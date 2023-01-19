@@ -1,27 +1,49 @@
 import axios from 'axios';
 
 export const Csv = () => {
-  // const url = 'https://jsonplaceholder.typicode.com/posts/1'
+
   const getApi = () => {
-    const url = 'http://localhost:3001/csv'
-    const params = '?platform=discogs'
-    axios.get(`${url}${params}`).then((res) => {
+    const platform = 'discogs'
+    console.log('getApi')
+    const envUrl = process.env.REACT_APP_API_URL
+    const url = `${envUrl}/csv/new.csv`
+    const params = `?platform=${platform}`
+    axios.get(`${url}${params}`, { responseType: "blob", }).then((res) => {
       console.log('res', res.data)
+      const url = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${platform}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(url);
+      link.parentNode.removeChild(link);
     })
   }
+
+  const platform = [
+    'discogs'
+  ]
+
   return (
     <>
-    <label for="country-select">国を選択</label>
-    <select name="countries" id="country-select">
-        <option value="">国</option>
-        <option value="dog">japan</option>
-        <option value="cat">海外</option>
-    </select>
-    <button
-      onClick={getApi}
-    >
-      csvを出力
-    </button>
+      {/* {platform.map((p) => { */}
+        {/* <label for="country-select">国を選択</label>
+        <select name="countries" id="country-select">
+            <option value="">国</option>
+            <option value="dog">japan</option>
+            <option value="cat">海外</option>
+        </select> */}
+
+          <div>
+            {'discogs'}
+            <button
+              onClick={getApi}
+            >
+              csvを出力
+            </button>
+          </div>
+      {/* })} */}
     </>
   )
 }

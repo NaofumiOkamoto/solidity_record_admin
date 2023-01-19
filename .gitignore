@@ -4,6 +4,7 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+tmp/db/*
 # Ignore bundler config.
 /api/.bundle
 
@@ -47,9 +48,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+/front/.env
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/tmp

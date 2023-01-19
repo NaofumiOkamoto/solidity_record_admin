@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   get 'csv', to: 'csv#index'
+  get 'csv/new', to: 'csv#new'
 end
