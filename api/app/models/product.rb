@@ -46,7 +46,7 @@ class Product < ApplicationRecord
     :ishii_memo
   )
 
-  def spreadsheets_save(result_values)
+  def spreadsheets_to_db_save(result_values)
     result_values.drop(1).each do |row_data|
       row = Row.new(*row_data)
       attributes = row.to_h.slice(

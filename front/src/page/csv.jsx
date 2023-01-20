@@ -2,9 +2,7 @@ import axios from 'axios';
 
 export const Csv = () => {
 
-  const getApi = () => {
-    const platform = 'discogs'
-    console.log('getApi')
+  const getApi = (platform) => {
     const envUrl = process.env.REACT_APP_API_URL
     const url = `${envUrl}/csv/new.csv`
     const params = `?platform=${platform}`
@@ -21,29 +19,31 @@ export const Csv = () => {
     })
   }
 
-  const platform = [
-    'discogs'
+  const platforms = [
+    'discogs',
+    'shopify',
   ]
 
   return (
     <>
-      {/* {platform.map((p) => { */}
+      {platforms.map((platform) => {
         {/* <label for="country-select">国を選択</label>
         <select name="countries" id="country-select">
             <option value="">国</option>
             <option value="dog">japan</option>
             <option value="cat">海外</option>
         </select> */}
-
+        return (
           <div>
-            {'discogs'}
+            <h3>{platform}</h3>
             <button
-              onClick={getApi}
+              onClick={() => getApi(platform)}
             >
               csvを出力
             </button>
           </div>
-      {/* })} */}
+        )
+      })}
     </>
   )
 }
