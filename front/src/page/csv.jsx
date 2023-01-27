@@ -1,4 +1,5 @@
 import axios from 'axios';
+import styled from 'styled-components';
 
 export const Csv = () => {
 
@@ -23,6 +24,9 @@ export const Csv = () => {
     'discogs',
     'shopify',
   ]
+  const Container = styled.div`
+  margin: 2rem;
+`
 
   return (
     <>
@@ -34,14 +38,14 @@ export const Csv = () => {
             <option value="cat">海外</option>
         </select> */}
         return (
-          <div>
+          <Container>
             <h3>{platform}</h3>
             <button
               onClick={() => getApi(platform)}
             >
               csvを出力
             </button>
-          </div>
+          </Container>
         )
       })}
     </>
