@@ -49,6 +49,7 @@ tmp/db/*
 .env.test.local
 .env.production.local
 /front/.env
+/api/.env
 
 npm-debug.log*
 yarn-debug.log*

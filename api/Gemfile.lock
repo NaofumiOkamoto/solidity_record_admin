@@ -78,6 +78,10 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     declarative (0.0.20)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.12.0)
     faraday (2.7.2)
       faraday-net_http (>= 2.0, < 3.1)
@@ -217,6 +221,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   debug
+  dotenv-rails
   google-api-client
   mysql2 (~> 0.5)
   puma (~> 5.0)

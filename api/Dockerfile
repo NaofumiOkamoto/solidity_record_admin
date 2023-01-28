@@ -5,6 +5,8 @@ ARG RUBYGEMS_VERSION=3.3.20
 WORKDIR /api
 COPY Gemfile* /api/
 
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs mariadb-client
+
 # Bundlerのversionが起因してエラーが発生するのを防いでいる (結構苦労した)
 # 過去には問題なく動いていた環境で急に動かなくなった人もいたみたい
 RUN gem update --system ${RUBYGEMS_VERSION} && \
