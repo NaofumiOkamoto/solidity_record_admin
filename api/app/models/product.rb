@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
 
-  # 行の構造を定義
+  # 元となるスプレットシートの列の構造を定義
   Row = Struct.new(
     :SKU,
     :artist,
@@ -21,8 +21,6 @@ class Product < ApplicationRecord
     :cover_description,
     :shopify用mp3_A,
     :shopify用mp3_B,
-    :yahoo用mp3_A,
-    :yahoo用mp3_B,
     :record_description_jp,
     :record_description_en,
     :record_grading,
@@ -69,8 +67,6 @@ class Product < ApplicationRecord
         :cover_description,
         :shopify用mp3_A,
         :shopify用mp3_B,
-        :yahoo用mp3_A,
-        :yahoo用mp3_B,
         :record_description_jp,
         :record_description_en,
         :record_grading,
