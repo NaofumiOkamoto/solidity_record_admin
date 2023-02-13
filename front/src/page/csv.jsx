@@ -5,7 +5,8 @@ export const Csv = () => {
 
   const getApi = (platform) => {
     const envUrl = process.env.REACT_APP_API_URL
-    const url = `${envUrl}/csv/new.csv`
+    const envPort = process.env.REACT_APP_API_PORT
+    const url = `${envUrl}:${envPort}/csv/new.csv`
     const params = `?platform=${platform}`
     axios.get(`${url}${params}`, { responseType: "blob", }).then((res) => {
       console.log('res', res.data)
@@ -22,7 +23,7 @@ export const Csv = () => {
 
   const platforms = [
     'discogs',
-    'shopify',
+    'mercari',
   ]
   const Container = styled.div`
   margin: 2rem;
