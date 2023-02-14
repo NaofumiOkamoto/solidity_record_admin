@@ -156,6 +156,9 @@ GEM
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
+    puma-daemon (0.1.2)
+      puma (>= 5.0)
+      rack
     racc (1.6.2)
     rack (2.2.5)
     rack-cors (1.1.1)
@@ -225,6 +228,7 @@ DEPENDENCIES
   google-api-client
   mysql2 (~> 0.5)
   puma (~> 5.0)
+  puma-daemon
   rack-cors
   rails (~> 7.0.4)
   tzinfo-data
