@@ -1,3 +1,4 @@
+import React from 'react'
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -9,7 +10,6 @@ export const Csv = () => {
     const url = `${envUrl}:${envPort}/csv/new.csv`
     const params = `?platform=${platform}`
     axios.get(`${url}${params}`, { responseType: "blob", }).then((res) => {
-      console.log('res', res.data)
       const url = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
       link.href = url;
@@ -17,7 +17,7 @@ export const Csv = () => {
       document.body.appendChild(link);
       link.click();
       URL.revokeObjectURL(url);
-      link.parentNode.removeChild(link);
+      link.parentNode?.removeChild(link);
     })
   }
 

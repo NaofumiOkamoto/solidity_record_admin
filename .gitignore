@@ -5,6 +5,9 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 tmp/db/
+node_modules
+package-lock.json
+package.json
 # Ignore bundler config.
 /api/.bundle
 
