@@ -1,7 +1,12 @@
 module MercariHelper
 
   def mercari_header
-    [
+    img_count = Product.maximum(:img_count)
+    img_array = []
+    img_count.times do |i|
+      img_array << "商品画像名_#{i}"
+    end
+    header = [
       # TODO 画像数によって
       '商品名',
       '商品説明',
@@ -15,10 +20,15 @@ module MercariHelper
       '発送までの日数',
       '商品ステータス',
     ]
+    img_array + header
   end
 
   def mercari_format(value)
-    [
+    img_count = Product.maximum(:img_count)
+    img_row = Array.new(img_count)
+    # TODO
+    # img_rowにこのrowの分だけ画像名入れる
+    row = [
       # TODO 画像数によって
       product_name(value), # 商品名
       product_description(value), # 商品説明
@@ -32,6 +42,7 @@ module MercariHelper
       '1', # 発送までの日数
       '2', # 商品ステータス
     ]
+    img_row + row
   end
 
   private
