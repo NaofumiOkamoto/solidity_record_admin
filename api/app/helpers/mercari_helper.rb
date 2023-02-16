@@ -7,7 +7,6 @@ module MercariHelper
       img_array << "商品画像名_#{i + 1}"
     end
     header = [
-      # TODO 画像数によって
       '商品名',
       '商品説明',
       'SKU1_在庫数',
@@ -30,10 +29,7 @@ module MercariHelper
     img_count.to_i.times do |i|
       img_row[i] = "#{value['SKU']}_#{i + 1}.jpg"
     end
-    # TODO
-    # img_rowにこのrowの分だけ画像名入れる
     row = [
-      # TODO 画像数によって
       product_name(value), # 商品名
       product_description(value), # 商品説明
       value['quantity'], # SKU1_在庫数
