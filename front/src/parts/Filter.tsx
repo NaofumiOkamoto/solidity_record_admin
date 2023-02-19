@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { Platforms } from '../page/Csv';
+import { Platforms } from '../page/CsvCreate';
 
 const FilterArea = styled.div`
   margin: 2rem 0;
