@@ -35,7 +35,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.integer :master_id
       t.string :cost_price
       t.string :buying_date
-      t.string :registration_date
+      t.date :registration_date, null: true
       t.integer :quantity
       t.string :youtube
       t.integer :img_count

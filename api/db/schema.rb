@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_19_002326) do
     t.integer "master_id"
     t.string "cost_price"
     t.string "buying_date"
-    t.string "registration_date"
+    t.date "registration_date"
     t.integer "quantity"
     t.string "youtube"
     t.integer "img_count"

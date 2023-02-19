@@ -1,4 +1,4 @@
-import { Csv } from './page/csv.tsx';
+import { Csv } from './page/Csv';
 
 export const App = () => {
   return (

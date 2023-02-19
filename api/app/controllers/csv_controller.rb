@@ -7,7 +7,7 @@ class CsvController < ApplicationController
 
   def new
     # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AP"])
-    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AP"])
+    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AP"])
     spreadsheet_result_values = [
       ["SKU", "artist", "title", "label", "country", "number", "release_year", "recoding_date", "genre", "format", "barcode", "track_list", "personnel", "musical_instrument", "item_condition", "cover_grading", "cover_description", "shopify用mp3_A", "shopify用mp3_B", "yahoo用mp3_A", "yahoo用mp3_B", "record_description_jp", "record_description_en", "record_grading", "weight", "price", "discogs_price", "discogs_id", "ebay_price", "ebay_id", "master_id", "cost_price", "buying_date", "registration_date", "quantity", "youtube", "img_count", "sold_date", "sold_price", "product_status", "sales_status", "ishii_memo"],
       ["1", "Hank Moble", "Soul Station", "Blue Note", "Japan", "GXK 8096", "1978", "1960/02/07", "103_105", "LP", "NULL", "A1. Remember A2. This I Dig Of You A3. Dig Dis B1. Split Feelin's B2. Soul Station B3. If I Should Lose You", "Hank Mobley (ts), Paul Chambers (b), Art Blakey (ds), Wynton Kelly (p)", "Tenor Saxophone", "Used", "EX-", "with insert and OBI. some brown stains.", "", "", "", "close to NM. great shape.", "EX+", "300", "7980", "80", "15531107", "79.99", "NULL", "1", "", "", "NULL", "0", "https://youtu.be/sbmKLZ_opuQ", "5", "NULL", "", "Active", "Sold Out"],
@@ -29,13 +29,29 @@ class CsvController < ApplicationController
     # productテーブルに一旦保存する
 
     # 開発段階だと下記を使用する
-    Product.new.spreadsheets_to_db_save(spreadsheet_result_values)
+    # Product.new.spreadsheets_to_db_save(spreadsheet_result_values)
 
     # スプしから取得した場合は下記を使用する
-    # Product.new.spreadsheets_to_db_save(result.values)
+    Product.new.spreadsheets_to_db_save(result.values)
 
     # TODO Productからcsv用データを作成する（フィルタも含め）
+    quantity = params[:quantity].to_i
     products = Product.all
+
+    # quantity の絞り込み
+    case quantity
+    when 0
+      products = products.where(quantity: quantity)
+    when 1
+      products = products.where(quantity: quantity..)
+    end
+
+    # registration_date の絞り込み
+    # products = products.where(registration_date: params[:date].to_date..Date.today)
+    products = products.where('registration_date >= ?', params[:date].to_date)
+
+    # country の絞り込み
+    
     respond_to do |format|
       format.html
       format.csv do |csv|
