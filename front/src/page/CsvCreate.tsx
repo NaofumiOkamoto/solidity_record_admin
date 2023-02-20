@@ -39,21 +39,47 @@ const Hr = styled.hr`
   border: none;
 `
 
+export type FilterState = {
+  discogs: {
+    date: Date,
+    country: string, // 全ての国
+    quantity: number,
+  },
+  mercari: {
+    date: Date,
+    country: string, // 日本以外
+    quantity: number,
+  },
+}
+
 export const Csv = () => {
 
-  const [registrationDate, setRegistrationDate] = useState(new Date())
-  const [country, setCountry] = useState('all')
-  const [quantity, setQuantity] = useState(-1)
+  const filterData = {
+    discogs: {
+      date: new Date(),
+      // date: new Date(2022, 0, 1),
+      country: 'all', // 全ての国
+      quantity: 1, // 在庫1以上
+    },
+    mercari: {
+      date: new Date(),
+      // date: new Date(2022, 0, 1),
+      country: 'except_japan', // 日本以外
+      quantity: 1, // 在庫1以上
+    },
+  }
+  const [filterState, setFilterState] = useState(filterData)
+  let testParams = '&'
+  for ( let key in filterState[platforms[0]] ) {
+    testParams = `${testParams}${key}=${String(filterState[platforms[0]][key])}&`
+  }
 
   const getApi = (platform) => {
     const envUrl = process.env.REACT_APP_API_URL
     const envPort = process.env.REACT_APP_API_PORT
     const url = `${envUrl}:${envPort}/csv/new.csv`
     const platformParams = `?platform=${platform}`
-    const dateParams = `&date=${registrationDate}`
-    const countryParams = `&country=${country}`
-    const quantityParams = `&quantity=${quantity}`
-    axios.get(`${url}${platformParams}${dateParams}${countryParams}${quantityParams}`, { responseType: "blob", }).then((res) => {
+    axios.get(`${url}${platformParams}${testParams}`, { responseType: "blob", }).then((res) => {
       const url = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
       link.href = url;
@@ -71,15 +97,11 @@ export const Csv = () => {
         return (
           <>
             <Container>
-              <h3>{platform}</h3>
+              <h2>{platform}</h2>
               <Filter
                 platform={platform}
-                registrationDate={registrationDate}
-                setRegistrationDate={setRegistrationDate}
-                country={country}
-                setCountry={setCountry}
-                quantity={quantity}
-                setQuantity={setQuantity}
+                filterState={filterState}
+                setFilterState={setFilterState}
               />
               <Button
                 onClick={() => getApi(platform)}

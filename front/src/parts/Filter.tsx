@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { Platforms } from '../page/CsvCreate';
+import { Platforms, FilterState } from '../page/CsvCreate';
 
 const FilterArea = styled.div`
   margin: 2rem 0;
@@ -46,32 +46,24 @@ const formatDate = (dt) => {
 
 type Props = {
   platform: Platforms;
-  registrationDate: Date;
-  setRegistrationDate: (date) => void;
-  country: string;
-  setCountry: (string) => void;
-  quantity: number;
-  setQuantity: (num) => void;
+  filterState: FilterState;
+  setFilterState: (v) => void;
 }
 
 export const Filter = ({
   platform,
-  registrationDate,
-  setRegistrationDate,
-  country,
-  setCountry,
-  quantity,
-  setQuantity,
+  filterState,
+  setFilterState,
 }: Props) => {
   const handleChange = (date: Date) => {
-    setRegistrationDate(date)
+    setFilterState({...filterState, [platform]: {...filterState[platform], date: date}})
   }
 
   return (
     <FilterArea>
       <Div>
         <Text>在庫</Text>
-        <Select value={quantity} onChange={e => setQuantity(e.target.value)}>
+        <Select value={filterState[platform]['quantity']} onChange={e => setFilterState({...filterState, [platform]: {...filterState[platform], quantity: e.target.value}})}>
           {
             QUANTITY.map((v,i) => (
               <option key={i} value={v.value}>{v.label}</option>)
@@ -81,7 +73,7 @@ export const Filter = ({
       </Div>
       <Div>
         <Text>国</Text>
-        <Select value={country} onChange={e => setCountry(e.target.value)}>
+        <Select value={filterState[platform]['country']} onChange={e => setFilterState({...filterState, [platform]: {...filterState[platform], country: e.target.value}})}>
           {
             COUNTRY.map((v,i) => (
               <option key={i} value={v.value}>{v.label}</option>)
@@ -93,11 +85,11 @@ export const Filter = ({
         <Text>登録日</Text>
         <DateArea>
           <DatePicker
-            selected={registrationDate}
+            selected={filterState[platform]['date']}
             onChange={handleChange}
             customInput={
               <DateButton>
-                {formatDate(registrationDate)}
+                {formatDate(filterState[platform]['date'])}
               </DateButton>
             }
           />
