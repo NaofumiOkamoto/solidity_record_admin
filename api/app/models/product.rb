@@ -18,13 +18,15 @@ class Product < ApplicationRecord
     :musical_instrument,
     :item_condition,
     :cover_grading,
-    :cover_description,
-    :shopify用mp3_A,
-    :shopify用mp3_B,
+    :cover_description_en,
+    :cover_description_jp,
+    :mp3_A,
+    :mp3_B,
     :record_description_jp,
     :record_description_en,
     :record_grading,
     :weight,
+    :img_count,
     :price,
     :discogs_price,
     :discogs_id,
@@ -36,7 +38,6 @@ class Product < ApplicationRecord
     :registration_date,
     :quantity,
     :youtube,
-    :img_count,
     :sold_date,
     :sold_price,
     :product_status,
@@ -45,9 +46,10 @@ class Product < ApplicationRecord
   )
 
   def spreadsheets_to_db_save(result_values)
+    products_attributes = []
     result_values.drop(1).each do |row_data|
       row = Row.new(*row_data)
-      attributes = row.to_h.slice(
+      products_attributes << row.to_h.slice(
         :SKU,
         :artist,
         :title,
@@ -64,13 +66,15 @@ class Product < ApplicationRecord
         :musical_instrument,
         :item_condition,
         :cover_grading,
-        :cover_description,
-        :shopify用mp3_A,
-        :shopify用mp3_B,
+        :cover_description_en,
+        :cover_description_jp,
+        :mp3_A,
+        :mp3_B,
         :record_description_jp,
         :record_description_en,
         :record_grading,
         :weight,
+        :img_count,
         :price,
         :discogs_price,
         :discogs_id,
@@ -82,17 +86,18 @@ class Product < ApplicationRecord
         :registration_date,
         :quantity,
         :youtube,
-        :img_count,
         :sold_date,
         :sold_price,
         :product_status,
         :sales_status,
         :ishii_memo
       )
-      sku_attributes = row.to_h.slice(:SKU)
-      products = Product.find_or_initialize_by(sku_attributes)
-      products.update(attributes)
-      products.save
+      # sku_attributes = row.to_h.slice(:SKU)
+      # products = Product.find_or_initialize_by(sku_attributes)
+      # products.update(attributes)
+      # products.save
     end
+
+    Product.upsert_all(products_attributes)
   end
 end
