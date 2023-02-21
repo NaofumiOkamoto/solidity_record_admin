@@ -15,7 +15,7 @@ module DiscogsHelper
 
   def discogs_format(value)
     [
-      value['discogs_id'],                # release_id
+      value['discogs_release_id'],        # release_id
       value['discogs_price'],             # price
       comments(value),                    # comments
       condition(value['record_grading']), # media_condition
@@ -29,9 +29,12 @@ module DiscogsHelper
   private
 
   def comments(value)
-    sleeve = "Sleeve: #{value['cover_grading']} #{value['cover_description']}"
-    vinyl = "Vinyl: #{value['record_grading']} #{value['record_description_en']}"
+    sleeve = "Sleeve: #{value['cover_grading']}. #{value['cover_description']}"
+    vinyl = "Vinyl: #{value['record_grading']}. #{value['record_description_en']}"
     comments = "#{value['cover_grading'].present? ? sleeve + ' ' : ''}#{vinyl}" 
+    if value['format'].start_with?('7 inch')
+      comments = "#{comments} *we can send you the audio files and the images of both sides. please let us know if you would like."
+    end
     comments
   end
 

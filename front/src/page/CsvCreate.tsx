@@ -57,13 +57,11 @@ export const Csv = () => {
   const filterData = {
     discogs: {
       date: new Date(),
-      // date: new Date(2022, 0, 1),
       country: 'all', // 全ての国
       quantity: 1, // 在庫1以上
     },
     mercari: {
       date: new Date(),
-      // date: new Date(2022, 0, 1),
       country: 'except_japan', // 日本以外
       quantity: 1, // 在庫1以上
     },
