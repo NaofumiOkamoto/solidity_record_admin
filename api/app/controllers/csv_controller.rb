@@ -7,18 +7,18 @@ class CsvController < ApplicationController
 
   def new
     # 本番シート
-    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AP"])
+    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
     # テストシート
-    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AP"])
+    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AQ"])
 
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
 
     # TODO Productからcsv用データを作成する（フィルタも含め）
-    quantity = params[:quantity].to_i
     products = Product.all
 
     # quantity の絞り込み
+    quantity = params[:quantity].to_i
     case quantity
     when 0
       products = products.where(quantity: quantity)
@@ -29,13 +29,18 @@ class CsvController < ApplicationController
     # registration_date の絞り込み
     products = products.where('registration_date >= ?', params[:date].to_date)
 
-
     # format の絞り込み
     if params[:platform] == 'mercari'
       products = products.where(format: '7 inch')
     end
-    
+
     # TODO: country の絞り込み
+    case params['country']
+    when 'japan'
+      products = products.where(country: 'Japan')
+    when 'except_japan'
+      products = products.where.not(country: 'Japan')
+    end
     
     respond_to do |format|
       format.html
