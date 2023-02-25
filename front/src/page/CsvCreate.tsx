@@ -73,6 +73,7 @@ export const Csv = () => {
     const platformParams = `?platform=${platform}`
     try {
       const res = await axios.get(`${url}${platformParams}${filterParams}`, { responseType: "blob", })
+      console.log(res)
       setIsLoading(false);
       const downloadUrl = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
