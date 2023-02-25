@@ -7,7 +7,7 @@ class CsvController < ApplicationController
 
   def new
     # 本番シート
-    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
+    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
     genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:D"])
 
     genre_map = {}
@@ -15,10 +15,9 @@ class CsvController < ApplicationController
       next if g[0] == 'id'
       genre_map[g[0]] = { main: g[1], sub: g[2] }
     end
-    # p genre_map['1'][:sub]
 
     # テストシート
-    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AQ"])
+    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AQ"])
 
     if result.values[0] != Product::SP_HEADER
       raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")
