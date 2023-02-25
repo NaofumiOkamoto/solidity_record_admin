@@ -81,6 +81,7 @@ class CsvController < ApplicationController
         csv << line if line.length > 0
       end
     end
+    Rails.logger.info("csv: #{csv_data}")
     send_data(csv_data, filename: "test.csv")
   end
 
