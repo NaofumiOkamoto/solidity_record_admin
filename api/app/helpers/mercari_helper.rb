@@ -61,8 +61,7 @@ module MercariHelper
   end
 
   def mercari_format(value, genre_map)
-    max_img_count = Product.maximum(:img_count)
-    img_row = Array.new(max_img_count)
+    img_row = Array.new(IMG_COUNT)
     img_count = value['img_count']
     IMG_COUNT.to_i.times do |i|
       if img_count.to_i > i
