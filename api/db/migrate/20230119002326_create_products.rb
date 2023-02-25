@@ -12,6 +12,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :recoding_date
       t.string :genre
       t.string :format
+      t.string :tags
       t.string :barcode
       t.string :track_list
       t.string :personnel
