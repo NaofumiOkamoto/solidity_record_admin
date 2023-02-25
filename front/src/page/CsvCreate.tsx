@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import ReactLoading from 'react-loading';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Filter } from '../parts/Filter';
+
 
 export type Platforms = 'discogs' | 'mercari'
 
@@ -19,6 +21,14 @@ const Hr = styled.hr`
   background-color: #dddddd;
   height: 1px;
   border: none;
+`
+const Loading = styled.div`
+  text-align: center;
+  margin-top: 100px;
+`
+const Div = styled.div`
+  width: 100px;
+  margin: 0 auto;
 `
 
 export type FilterState = {
@@ -49,8 +59,10 @@ export const Csv = () => {
     },
   }
   const [filterState, setFilterState] = useState(filterData)
+  const [isLoading, setIsLoading] = useState(false)
 
   const getApi = async (platform) => {
+    setIsLoading(true);
     let filterParams = '&'
     for ( let key in filterState[platform] ) {
       filterParams = `${filterParams}${key}=${String(filterState[platform][key])}&`
@@ -61,6 +73,10 @@ export const Csv = () => {
     const platformParams = `?platform=${platform}`
     try {
       const res = await axios.get(`${url}${platformParams}${filterParams}`, { responseType: "blob", })
+      if (res) {
+        setIsLoading(false);
+        console.log('レスポンス帰ってきた')
+      }
       const downloadUrl = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
       link.href = downloadUrl;
@@ -70,6 +86,7 @@ export const Csv = () => {
       URL.revokeObjectURL(downloadUrl);
       link.parentNode?.removeChild(link);
     } catch(e) {
+      setIsLoading(false);
       if (e.code === "ERR_BAD_REQUEST") {
         alert('!!!!!スプレットシートの項目順か項目名が正しくなーい!!!!!\nのでcsvを作成できませんでした。')
       } else {
@@ -80,7 +97,21 @@ export const Csv = () => {
 
   return (
     <>
-      {platforms.map(platform => {
+    {isLoading ?
+      <Loading>
+        <Div>
+          <ReactLoading
+            type="spinningBubbles"
+            color="#b2cbf3"
+            height="100px"
+            width="100px"
+            className="mx-auto"
+          />
+        </Div>
+        <p>csvを作成中です....</p>
+      </Loading>
+      :
+      platforms.map(platform => {
         return (
           <>
             <Container>
@@ -99,7 +130,8 @@ export const Csv = () => {
             <Hr />
           </>
         )
-      })}
+      })
+    }
     </>
   )
 }
