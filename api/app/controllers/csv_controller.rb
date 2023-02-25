@@ -24,6 +24,7 @@ class CsvController < ApplicationController
       raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")
     end
 
+    Rails.logger.level = 0
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
     products = Product.all
