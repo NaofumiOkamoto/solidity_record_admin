@@ -7,9 +7,19 @@ class CsvController < ApplicationController
 
   def new
     # 本番シート
-    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
+    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
+    genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:D"])
+
+    genre_map = {}
+    genre.values.each do |g|
+      next if g[0] == 'id'
+      genre_map[g[0]] = { main: g[1], sub: g[2] }
+    end
+    # p genre_map['1'][:sub]
+
     # テストシート
-    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AQ"])
+    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AQ"])
+
     if result.values[0] != Product::SP_HEADER
       raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")
     end
@@ -48,20 +58,20 @@ class CsvController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do |csv|
-        send_posts_csv(products)
+        send_posts_csv(products, genre_map)
       end
     end
   end
 
   private
 
-  def send_posts_csv(products)
+  def send_posts_csv(products, genre_map)
     csv_data = CSV.generate do |csv|
       platform = params[:platform]
       header = self.send("#{platform}_header")
       csv << header
       products.each do |value|
-        line = self.send("#{platform}_format", value)
+        line = self.send("#{platform}_format", value, genre_map)
         csv << line if line.length > 0
       end
     end
