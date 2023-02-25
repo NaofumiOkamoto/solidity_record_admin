@@ -13,7 +13,7 @@ module DiscogsHelper
     ]
   end
 
-  def discogs_format(value)
+  def discogs_format(value, _)
     [
       value['discogs_release_id'],        # release_id
       value['discogs_price'],             # price
@@ -48,7 +48,7 @@ module DiscogsHelper
       'Very Good Plus (VG+)'
     when 'VG'
       'Very Good (VG)'
-    when 'VG-、G+'
+    when 'VG-', 'G+'
       'Good Plus (G+)'
     when 'G'
       'Good (G)'

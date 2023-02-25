@@ -73,10 +73,7 @@ export const Csv = () => {
     const platformParams = `?platform=${platform}`
     try {
       const res = await axios.get(`${url}${platformParams}${filterParams}`, { responseType: "blob", })
-      if (res) {
-        setIsLoading(false);
-        console.log('レスポンス帰ってきた')
-      }
+      setIsLoading(false);
       const downloadUrl = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
       link.href = downloadUrl;
@@ -113,7 +110,7 @@ export const Csv = () => {
       :
       platforms.map(platform => {
         return (
-          <>
+          <div key={platform}>
             <Container>
               <h2>{platform}</h2>
               <Filter
@@ -128,7 +125,7 @@ export const Csv = () => {
               </Button>
             </Container>
             <Hr />
-          </>
+          </div>
         )
       })
     }
