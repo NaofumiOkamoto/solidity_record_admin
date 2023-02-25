@@ -10,6 +10,9 @@ class CsvController < ApplicationController
     result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
     # テストシート
     # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AQ"])
+    if result.values[0] != Product::SP_HEADER
+      raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")
+    end
 
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
