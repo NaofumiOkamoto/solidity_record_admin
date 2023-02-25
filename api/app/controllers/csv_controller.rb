@@ -9,6 +9,7 @@ class CsvController < ApplicationController
     # 本番シート
     result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
     genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:D"])
+    Rails.logger.debug('スプシ取得完了')
 
     genre_map = {}
     genre.values.each do |g|
@@ -26,6 +27,7 @@ class CsvController < ApplicationController
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
     products = Product.all
+    Rails.logger.debug('DB情報取得完了')
 
     # quantity の絞り込み
     quantity = params[:quantity].to_i
@@ -35,11 +37,13 @@ class CsvController < ApplicationController
     when 1
       products = products.where(quantity: quantity..)
     end
+    Rails.logger.debug('quantiry絞り込み完了')
 
     # format の絞り込み
     if params[:platform] == 'mercari'
       products = products.where(format: '7 inch')
     end
+    Rails.logger.debug('format絞り込み完了')
 
     # country の絞り込み
     case params['country']
@@ -48,10 +52,13 @@ class CsvController < ApplicationController
     when 'except_japan'
       products = products.where.not(country: 'Japan')
     end
+    Rails.logger.debug('country絞り込み完了')
 
     # registration_date の絞り込み
     products = products.where('registration_date >= ?', params[:date].to_date)
-    
+    Rails.logger.debug('registration_date絞り込み完了')
+    Rails.logger.debug("取得数: #{products.length}")
+
     respond_to do |format|
       format.html
       format.csv do |csv|
