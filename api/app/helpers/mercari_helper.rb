@@ -120,7 +120,7 @@ module MercariHelper
       '',
       value['price'] + 185, # 販売価格
       'rQXZaxCTHYJwurBjB687QC', # カテゴリID
-      condition(value), # 商品の状態
+      mercari_condition(value), # 商品の状態
       '1', # 配送方法
       'jp13', # 発送元の地域
       '1', # 発送までの日数
@@ -131,8 +131,10 @@ module MercariHelper
 
   private
 
-  def condition(value)
-    case value['record_grading'].split('_')[0]
+  def mercari_condition(value)
+    grading = value['record_grading']
+    return if grading.nil?
+    case grading.split('_')[0]
     when 'M', 'NM', 'EX+', 'EX'
       3
     when 'EX-', 'VG+'

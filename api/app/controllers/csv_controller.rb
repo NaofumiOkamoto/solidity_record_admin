@@ -25,8 +25,6 @@ class CsvController < ApplicationController
 
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
-
-    # TODO Productからcsv用データを作成する（フィルタも含め）
     products = Product.all
 
     # quantity の絞り込み
@@ -46,7 +44,7 @@ class CsvController < ApplicationController
       products = products.where(format: '7 inch')
     end
 
-    # TODO: country の絞り込み
+    # country の絞り込み
     case params['country']
     when 'japan'
       products = products.where(country: 'Japan')

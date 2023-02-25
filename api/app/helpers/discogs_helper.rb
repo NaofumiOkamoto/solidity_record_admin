@@ -13,13 +13,13 @@ module DiscogsHelper
     ]
   end
 
-  def discogs_format(value, _)
+  def discogs_format(value, genre)
     [
       value['discogs_release_id'],        # release_id
       value['discogs_price'],             # price
       comments(value),                    # comments
-      condition(value['record_grading']), # media_condition
-      condition(value['cover_grading']),  # sleeve_condition
+      discogs_condition(value['record_grading']), # media_condition
+      discogs_condition(value['cover_grading']),  # sleeve_condition
       value['SKU'],                       # external_id
       value['weight'],                    # weight
       value['quantity'],                  # quantity
@@ -38,7 +38,7 @@ module DiscogsHelper
     comments
   end
 
-  def condition(grading)
+  def discogs_condition(grading)
     case grading.split('_')[0]
     when 'M'
       'Mint (M)'
