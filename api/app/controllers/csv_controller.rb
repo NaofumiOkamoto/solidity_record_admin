@@ -36,9 +36,6 @@ class CsvController < ApplicationController
       products = products.where(quantity: quantity..)
     end
 
-    # registration_date の絞り込み
-    products = products.where('registration_date >= ?', params[:date].to_date)
-
     # format の絞り込み
     if params[:platform] == 'mercari'
       products = products.where(format: '7 inch')
@@ -51,6 +48,9 @@ class CsvController < ApplicationController
     when 'except_japan'
       products = products.where.not(country: 'Japan')
     end
+
+    # registration_date の絞り込み
+    products = products.where('registration_date >= ?', params[:date].to_date)
     
     respond_to do |format|
       format.html
