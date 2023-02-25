@@ -73,7 +73,7 @@ export const Csv = () => {
     const platformParams = `?platform=${platform}`
     try {
       const res = await axios.get(`${url}${platformParams}${filterParams}`, { responseType: "blob", })
-      console.log(res)
+      console.log('res', res)
       setIsLoading(false);
       const downloadUrl = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
@@ -85,7 +85,7 @@ export const Csv = () => {
       link.parentNode?.removeChild(link);
     } catch(e) {
       setIsLoading(false);
-      console.log(e)
+      console.log('e', e)
       if (e.code === "ERR_BAD_REQUEST") {
         alert('!!!!!スプレットシートの項目順か項目名が正しくなーい!!!!!\nのでcsvを作成できませんでした。')
       } else {
