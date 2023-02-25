@@ -85,6 +85,7 @@ export const Csv = () => {
       link.parentNode?.removeChild(link);
     } catch(e) {
       setIsLoading(false);
+      console.log(e)
       if (e.code === "ERR_BAD_REQUEST") {
         alert('!!!!!スプレットシートの項目順か項目名が正しくなーい!!!!!\nのでcsvを作成できませんでした。')
       } else {
