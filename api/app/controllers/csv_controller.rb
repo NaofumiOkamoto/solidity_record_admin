@@ -1,5 +1,6 @@
 class CsvController < ApplicationController
   require 'csv'
+  require 'fileutils'
 
   def index
     render :json => {id: 1}
@@ -72,8 +73,8 @@ class CsvController < ApplicationController
   private
 
   def send_posts_csv(products, genre_map)
+    platform = params[:platform]
     csv_data = CSV.generate do |csv|
-      platform = params[:platform]
       header = self.send("#{platform}_header")
       csv << header
       products.each do |value|
@@ -81,7 +82,15 @@ class CsvController < ApplicationController
         csv << line if line.length > 0
       end
     end
-    send_data(csv_data, filename: "test.csv")
+    if File.exist?("./tmp/#{platform}_csv")
+      FileUtils.rm_r("./tmp/#{platform}_csv")
+    end
+    Dir.mkdir("./tmp/#{platform}_csv")
+    File.open("./tmp/#{platform}_csv/test.csv", 'w') do |file|
+      file.write(csv_data)
+    end
+    # send_data(csv_data, filename: "test.csv")
+    send_file("./tmp/#{platform}_csv/test.csv", filename: "test.csv")
   end
 
 end
