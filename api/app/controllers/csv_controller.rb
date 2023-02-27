@@ -89,8 +89,8 @@ class CsvController < ApplicationController
     File.open("./tmp/#{platform}_csv/test.csv", 'w') do |file|
       file.write(csv_data)
     end
-    # send_data(csv_data, filename: "test.csv")
-    send_file("./tmp/#{platform}_csv/test.csv", filename: "test.csv")
+    send_data(csv_data, filename: "test.csv")
+    # send_file("./tmp/#{platform}_csv/test.csv", filename: "test.csv")
   end
 
 end

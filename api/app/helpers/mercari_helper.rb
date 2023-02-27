@@ -72,7 +72,7 @@ module MercariHelper
     end
     genre = []
     value['genre'].split('_').each do |id|
-      genre << genre_map[id.to_s][:sub]
+      genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
     end
     row = [
       product_name(value), # 商品名
