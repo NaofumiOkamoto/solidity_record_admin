@@ -13,7 +13,8 @@ module MercariHelper
       'SKU1_在庫数',
       'SKU1_商品管理コード',
       'SKU1_JANコード',
-      'SKU2_種類	SKU2_在庫数',
+      'SKU2_種類',
+      'SKU2_在庫数',
       'SKU2_商品管理コード',
       'SKU2_JANコード',
       'SKU3_種類',
@@ -117,6 +118,7 @@ module MercariHelper
       '',
       '',
       '',
+      '',
       value['price'] + 185, # 販売価格
       'rQXZaxCTHYJwurBjB687QC', # カテゴリID
       mercari_condition(value), # 商品の状態
@@ -147,14 +149,15 @@ module MercariHelper
 
   def product_name(value)
     genres =  value['genre'].split('_')
+    is_format = value['format'] == '7 inch'
     return "#{value['artist']} SOUL ソウル レコード 7インチ 45" if genres.include?('1')
-    return "#{value['artist']} SOUL FUNK ソウル ファンク レコード 7インチ 45" if genres.include?('2')
+    return "#{value['artist']} FUNK ファンク レコード 7インチ 45" if genres.include?('2')
     return "#{value['artist']} BLUES ブルース レコード 7インチ 45" if genres.include?('3')
-    return "#{value['artist']} SOUL DISCO ソウル ディスコ レコード 7インチ 45" if genres.include?('4')
-    return "#{value['artist']} GOSPEL ゴスペル レコード 7インチ 45" if genres.include?('5')
-    return "#{value['artist']} R&B R&R レコード 7インチ 45" if genres.include?('6')
-    return "#{value['artist']} JAZZ FUNK ジャズ ファンク レコード 7インチ 45" if genres.include?('110')
-    return "#{value['artist']} ROCK POP ロック ポップ レコード 7インチ 45" if genres.include?('2000')
+    return "#{value['artist']} DISCO ディスコ レコード 7インチ 45" if genres.include?('4')
+    return "#{value['artist']} GOSPEL ゴスペル レコード 7インチ 45" if genres.include?('5') && is_format
+    return "#{value['artist']} R&B R&R レコード 7インチ 45" if genres.include?('6') && is_format
+    return "#{value['artist']} JAZZ FUNK レコード 7インチ 45" if genres.include?('110') && is_format
+    return "#{value['artist']} ROCK POP レコード 7インチ 45" if genres.include?('2000') && is_format
   end
 
   def product_description(value, genre)
@@ -208,6 +211,8 @@ module MercariHelper
       VG, VG- → 悪い。ノイズが多くのる場合がある。
 
       G+, G → 非常に悪い。ノイズが多い。
+
+      ※当店の商品はすべて洗浄、再生確認済みです(新品、未開封品を除く)。グレーディングについては、原則、傷やダメージなど見た目での評価となります。傷の量に比べ、ノイズが比較的少ない盤もございますので、商品ページに試聴音源がある商品につきましては、ご購入前に試聴をおすすめいたします。
 
       ●配送方法:
 

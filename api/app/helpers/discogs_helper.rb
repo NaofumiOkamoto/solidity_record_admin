@@ -32,7 +32,7 @@ module DiscogsHelper
     sleeve = "Sleeve: #{value['cover_grading']}. #{value['cover_description']}"
     vinyl = "Vinyl: #{value['record_grading']}. #{value['record_description_en']}"
     comments = "#{value['cover_grading'].present? ? sleeve + ' ' : ''}#{vinyl}" 
-    if value['format'].start_with?('7 inch')
+    if value['item_condition'] == 'Used'
       comments = "#{comments} *we can send you the audio files and the images of both sides. please let us know if you would like."
     end
     comments

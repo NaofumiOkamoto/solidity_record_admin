@@ -42,12 +42,6 @@ class CsvController < ApplicationController
     end
     Rails.logger.info('quantiry絞り込み完了')
 
-    # format の絞り込み
-    if params[:platform] == 'mercari'
-      products = products.where(format: '7 inch')
-    end
-    Rails.logger.info('format絞り込み完了')
-
     # country の絞り込み
     case params['country']
     when 'japan'
