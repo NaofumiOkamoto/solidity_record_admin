@@ -27,6 +27,17 @@ class CsvController < ApplicationController
       raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")
     end
 
+    # スプレットシートの列を変更してもできるようにチャレンジしたが、
+    # 絞り込みが難しいことに気づき断念
+    # test = result.values.map.with_index do |r, i|
+    #   next if i == 0
+    #   hash = {}
+    #   result.values[0].each.with_index do |v, i|
+    #     hash[v] = r[i]
+    #   end
+    #   hash
+    # end
+
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
     products = Product.all

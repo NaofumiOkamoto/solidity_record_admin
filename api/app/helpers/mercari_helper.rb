@@ -164,41 +164,23 @@ module MercariHelper
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
 
     description = <<~PRODUCT
-      ●Artist: 
+      ●Artist: #{value['artist']}
 
-      #{value['artist']}
+      ●Title: #{value['title']}
 
-      ●Title: 
+      ●Label: #{value['label']}
 
-      #{value['title']}
+      ●Country: #{value['country']}
 
-      ●Label: 
+      ●Number: #{value['number']}
 
-      #{value['label']}
+      ●Format: #{value['format']}
 
-      ●Country:
+      ●Year: #{value['release_year']}
 
-      #{value['country']}
+      ●Genre: #{genre.join(', ')}
 
-      ●Number: 
-
-      #{value['number']}
-
-      ●Format:
-
-      #{value['format']}
-
-      ●Year:
-
-      #{value['release_year']}
-
-      ●Genre:
-
-      #{genre.join(', ')}
-
-      ●Condition: 
-
-      #{value['record_grading']} #{record_description_jp}
+      ●Condition: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}
 
       ●Grading Policy:
 
@@ -224,7 +206,7 @@ module MercariHelper
 
       https://www.post.japanpost.jp/service/you_pack/charge/ichiran/13.html
 
-      購入金額10000円以上の場合は、送料無料で発送いたします。(各商品金額には送料185円が含まれております。そのため、『購入金額10000円以上で送料無料』が適用される金額は、各商品金額から送料185円を引いた金額の合計となります。)
+      購入金額10,000円以上の場合は、送料無料で発送いたします。(各商品金額には送料185円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から送料185円を引いた金額の合計となります。)
 
       発送につきましては、平日のみ行っております。大変申し訳ございませんが、土曜日・日曜日・祝日の発送は行っておりませんので、何卒ご理解のほどよろしくお願い申し上げます。
 
@@ -238,7 +220,7 @@ module MercariHelper
       B. #{value['title'].split(' / ')[1]}
       https://drive.google.com/file/d/#{value['mp3_B']}/view?usp=sharing
 
-      ※PC以外の方は、画面上部中央にある下矢印のダウンロードボタンを押してから、試聴が開始されます。表示orダウンロードと出ますので、表示をクリックしてください。試聴は実際のレコードから録音しています。
+      ※PC以外の方は、画面上部中央にある下矢印のダウンロードボタンを押すと試聴が開始されます。表示orダウンロードと出ますので、表示をクリックしてください。試聴は実際のレコードから録音しています。
     PRODUCT
 
     description
