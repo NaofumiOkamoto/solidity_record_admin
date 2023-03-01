@@ -18,8 +18,8 @@ module DiscogsHelper
       value['discogs_release_id'],        # release_id
       value['discogs_price'],             # price
       comments(value),                    # comments
-      discogs_condition(value['record_grading']&.gsub('_', '~')), # media_condition
-      discogs_condition(value['cover_grading']&.gsub('_', '~')),  # sleeve_condition
+      discogs_condition(value['record_grading']), # media_condition
+      discogs_condition(value['cover_grading']),  # sleeve_condition
       value['SKU'],                       # external_id
       value['weight'],                    # weight
       value['quantity'],                  # quantity
@@ -33,7 +33,7 @@ module DiscogsHelper
     vinyl = "Vinyl: #{value['record_grading']&.gsub('_', '~')}. #{value['record_description_en']}"
     comments = "#{value['cover_grading'].present? ? sleeve + ' ' : ''}#{vinyl}" 
     if value['item_condition'] == 'Used'
-      comments = "#{comments} *we can send you the audio files and the images of both sides. please let us know if you would like."
+      comments = "#{comments} *We can send you the audio files and the images of both sides. Please let us know if you would like."
     end
     comments
   end
