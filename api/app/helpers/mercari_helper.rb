@@ -148,16 +148,43 @@ module MercariHelper
   end
 
   def product_name(value)
-    genres =  value['genre'].split('_')
-    is_format = value['format'] == '7 inch'
-    return "#{value['artist']} SOUL ソウル レコード 7インチ 45" if genres.include?('1')
-    return "#{value['artist']} FUNK ファンク レコード 7インチ 45" if genres.include?('2')
-    return "#{value['artist']} BLUES ブルース レコード 7インチ 45" if genres.include?('3')
-    return "#{value['artist']} DISCO ディスコ レコード 7インチ 45" if genres.include?('4')
-    return "#{value['artist']} GOSPEL ゴスペル レコード 7インチ 45" if genres.include?('5') && is_format
-    return "#{value['artist']} R&B R&R レコード 7インチ 45" if genres.include?('6') && is_format
-    return "#{value['artist']} JAZZ FUNK レコード 7インチ 45" if genres.include?('110') && is_format
-    return "#{value['artist']} ROCK POP レコード 7インチ 45" if genres.include?('2000') && is_format
+    genre, _ =  value['genre'].split('_')
+    format = ''
+    case value['format']
+    when '7 inch'
+      format = '7インチ 45' 
+    when 'LP'
+      format = 'LP'
+    end
+
+    case genre.to_i
+    when 1
+      return "#{value['artist']} SOUL ソウル レコード #{format}"
+    when 2
+      return "#{value['artist']} FUNK ファンク レコード #{format}"
+    when 3
+      return "#{value['artist']} BLUES ブルース レコード #{format}"
+    when 4
+      return "#{value['artist']} DISCO ディスコ レコード #{format}"
+    when 5
+      return "#{value['artist']} GOSPEL ゴスペル レコード #{format}"
+    when 6
+      return "#{value['artist']} R&B R&R レコード #{format}"
+    when 101..199
+      return "#{value['artist']} JAZZ FUNK レコード #{format}"
+    when 201..299
+      return "#{value['artist']} REGGAE レゲエ レコード #{format}"
+    when 301..398
+      return "#{value['artist']} LATIN ラテン レコード #{format}"
+    when 399
+      return "#{value['artist']} CUMBIA クンビア レコード #{format}"
+    when 2000..2099 
+      return "#{value['artist']} ROCK POP レコード #{format}"
+    when 3000..3099 
+      return "#{value['artist']} ROCK FOLK COUNTRY レコード #{format}"
+    when 4000..4099 
+      return "#{value['artist']} HIP HOP R&B レコード #{format}"
+    end
   end
 
   def product_description(value, genre)
