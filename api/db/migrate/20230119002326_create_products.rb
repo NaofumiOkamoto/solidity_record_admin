@@ -31,7 +31,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.integer :price
       t.integer :discogs_price
       t.integer :discogs_release_id
-      t.integer :discogs_listing_id
+      t.bigint :discogs_listing_id
       t.decimal :ebay_price
       t.integer :ebay_id
       t.integer :master_id

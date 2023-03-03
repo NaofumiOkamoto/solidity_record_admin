@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_19_002326) do
     t.integer "price"
     t.integer "discogs_price"
     t.integer "discogs_release_id"
-    t.integer "discogs_listing_id"
+    t.bigint "discogs_listing_id"
     t.decimal "ebay_price", precision: 10
     t.integer "ebay_id"
     t.integer "master_id"
