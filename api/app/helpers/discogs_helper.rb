@@ -29,8 +29,8 @@ module DiscogsHelper
   private
 
   def comments(value)
-    sleeve = "Sleeve: #{value['cover_grading']&.gsub('_', '~')}. #{value['cover_description']}"
-    vinyl = "Vinyl: #{value['record_grading']&.gsub('_', '~')}. #{value['record_description_en']}"
+    sleeve = "Cover: #{value['cover_grading']&.gsub('_', '~')}. #{value['cover_description']}"
+    vinyl = "Record: #{value['record_grading']&.gsub('_', '~')}. #{value['record_description_en']}"
     comments = "#{value['cover_grading'].present? ? sleeve + ' ' : ''}#{vinyl}" 
     if value['item_condition'] == 'Used'
       comments = "#{comments} *We can send you the audio files and the images of both sides. Please let us know if you would like."

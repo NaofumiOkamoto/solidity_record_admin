@@ -39,7 +39,8 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :buying_date
       t.date :registration_date
       t.integer :quantity
-      t.string :youtube
+      t.string :youtube_A
+      t.string :youtube_B
       t.string :sold_date
       t.integer :sold_price
       t.string :product_status

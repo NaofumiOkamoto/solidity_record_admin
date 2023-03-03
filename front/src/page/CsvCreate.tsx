@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import { Filter } from '../parts/Filter';
 
 
-export type Platforms = 'discogs' | 'mercari'
+export type Platforms = 'discogs' | 'mercari' | 'shopify'
 
 const platforms: Array<Platforms> = [
   'discogs',
   'mercari',
+  'shopify',
 ]
 const Container = styled.div`
   margin: 2rem;
@@ -42,6 +43,11 @@ export type FilterState = {
     country: string, // 日本以外
     quantity: number,
   },
+  shopify: {
+    date: Date,
+    country: string, // 全ての国
+    quantity: number,
+  },
 }
 
 export const Csv = () => {
@@ -55,6 +61,11 @@ export const Csv = () => {
     mercari: {
       date: new Date(),
       country: 'except_japan', // 日本以外
+      quantity: 1, // 在庫1以上
+    },
+    shopify: {
+      date: new Date(),
+      country: 'all', // 全ての国
       quantity: 1, // 在庫1以上
     },
   }
@@ -73,7 +84,6 @@ export const Csv = () => {
     const platformParams = `?platform=${platform}`
     try {
       const res = await axios.get(`${url}${platformParams}${filterParams}`, { responseType: "blob", })
-      console.log('res', res)
       setIsLoading(false);
       const downloadUrl = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");

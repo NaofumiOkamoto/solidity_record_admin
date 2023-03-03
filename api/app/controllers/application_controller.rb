@@ -3,4 +3,5 @@ class ApplicationController < ActionController::API
   include ActionController::MimeResponds
   include DiscogsHelper
   include MercariHelper
+  include ShopifyHelper
 end

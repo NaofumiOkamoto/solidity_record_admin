@@ -10,7 +10,8 @@ class CsvController < ApplicationController
     Rails.logger.level = 1
 
     # 本番シート
-    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AQ"])
+    Rails.logger.info('スプレットシート取得開始')
+    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AR"])
     genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:D"])
     Rails.logger.info('スプシ取得完了')
 
@@ -21,7 +22,7 @@ class CsvController < ApplicationController
     end
 
     # テストシート
-    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AQ"])
+    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
 
     if result.values[0] != Product::SP_HEADER
       raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")
@@ -84,7 +85,14 @@ class CsvController < ApplicationController
       csv << header
       products.each do |value|
         line = self.send("#{platform}_format", value, genre_map)
-        csv << line if line.length > 0
+        case platform
+        when 'shopify'
+          line.each do |l|
+            csv << l
+          end
+        else
+          csv << line
+        end
       end
     end
     if File.exist?("./tmp/#{platform}_csv")
