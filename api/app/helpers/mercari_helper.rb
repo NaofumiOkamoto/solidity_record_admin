@@ -157,33 +157,34 @@ module MercariHelper
       format = 'LP'
     end
 
+    base = "#{value['artist'].gsub('_', ', ')} #{value['title']} #{value['label']} #{value['country']} #{value['number']} #{value['SKU']}"
     case genre.to_i
     when 1
-      return "#{value['artist']} SOUL ソウル レコード #{format}"
+      return "#{base} SOUL ソウル レコード #{format}"
     when 2
-      return "#{value['artist']} FUNK ファンク レコード #{format}"
+      return "#{base} SOUL FUNK ソウル ファンク レコード #{format}"
     when 3
-      return "#{value['artist']} BLUES ブルース レコード #{format}"
+      return "#{base} BLUES ブルース レコード #{format}"
     when 4
-      return "#{value['artist']} DISCO ディスコ レコード #{format}"
+      return "#{base} SOUL DISCO ソウル ディスコ レコード #{format}"
     when 5
-      return "#{value['artist']} GOSPEL ゴスペル レコード #{format}"
+      return "#{base} GOSPEL ゴスペル レコード #{format}"
     when 6
-      return "#{value['artist']} R&B R&R レコード #{format}"
+      return "#{base} R&B R&R レコード #{format}"
     when 101..199
-      return "#{value['artist']} JAZZ FUNK レコード #{format}"
+      return "#{base} JAZZ ジャズ レコード #{format}"
     when 201..299
-      return "#{value['artist']} REGGAE レゲエ レコード #{format}"
+      return "#{base} REGGAE レゲエ レコード #{format}"
     when 301..398
-      return "#{value['artist']} LATIN ラテン レコード #{format}"
+      return "#{base} LATIN ラテン レコード #{format}"
     when 399
-      return "#{value['artist']} CUMBIA クンビア レコード #{format}"
+      return "#{base} CUMBIA クンビア レコード #{format}"
     when 2000..2099 
-      return "#{value['artist']} ROCK POP レコード #{format}"
+      return "#{base} ROCK POP ロック ポップ レコード #{format}"
     when 3000..3099 
-      return "#{value['artist']} ROCK FOLK COUNTRY レコード #{format}"
+      return "#{base} FOLK COUNTRY レコード #{format}"
     when 4000..4099 
-      return "#{value['artist']} HIP HOP R&B レコード #{format}"
+      return "#{base} HIP HOP R&B レコード #{format}"
     end
   end
 
@@ -191,7 +192,7 @@ module MercariHelper
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
 
     description = <<~PRODUCT
-      ●Artist: #{value['artist']}
+      ●Artist: #{value['artist'].gsub('_', ', ')}
 
       ●Title: #{value['title']}
 
