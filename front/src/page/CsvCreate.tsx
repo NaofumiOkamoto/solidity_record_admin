@@ -3,6 +3,7 @@ import ReactLoading from 'react-loading';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Filter } from '../parts/Filter';
+import { ImgParams } from '../parts/ImgParams';
 
 
 export type Platforms = 'discogs' | 'mercari' | 'shopify'
@@ -66,10 +67,11 @@ export const Csv = () => {
     shopify: {
       date: new Date(),
       country: 'all', // 全ての国
-      quantity: 1, // 在庫1以上
+      quantity: -1, // 全て
     },
   }
   const [filterState, setFilterState] = useState(filterData)
+  const [imgParams, setImgParams] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const getApi = async (platform) => {
@@ -78,12 +80,13 @@ export const Csv = () => {
     for ( let key in filterState[platform] ) {
       filterParams = `${filterParams}${key}=${String(filterState[platform][key])}&`
     }
+    const imgParameter = imgParams ? `&imgParams=${imgParams}` : '';
     const envUrl = process.env.REACT_APP_API_URL
     const envPort = process.env.REACT_APP_API_PORT
     const url = `${envUrl}:${envPort}/csv/new.csv`
     const platformParams = `?platform=${platform}`
     try {
-      const res = await axios.get(`${url}${platformParams}${filterParams}`, { responseType: "blob", })
+      const res = await axios.get(`${url}${platformParams}${filterParams}${imgParameter}`, { responseType: "blob", })
       setIsLoading(false);
       const downloadUrl = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
@@ -130,6 +133,12 @@ export const Csv = () => {
                 filterState={filterState}
                 setFilterState={setFilterState}
               />
+              {platform === 'shopify' &&
+              <ImgParams
+                imgParams={imgParams}
+                setImgParams={setImgParams}
+              />
+              }
               <Button
                 onClick={() => getApi(platform)}
               >
