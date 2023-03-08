@@ -196,8 +196,8 @@ module ShopifyHelper
       .gsub(',', '-')
       .gsub('&', '-')
       .gsub('/', '-')
-      .gsub('\'', '-')
       .gsub('.', '-')
+      .gsub('\'', '')
       .squeeze('\-')
 
     handle.chop! if handle[-1] == '-'
