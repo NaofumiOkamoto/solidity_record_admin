@@ -371,37 +371,21 @@ module ShopifyHelper
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Genre: #{genre.join(', ')}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Item Condition: #{value['item_condition']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} (#{value['record_description_en']})</span></p>
-      <p data-mce-fragment="1">
-        <span data-mce-fragment="1">-Grading Policy-</span>
-        <br data-mce-fragment="1"><span data-mce-fragment="1">M～NM～EX+～EX～EX-～VG+～VG～VG-~G+~G (10 grades)</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">M → Still sealed.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">NM → Nearly perfect. Great shape.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">EX+ → It might has very slight wear, stains or marks. But great shape. Close to NM.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">EX → Some very slight wear, stains or marks. But great shape.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">EX- → Some(or slight) wear, stains or marks. Record might has some noise. But good shape.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">VG+ → Some(or many) wear, stains or marks. Record might has some noise. But good shape.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">VG → Many wear, stains or marks. Record might has loud noise.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">VG- to G → Bad condition. Too many wear, stains or marks. Record has loud noise.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">*Basically, our grading is based on 'Goldmine US' or 'Record Collector UK'. But our grading is more classified. Also, We check the condition of all items before listing(except sealed item). Our grading is visual. But the sound may be better than visual. Therefore, if there is an audio clip on the item page, we recommend that you listen to a sample of the item before purchasing. If you have any questions about grading, please feel free to contact us.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">*Also, you can order by e-mail. Please contact to solidityrecords@gmail.com</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">*The listen sample is recorded from the actual item.</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">A. #{value['title'].split(' / ')[0]}</span>
-        <br data-mce-fragment="1">
-        <br data-mce-fragment="1"><span data-mce-fragment="1">B. #{value['title'].split(' / ')[1]}</span>
-      </p>
-
+      <p data-mce-fragment="1">-Grading Policy-</p>
+      <p data-mce-fragment="1">M～NM～EX+～EX～EX-～VG+～VG～VG-~G+~G (10 grades)</p>
+      <p data-mce-fragment="1">M → Still sealed.</p>
+      <p data-mce-fragment="1">NM → Nearly perfect. Great shape.</p>
+      <p data-mce-fragment="1">EX+ → It might has very slight wear, stains or marks. But great shape. Close to NM.</p>
+      <p data-mce-fragment="1">EX → Some very slight wear, stains or marks. But great shape.</p>
+      <p data-mce-fragment="1">EX- → Some(or slight) wear, stains or marks. Record might has some noise. But good shape.</p>
+      <p data-mce-fragment="1">VG+ → Some(or many) wear, stains or marks. Record might has some noise. But good shape.</p>
+      <p data-mce-fragment="1">VG → Many wear, stains or marks. Record might has loud noise.</p>
+      <p data-mce-fragment="1">VG- to G → Bad condition. Too many wear, stains or marks. Record has loud noise.</p>
+      <p data-mce-fragment="1">*Basically, our grading is based on 'Goldmine US' or 'Record Collector UK'. But our grading is more classified. Also, We check the condition of all items before listing(except sealed item). Our grading is visual. But the sound may be better than visual. Therefore, if there is an audio clip on the item page, we recommend that you listen to a sample of the item before purchasing. If you have any questions about grading, please feel free to contact us.</p>
+      <p data-mce-fragment="1">*Also, you can order by e-mail. Please contact to solidityrecords@gmail.com</p>
+      <p data-mce-fragment="1">*The listen sample is recorded from the actual item.</p>
+      <p data-mce-fragment="1">A. #{value['title'].split(' / ')[0]}</p>
+      <p data-mce-fragment="1">B. #{value['title'].split(' / ')[1]}</p>
     BODY
   end
 
