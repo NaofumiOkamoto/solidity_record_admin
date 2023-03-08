@@ -62,10 +62,10 @@ module ShopifyHelper
   end
   def shopify_format(value, genre_map)
     rows = []
-    value['img_count'].times do |i|
+    value['img_count']&.times do |i|
       if i == 0
         rows << [
-          '', # 'Handle',
+          shopify_handle(value), # 'Handle',
           shopify_title(value), # 'Title',
           shopify_body(value, genre_map), # 'Body (HTML)',
           'Solidity Records', # 'Vendor',
@@ -186,6 +186,22 @@ module ShopifyHelper
       end
     end
     rows
+  end
+
+  def shopify_handle(value)
+    handle = shopify_title(value).downcase
+      .gsub(' ', '-')
+      .gsub('(', '-')
+      .gsub(')', '-')
+      .gsub(',', '-')
+      .gsub('&', '-')
+      .gsub('/', '-')
+      .gsub('\'', '-')
+      .gsub('.', '-')
+      .squeeze('\-')
+
+    handle.chop! if handle[-1] == '-'
+    handle
   end
 
   def shopify_title(value)
