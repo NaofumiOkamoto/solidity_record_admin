@@ -60,14 +60,14 @@ module ShopifyHelper
       'Status',
     ]
   end
-  def shopify_format(value, _)
+  def shopify_format(value, genre_map)
     rows = []
     value['img_count'].times do |i|
       if i == 0
         rows << [
           '', # 'Handle',
           shopify_title(value), # 'Title',
-          'まだ', # 'Body (HTML)',
+          shopify_body(value, genre_map), # 'Body (HTML)',
           'Solidity Records', # 'Vendor',
           '', # 'Product Category',
           value['format'], # 'Type',
@@ -277,12 +277,45 @@ module ShopifyHelper
       when 108
         tags << 'latin-jazz'
       when 109
-        tags << ''
+        if value['item_condition'] == 'New'
+          tags << 'free-jazz-spiritual-jazz'
+        else
+          tags << 'free-jazz-spiritual-jazz-new'
+        end
       when 110
-        tags << ''
+        if value['item_condition'] == 'New'
+          tags << 'jazz-funk-soul-jazz-new'
+        else
+          tags << 'soul-jazz'
+        end
+      when 111
+        tags << 'jazz-rock-fusion'
+      when 112
+        if value['item_condition'] == 'New'
+          tags << 'contemporary-jazz-new'
+        else
+          tags << 'contemporary-jazz'
+        end
+      when 113
+        tags << 'vocal-jazz'
+      when 114
+        tags << 'japanese-jazz'
+      when 115
+        tags << 'modal'
+      when 201..299
+        tags << 'reggae'
+      when 301..398
+        tags << 'latin'
+      when 399
+        tags << 'cumbia'
+      when 2000
+        tags << 'rock-pop'
+      when 3000
+        tags << 'folk-country'
+      when 4000
+        tags << 'hip-hop-r-b'
       end
     end
-
 
     case value['label']
     when 'Blue Note'
@@ -318,6 +351,58 @@ module ShopifyHelper
     end
 
     tags.join(', ')
+  end
+
+  def shopify_body(value, genre_map)
+    genre = []
+    value['genre'].split('_').each do |id|
+      genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
+    end
+
+    description = <<~BODY
+      <meta charset="utf-8">
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{value['title']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Label: #{value['label']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Country: #{value['country']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Number: #{value['number']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Format: #{value['format']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Release Year: #{value['release_year']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Genre: #{genre.join(', ')}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Item Condition: #{value['item_condition']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} (#{value['record_description_en']})</span></p>
+      <p data-mce-fragment="1">
+        <span data-mce-fragment="1">-Grading Policy-</span>
+        <br data-mce-fragment="1"><span data-mce-fragment="1">M～NM～EX+～EX～EX-～VG+～VG～VG-~G+~G (10 grades)</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">M → Still sealed.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">NM → Nearly perfect. Great shape.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">EX+ → It might has very slight wear, stains or marks. But great shape. Close to NM.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">EX → Some very slight wear, stains or marks. But great shape.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">EX- → Some(or slight) wear, stains or marks. Record might has some noise. But good shape.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">VG+ → Some(or many) wear, stains or marks. Record might has some noise. But good shape.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">VG → Many wear, stains or marks. Record might has loud noise.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">VG- to G → Bad condition. Too many wear, stains or marks. Record has loud noise.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">*Basically, our grading is based on 'Goldmine US' or 'Record Collector UK'. But our grading is more classified. Also, We check the condition of all items before listing(except sealed item). Our grading is visual. But the sound may be better than visual. Therefore, if there is an audio clip on the item page, we recommend that you listen to a sample of the item before purchasing. If you have any questions about grading, please feel free to contact us.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">*Also, you can order by e-mail. Please contact to solidityrecords@gmail.com</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">*The listen sample is recorded from the actual item.</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">A. #{value['title'].split(' / ')[0]}</span>
+        <br data-mce-fragment="1">
+        <br data-mce-fragment="1"><span data-mce-fragment="1">B. #{value['title'].split(' / ')[1]}</span>
+      </p>
+
+    BODY
   end
 
 end
