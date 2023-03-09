@@ -198,6 +198,7 @@ module ShopifyHelper
       .gsub('/', '-')
       .gsub('.', '-')
       .gsub('\'', '')
+      .gsub('\’', '')
       .squeeze('\-')
 
     handle.chop! if handle[-1] == '-'
@@ -216,7 +217,7 @@ module ShopifyHelper
   end
 
   def shopify_img_src(value, i)
-    "https://cdn.shopify.com/s/files/1/0415/0791/3886/products/#{value['SKU']}_#{format("%02d", i + 1)}.jpg?v=#{params[:imgParams]}"
+    "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{value['SKU']}_#{format("%02d", i + 1)}.jpg?v=#{params[:imgParams]}"
   end
 
   def shopify_tags(value)
