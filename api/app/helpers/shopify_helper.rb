@@ -125,7 +125,7 @@ module ShopifyHelper
         ]
       else
         rows << [
-          '', # 'Handle',
+          shopify_handle(value), # 'Handle',
           '', # 'Title',
           '', # 'Body (HTML)',
           '', # 'Vendor',
@@ -376,9 +376,12 @@ module ShopifyHelper
       genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
     end
 
+    mp3_A = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_A']}\"></audio>"
+    mp3_B = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_B']}\"></audio>"
+
     description = <<~BODY
       <meta charset="utf-8">
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist'].gsub('_', ', ')}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{value['title']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Label: #{value['label']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Country: #{value['country']}</span></p>
@@ -402,7 +405,9 @@ module ShopifyHelper
       <p data-mce-fragment="1">*Also, you can order by e-mail. Please contact to solidityrecords@gmail.com</p>
       <p data-mce-fragment="1">*The listen sample is recorded from the actual item.</p>
       <p data-mce-fragment="1">A. #{value['title'].split(' / ')[0]}</p>
+      #{mp3_A if value['mp3_A'].present?}
       <p data-mce-fragment="1">B. #{value['title'].split(' / ')[1]}</p>
+      #{mp3_B if value['mp3_B'].present?}
     BODY
   end
 
