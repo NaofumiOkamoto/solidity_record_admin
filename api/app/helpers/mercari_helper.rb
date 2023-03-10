@@ -190,6 +190,12 @@ module MercariHelper
 
   def product_description(value, genre)
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
+    cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
+
+    cover_grading = <<~COVER
+
+      ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_jp}
+    COVER
 
     description = <<~PRODUCT
       ●Artist: #{value['artist'].gsub('_', ', ')}
@@ -208,7 +214,9 @@ module MercariHelper
 
       ●Genre: #{genre.join(', ')}
 
-      ●Condition: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}
+      ●Item Condition: #{value['item_condition']}
+      #{cover_grading if value['cover_grading'].present?}
+      ●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}
 
       ●Grading Policy:
 
@@ -228,13 +236,15 @@ module MercariHelper
 
       クリックポスト or ゆうパック
 
-      すべての商品同梱可能です。複数枚ご購入いただく際は、ページをまとめますので、ご購入前にコメントにてご希望商品をご連絡ください。7インチ6枚までクリックポスト(185円)で発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。
+      すべての商品同梱可能です。複数枚ご購入いただく際は、ページをまとめますので、ご購入前にコメントにてご希望商品をご連絡ください。2枚目より185円値引きさせていただきます。
+
+      複数枚ご購入の場合、7インチ6枚までクリックポスト(185円)で発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。
 
       ゆうパックの料金につきましては以下のリンクよりご確認ください。
 
       https://www.post.japanpost.jp/service/you_pack/charge/ichiran/13.html
 
-      購入金額10,000円以上の場合は、送料無料で発送いたします。(各商品金額には送料185円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から送料185円を引いた金額の合計となります。)
+      購入金額10,000円以上で、送料無料となります。(各商品金額には送料185円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から送料185円を引いた金額の合計となります。)
 
       発送につきましては、平日のみ行っております。大変申し訳ございませんが、土曜日・日曜日・祝日の発送は行っておりませんので、何卒ご理解のほどよろしくお願い申し上げます。
 
