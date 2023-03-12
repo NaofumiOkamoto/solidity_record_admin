@@ -206,7 +206,7 @@ module ShopifyHelper
   end
 
   def shopify_title(value)
-    title = "#{value['artist']} - #{value['title']}" 
+    title = "#{value['artist'].gsub('_', ', ')} - #{value['title']}" 
     if value['format'].start_with?('7 inch')
       title += ' (7 inch Record / Used)'
     end
@@ -387,7 +387,7 @@ module ShopifyHelper
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Country: #{value['country']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Number: #{value['number']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Format: #{value['format']}</span></p>
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Release Year: #{value['release_year']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Release Year: #{value['release_year'] || 'Unknown'}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Genre: #{genre.join(', ')}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Item Condition: #{value['item_condition']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} (#{value['record_description_en']})</span></p>
