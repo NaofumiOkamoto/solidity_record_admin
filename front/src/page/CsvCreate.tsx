@@ -6,12 +6,13 @@ import { Filter } from '../parts/Filter';
 import { ImgParams } from '../parts/ImgParams';
 
 
-export type Platforms = 'discogs' | 'mercari' | 'shopify'
+export type Platforms = 'discogs' | 'mercari' | 'shopify' | 'ebay'
 
 const platforms: Array<Platforms> = [
   'discogs',
   'mercari',
   'shopify',
+  'ebay',
 ]
 const Container = styled.div`
   margin: 2rem;
@@ -68,6 +69,11 @@ export const Csv = () => {
       date: new Date(),
       country: 'all', // 全ての国
       quantity: -1, // 全て
+    },
+    ebay: {
+      date: new Date(),
+      country: 'all', // 全ての国
+      quantity: 1, // 在庫1以上
     },
   }
   const [filterState, setFilterState] = useState(filterData)

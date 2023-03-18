@@ -4,4 +4,5 @@ class ApplicationController < ActionController::API
   include DiscogsHelper
   include MercariHelper
   include ShopifyHelper
+  include EbayHelper
 end
