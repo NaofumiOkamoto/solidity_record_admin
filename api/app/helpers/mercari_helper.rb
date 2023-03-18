@@ -210,7 +210,7 @@ module MercariHelper
 
       ●Format: #{value['format']}
 
-      ●Year: #{value['release_year'] || 'Unknown'}
+      ●Release Year: #{value['release_year'] || 'Unknown'}
 
       ●Genre: #{genre.join(', ')}
 
