@@ -54,7 +54,7 @@ module EbayHelper
       'まだ', # Description
       'FixedPrice', # Format2
       'GTC', # Duration
-      value['discogs_price'], # StartPrice
+      "%.15g"%value['ebay_price'], # StartPrice
       value['quantity'], # Quantity
       'Japan', # Location
       'Returns Accepted,Buyer,30 Days,Money Back,Int#0', # ReturnProfileName

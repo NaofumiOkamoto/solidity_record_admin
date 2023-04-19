@@ -38,10 +38,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_19_002326) do
     t.integer "weight"
     t.integer "img_count"
     t.integer "price"
-    t.integer "discogs_price"
+    t.float "discogs_price"
     t.integer "discogs_release_id"
     t.bigint "discogs_listing_id"
-    t.decimal "ebay_price", precision: 10
+    t.float "ebay_price"
     t.integer "ebay_id"
     t.integer "master_id"
     t.string "cost_price"
