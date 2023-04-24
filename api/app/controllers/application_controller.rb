@@ -5,4 +5,5 @@ class ApplicationController < ActionController::API
   include MercariHelper
   include ShopifyHelper
   include EbayHelper
+  include YahooHelper
 end

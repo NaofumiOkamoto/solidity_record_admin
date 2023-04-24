@@ -130,23 +130,6 @@ module MercariHelper
     img_row + row
   end
 
-  private
-
-  def mercari_condition(value)
-    grading = value['record_grading']
-    return if grading.nil?
-    case grading.split('_')[0]
-    when 'M', 'NM', 'EX+', 'EX'
-      3
-    when 'EX-', 'VG+'
-      4
-    when 'VG', 'VG-'
-      5
-    when 'G', 'G+'
-      6
-    end
-  end
-
   def product_name(value)
     genre, _ =  value['genre'].split('_')
     format = ''
@@ -185,6 +168,23 @@ module MercariHelper
       return "#{base} FOLK COUNTRY レコード #{format}"
     when 4000..4099 
       return "#{base} HIP HOP R&B レコード #{format}"
+    end
+  end
+
+  private
+
+  def mercari_condition(value)
+    grading = value['record_grading']
+    return if grading.nil?
+    case grading.split('_')[0]
+    when 'M', 'NM', 'EX+', 'EX'
+      3
+    when 'EX-', 'VG+'
+      4
+    when 'VG', 'VG-'
+      5
+    when 'G', 'G+'
+      6
     end
   end
 
