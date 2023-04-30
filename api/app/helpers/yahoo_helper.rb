@@ -182,7 +182,7 @@ module YahooHelper
 
       ●Format: #{value['format']}<br><br>
 
-      ●Release Year: #{value['release_year']}<br><br>
+      ●Release Year: #{value['release_year'] || 'Unknown'}<br><br>
 
       ●Genre: #{genre.join(', ')}<br><br>
 
