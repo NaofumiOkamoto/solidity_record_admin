@@ -202,6 +202,11 @@ module ShopifyHelper
       .squeeze('\-')
 
     handle.chop! if handle[-1] == '-'
+
+    # ishii_memoに「x枚目」があるときは「-x」をケツにつける
+    match = value['ishii_memo']&.match(/(\d+)枚目/)
+    handle << "-#{match[1]}" if match.present?
+
     handle
   end
 
@@ -371,6 +376,13 @@ module ShopifyHelper
   end
 
   def shopify_body(value, genre_map)
+    record_description_en = value['record_description_en'].present? ? "(#{value['record_description_en']})": ''
+    cover_description_en = value['cover_description_en'].present? ? "(#{value['cover_description_en']})": ''
+
+    cover_grading = <<~COVER
+     <p data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_en}
+    COVER
+
     genre = []
     value['genre'].split('_').each do |id|
       genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
@@ -390,7 +402,7 @@ module ShopifyHelper
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Release Year: #{value['release_year'] || 'Unknown'}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Genre: #{genre.join(', ')}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Item Condition: #{value['item_condition']}</span></p>
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} (#{value['record_description_en']})</span></p>
+      #{cover_grading if value['cover_grading'].present?}<p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_en}</span></p>
       <p data-mce-fragment="1">-Grading Policy-</p>
       <p data-mce-fragment="1">M～NM～EX+～EX～EX-～VG+～VG～VG-~G+~G (10 grades)</p>
       <p data-mce-fragment="1">M → Still sealed.</p>
