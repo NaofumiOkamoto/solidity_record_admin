@@ -222,7 +222,12 @@ module ShopifyHelper
   end
 
   def shopify_img_src(value, i)
-    "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{value['SKU']}_#{format("%02d", i + 1)}.jpg?v=#{params[:imgParams]}"
+    img_name = if i ==0
+                 value['SKU']
+               else
+                 "#{value['SKU']}_#{i}"
+               end
+    "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{img_name}.jpg?v=#{params[:imgParams]}"
   end
 
   def shopify_tags(value)

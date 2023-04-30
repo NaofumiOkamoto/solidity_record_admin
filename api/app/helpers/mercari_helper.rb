@@ -65,8 +65,10 @@ module MercariHelper
     img_row = Array.new(IMG_COUNT)
     img_count = value['img_count']
     IMG_COUNT.to_i.times do |i|
-      if img_count.to_i > i
-        img_row[i] = "#{value['SKU']}_#{format("%02d", i + 1)}.jpg"
+      if i == 0
+        img_row[i] = "#{value['SKU']}.jpg"
+      elsif img_count.to_i > i
+        img_row[i] = "#{value['SKU']}_#{i}.jpg"
       else
         img_row[i] = ''
       end
