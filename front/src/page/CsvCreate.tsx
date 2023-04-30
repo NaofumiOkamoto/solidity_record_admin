@@ -83,7 +83,7 @@ export const Csv = () => {
     },
     yahoo: {
       date: new Date(),
-      country: 'all', // 全ての国
+      country: 'except_japan', // 全ての国
       quantity: 1, // 在庫1以上
     },
   }
