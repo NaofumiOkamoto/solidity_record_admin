@@ -5,7 +5,7 @@ module YahooAuctionHelper
       'カテゴリ',
       'タイトル',
       '説明',
-      '販売価格',
+      '開始価格',
       '即決価格',
       '個数',
       '開催期間',
@@ -49,7 +49,7 @@ module YahooAuctionHelper
       yahoo_auction_category(value), # カテゴリ
       product_name(value), # タイトル
       yahoo_auction_body(value, genre), # 説明
-      value['price'], # 販売価格
+      value['price'], # 開始価格
       value['price'], # 即決価格
       value['quantity'], # 個数
       '7', # 開催期間
