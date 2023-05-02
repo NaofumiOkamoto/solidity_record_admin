@@ -6,7 +6,7 @@ import { Filter } from '../parts/Filter';
 import { ImgParams } from '../parts/ImgParams';
 
 
-export type Platforms = 'discogs' | 'mercari' | 'shopify' | 'ebay' | 'yahoo'
+export type Platforms = 'discogs' | 'mercari' | 'shopify' | 'ebay' | 'yahoo' | 'yahoo_auction'
 
 const platforms: Array<Platforms> = [
   'discogs',
@@ -14,6 +14,7 @@ const platforms: Array<Platforms> = [
   'shopify',
   'ebay',
   'yahoo',
+  'yahoo_auction',
 ]
 const Container = styled.div`
   margin: 2rem;
@@ -56,6 +57,11 @@ export type FilterState = {
     country: string, // 全ての国
     quantity: number,
   },
+  yahoo_auction: {
+    date: Date,
+    country: string, // 全ての国
+    quantity: number,
+  },
 }
 
 export const Csv = () => {
@@ -82,6 +88,11 @@ export const Csv = () => {
       quantity: 1, // 在庫1以上
     },
     yahoo: {
+      date: new Date(),
+      country: 'except_japan', // 全ての国
+      quantity: 1, // 在庫1以上
+    },
+    yahoo_auction: {
       date: new Date(),
       country: 'except_japan', // 全ての国
       quantity: 1, // 在庫1以上

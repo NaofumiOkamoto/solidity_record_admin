@@ -158,7 +158,7 @@ module YahooHelper
 
     cover_grading = <<~COVER
 
-      ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_jp}
+      ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_jp}<br><br>
     COVER
 
     genre = []

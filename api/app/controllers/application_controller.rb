@@ -6,4 +6,5 @@ class ApplicationController < ActionController::API
   include ShopifyHelper
   include EbayHelper
   include YahooHelper
+  include YahooAuctionHelper
 end
