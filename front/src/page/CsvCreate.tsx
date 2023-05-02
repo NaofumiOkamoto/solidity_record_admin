@@ -12,14 +12,23 @@ const platforms: Array<Platforms> = [
   'discogs',
   'mercari',
   'shopify',
-  'ebay',
   'yahoo',
   'yahoo_auction',
+  'ebay',
 ]
 const Container = styled.div`
   margin: 2rem;
 `
 const Button = styled.button`
+margin-top: 30px;
+  background-color: #fff;
+  border: solid 2px #b3b3b3;
+  padding: 10px 30px;
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+    background-color: #ebebeb;
+  }
 `
 const Hr = styled.hr`
   width: 90%;
@@ -35,6 +44,27 @@ const Div = styled.div`
   width: 100px;
   margin: 0 auto;
 `
+
+const Header = styled.div`
+  width: 100%;
+  border-bottom: solid 2px #ebebeb;
+`
+
+const SelectArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 25px -2px 20px;
+`
+const Tab = styled.button`
+  background-color: ${p => p.theme.selectPlatform ? "#fff" : '#ebebeb'};
+  width: 100%;
+  border: solid 3px ${p => p.theme.selectPlatform ? "#ebebeb" : '#fff'};
+  border-bottom: solid 1px ${p => p.theme.selectPlatform ? "#fff" : '#ebebeb'};
+  padding: 15px;
+  font-weight: bold;
+  border-radius: 2px 2px 0 0;
+`
+  // border-top: solid 3px ${p => p.theme.selectPlatform ? "#b0e0e9" : '#fff'};
 
 export type FilterState = {
   discogs: {
@@ -101,6 +131,7 @@ export const Csv = () => {
   const [filterState, setFilterState] = useState(filterData)
   const [imgParams, setImgParams] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [selectPlatform, setSelectPlatform] = useState<Platforms>('discogs')
 
   const getApi = async (platform) => {
     setIsLoading(true);
@@ -137,47 +168,54 @@ export const Csv = () => {
 
   return (
     <>
-    {isLoading ?
-      <Loading>
-        <Div>
-          <ReactLoading
-            type="spinningBubbles"
-            color="#b2cbf3"
-            height="100px"
-            width="100px"
-            className="mx-auto"
-          />
-        </Div>
-        <p>csvを作成中です....</p>
-      </Loading>
-      :
-      platforms.map(platform => {
-        return (
-          <div key={platform}>
-            <Container>
-              <h2>{platform}</h2>
-              <Filter
-                platform={platform}
-                filterState={filterState}
-                setFilterState={setFilterState}
-              />
-              {platform === 'shopify' &&
-              <ImgParams
-                imgParams={imgParams}
-                setImgParams={setImgParams}
-              />
-              }
-              <Button
-                onClick={() => getApi(platform)}
-              >
-                csvを出力
-              </Button>
-            </Container>
-            <Hr />
-          </div>
-        )
-      })
-    }
+      <Header>
+        <SelectArea>
+          {platforms.map(platform =>
+            <Tab
+              onClick={() => setSelectPlatform(platform)}
+              theme={{selectPlatform: selectPlatform === platform}}
+            >
+              {platform}
+            </Tab>
+          )}
+        </SelectArea>
+      </Header>
+      {isLoading ?
+        <Loading>
+          <Div>
+            <ReactLoading
+              type="spinningBubbles"
+              color="#b2cbf3"
+              height="100px"
+              width="100px"
+              className="mx-auto"
+            />
+          </Div>
+          <p>csvを作成中です....</p>
+        </Loading>
+        :
+        <div key={selectPlatform}>
+          <Container>
+            <h2>{selectPlatform}</h2>
+            <Filter
+              platform={selectPlatform}
+              filterState={filterState}
+              setFilterState={setFilterState}
+            />
+            {selectPlatform === 'shopify' &&
+            <ImgParams
+              imgParams={imgParams}
+              setImgParams={setImgParams}
+            />
+            }
+            <Button
+              onClick={() => getApi(selectPlatform)}
+            >
+              export csv
+            </Button>
+          </Container>
+        </div>
+      }
     </>
   )
 }

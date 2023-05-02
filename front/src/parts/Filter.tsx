@@ -18,13 +18,17 @@ const DateArea = styled.div`
 `
 const DateButton = styled.button`
   width: 100px;
+  background-color: #fff;
+  border: solid 1px #b3b3b3;
+  padding: 6px 6px;
 `
 const Text = styled.p`
   margin: 0;
   font-size: 80%;
 `
 const Select = styled.select`
-padding: 1px 5px;
+  padding: 5px 13px;
+  border: solid 1px #b3b3b3;
 `
 const QUANTITY = [
   {value: -1, label: '全て'},
