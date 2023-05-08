@@ -12,13 +12,13 @@ class CsvController < ApplicationController
     # 本番シート
     Rails.logger.info('スプレットシート取得開始')
     result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AR"])
-    genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:D"])
+    genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:E"])
     Rails.logger.info('スプシ取得完了')
 
     genre_map = {}
     genre.values.each do |g|
       next if g[0] == 'id'
-      genre_map[g[0]] = { main: g[1], sub: g[2] }
+      genre_map[g[0]] = { main: g[1], sub: g[2], yahoo_path_genre: g[3] }
     end
 
     # テストシート

@@ -47,89 +47,25 @@ module YahooHelper
   end
 
   private
-  def yahoo_path(value, genre)
+  def yahoo_path(value, genre_map)
     yahoo_path = value['genre'].split('_').map do |genre_id|
-      yahoo_genre_map(value['format'], genre_id)
+      yahoo_genre_map(value['format'], genre_id, genre_map)
     end
 
     yahoo_path.flatten.uniq.join("\n")
   end
 
-  def yahoo_genre_map(format, genre_id)
+  def yahoo_genre_map(format, genre_id, genre_map)
     convert_format =  format.gsub(/ inch/, 'インチ')
     case genre_id.to_i
     when 101..199
-      jazz_default =  "#{convert_format}:ジャズ"
-      case genre_id.to_i
-      when 101
-        [jazz_default, "#{convert_format}:ディキシーランド・ジャズ/スウィング・ジャズ"]
-      when 102
-        [jazz_default, "#{convert_format}:ビッグバンド"]
-      when 103
-        [jazz_default, "#{convert_format}:モダン・ジャズ"]
-      when 104
-        [jazz_default, "#{convert_format}:バップ"]
-      when 105
-        [jazz_default, "#{convert_format}:ハード・バップ"]
-      when 106
-        [jazz_default, "#{convert_format}:ポスト・バップ"]
-      when 107
-        [jazz_default, "#{convert_format}:クール・ジャズ"]
-      when 108
-        [jazz_default, "#{convert_format}:ラテン・ジャズ"]
-      when 109
-        [jazz_default, "#{convert_format}:フリー・ジャズ/スピリチュアル・ジャズ"]
-      when 110
-        [jazz_default, "#{convert_format}:ジャズ・ファンク/ソウル・ジャズ"]
-      when 111
-        [jazz_default, "#{convert_format}:ジャズ・ロック/フュージョン"]
-      when 112
-        [jazz_default, "#{convert_format}:コンテンポラリー・ジャズ"]
-      when 113
-        [jazz_default, "#{convert_format}:ヴォーカル・ジャズ"]
-      when 114
-        [jazz_default, "#{convert_format}:ジャパニーズ・ジャズ"]
-      when 115
-        [jazz_default, "#{convert_format}:モーダル・ジャズ"]
-      when 116
-        [jazz_default, "#{convert_format}:ボサノヴァ"]
-      end
-    when 1
-      ["#{convert_format}:ソウル"]
-    when 11
-      ["#{convert_format}:60’sソウル"]
-    when 13
-      ["#{convert_format}:70’sソウル"]
-    when 15
-      ["#{convert_format}:80’sソウル"]
-    when 2
-      ["#{convert_format}:ファンク"]
-    when 10
-      ["#{convert_format}:60’sファンク"]
-    when 12
-      ["#{convert_format}:70’sファンク"]
-    when 14
-      ["#{convert_format}:80’sファンク"]
-    when 4
-      ["#{convert_format}:ディスコ"]
-    when 3
-      ["#{convert_format}:ブルース"]
-    when 5
-      ["#{convert_format}:ゴスペル"]
-    when 6
-      ["#{convert_format}:リズム・アンド・ブルース/ロックンロール"]
-    when 201..299
-      ["#{convert_format}:スカ/レゲエ"]
-    when 301
-      ["#{convert_format}:ラテン"]
-    when 399
-      ["#{convert_format}:クンビア"]
-    when 4000
-      ["#{convert_format}:ヒップホップ/アール・アンド・ビー"]
-    when 2000
-      ["#{convert_format}:ロック/ポップ"]
-    when 3000
-      ["#{convert_format}:フォーク/カントリー"]
+      ["#{convert_format}:ジャズ", "#{convert_format}:ジャズ:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
+    when 10, 12, 14
+      ["#{convert_format}:ファンク:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
+    when 11, 13, 15
+      ["#{convert_format}:ソウル:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
+    else
+      ["#{convert_format}:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
     end
   end
 
