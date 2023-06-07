@@ -6,4 +6,5 @@ Rails.application.routes.draw do
 
   get 'csv', to: 'csv#index'
   get 'csv/new', to: 'csv#new'
+  get 'delete_product_csv/new', to: 'delete_product_csv#new'
 end

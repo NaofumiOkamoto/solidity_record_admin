@@ -3,6 +3,7 @@ import ReactLoading from 'react-loading';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Filter } from '../parts/Filter';
+import { DeleteFilter } from '../parts/DeleteFilter';
 import { ImgParams } from '../parts/ImgParams';
 
 
@@ -31,7 +32,7 @@ margin-top: 30px;
   }
 `
 const Hr = styled.hr`
-  width: 90%;
+  width: 98%;
   background-color: #dddddd;
   height: 1px;
   border: none;
@@ -132,17 +133,17 @@ export const Csv = () => {
   const [imgParams, setImgParams] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [selectPlatform, setSelectPlatform] = useState<Platforms>('discogs')
+  const imgParameter = imgParams ? `&imgParams=${imgParams}` : '';
+  const envUrl = process.env.REACT_APP_API_URL
+  const envPort = process.env.REACT_APP_API_PORT
 
-  const getApi = async (platform) => {
+  const getApi = async (platform, path) => {
     setIsLoading(true);
     let filterParams = '&'
     for ( let key in filterState[platform] ) {
       filterParams = `${filterParams}${key}=${String(filterState[platform][key])}&`
     }
-    const imgParameter = imgParams ? `&imgParams=${imgParams}` : '';
-    const envUrl = process.env.REACT_APP_API_URL
-    const envPort = process.env.REACT_APP_API_PORT
-    const url = `${envUrl}:${envPort}/csv/new.csv`
+    const url = `${envUrl}:${envPort}/${path}/new.csv`
     const platformParams = `?platform=${platform}`
     try {
       const res = await axios.get(`${url}${platformParams}${filterParams}${imgParameter}`, { responseType: "blob", })
@@ -209,11 +210,26 @@ export const Csv = () => {
             />
             }
             <Button
-              onClick={() => getApi(selectPlatform)}
+              onClick={() => getApi(selectPlatform, 'csv')}
             >
-              export csv
+              export upload csv
             </Button>
           </Container>
+          <Hr />
+          {selectPlatform === 'discogs' &&
+            <Container>
+              <DeleteFilter
+                platform={selectPlatform}
+                filterState={filterState}
+                setFilterState={setFilterState}
+              />
+              <Button
+                onClick={() => getApi(selectPlatform, 'delete_product_csv')}
+              >
+                export delete csv
+              </Button>
+            </Container>
+          }
         </div>
       }
     </>
