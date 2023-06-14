@@ -152,4 +152,55 @@ class Product < ApplicationRecord
 
     Product.upsert_all(products_attributes)
   end
+
+  def csv_filter(params)
+    products = Product.all
+    Rails.logger.info('DB情報取得完了')
+    products = common_filter(products, params)
+
+    # registration_date の絞り込み
+    products = products.where('registration_date >= ?', params[:date].to_date)
+    Rails.logger.info('registration_date絞り込み完了')
+    Rails.logger.info("取得数: #{products.length}")
+
+    products
+  end
+
+  def delete_csv_filter(params)
+    products = Product.all
+    Rails.logger.info('DB情報取得完了')
+    products = common_filter(products, params)
+
+    # sold_date の絞り込み
+    products = products.where('sold_date >= ?', params[:date].to_date)
+    Rails.logger.info('sold_date')
+    Rails.logger.info("取得数: #{products.length}")
+
+    products
+  end
+
+  private
+
+  def common_filter(products, params)
+    # quantity の絞り込み
+    quantity = params[:quantity].to_i
+    case quantity
+    when 0
+      products = products.where(quantity: quantity)
+    when 1
+      products = products.where(quantity: quantity..)
+    end
+    Rails.logger.info('quantiry絞り込み完了')
+
+    # country の絞り込み
+    case params['country']
+    when 'japan'
+      products = products.where(country: 'Japan')
+    when 'except_japan'
+      products = products.where.not(country: 'Japan')
+    end
+    Rails.logger.info('country絞り込み完了')
+
+    products
+  end
 end

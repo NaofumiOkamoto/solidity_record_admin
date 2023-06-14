@@ -216,7 +216,9 @@ export const Csv = () => {
             </Button>
           </Container>
           <Hr />
-          {selectPlatform === 'discogs' &&
+          {(selectPlatform === 'discogs' ||
+            selectPlatform === 'yahoo_auction' ||
+            selectPlatform === 'mercari') &&
             <Container>
               <DeleteFilter
                 platform={selectPlatform}

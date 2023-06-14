@@ -41,32 +41,8 @@ class CsvController < ApplicationController
 
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
-    products = Product.all
-    Rails.logger.info('DB情報取得完了')
 
-    # quantity の絞り込み
-    quantity = params[:quantity].to_i
-    case quantity
-    when 0
-      products = products.where(quantity: quantity)
-    when 1
-      products = products.where(quantity: quantity..)
-    end
-    Rails.logger.info('quantiry絞り込み完了')
-
-    # country の絞り込み
-    case params['country']
-    when 'japan'
-      products = products.where(country: 'Japan')
-    when 'except_japan'
-      products = products.where.not(country: 'Japan')
-    end
-    Rails.logger.info('country絞り込み完了')
-
-    # registration_date の絞り込み
-    products = products.where('registration_date >= ?', params[:date].to_date)
-    Rails.logger.info('registration_date絞り込み完了')
-    Rails.logger.info("取得数: #{products.length}")
+    products = Product.new.csv_filter(params)
 
     respond_to do |format|
       format.html

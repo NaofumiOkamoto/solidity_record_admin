@@ -9,12 +9,11 @@ class DeleteProductCsvController < ApplicationController
   def new
     Rails.logger.level = 1
 
-
     # 本番シート
     Rails.logger.info('スプレットシート取得開始')
-    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AR"])
+    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AR"])
     # テストシート
-    result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
+    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
     Rails.logger.info('スプシ取得完了')
 
 
@@ -24,7 +23,7 @@ class DeleteProductCsvController < ApplicationController
 
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
-    products = Product.where('sold_date >= ?', params[:date].to_date)
+    products = Product.new.delete_csv_filter(params)
     Rails.logger.info('DB情報取得完了')
 
 
