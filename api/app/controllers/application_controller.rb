@@ -9,4 +9,5 @@ class ApplicationController < ActionController::API
   include EbayHelper
   include YahooHelper
   include YahooAuctionHelper
+  include YahooAuctionDeleteHelper
 end
