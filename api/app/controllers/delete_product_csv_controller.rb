@@ -23,14 +23,14 @@ class DeleteProductCsvController < ApplicationController
 
     # productテーブルに一旦保存する
     Product.new.spreadsheets_to_db_save(result.values)
-    products = Product.new.delete_csv_filter(params)
+    sold_products = Product.new.delete_csv_filter(params)
     Rails.logger.info('DB情報取得完了')
 
 
     respond_to do |format|
       format.html
       format.csv do |csv|
-        send_posts_csv(products)
+        send_posts_csv(sold_products)
       end
     end
   end
@@ -45,7 +45,7 @@ class DeleteProductCsvController < ApplicationController
 
       result = self.send("#{platform}_delete_format", products)
       result.each do |r|
-        csv << [r]
+        csv << r
       end
     end
     if File.exist?("./tmp/#{platform}_csv")

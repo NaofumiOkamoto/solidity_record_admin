@@ -6,8 +6,10 @@ module YahooAuctionDeleteHelper
     ]
   end
 
-  def yahoo_auction_delete_format(products)
-    products.pluck(:SKU)
+  def yahoo_auction_delete_format(sold_products)
+    [
+      sold_products.pluck(:SKU)
+    ]
   end
 
 end

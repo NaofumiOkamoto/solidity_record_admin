@@ -128,7 +128,7 @@ class Product < ApplicationRecord
         :price,
         :discogs_price,
         :discogs_release_id,
-        :discogs_listing_id,
+        # :discogs_listing_id, # NULLで更新したくないためコメントアウト
         :ebay_price,
         :ebay_id,
         :master_id,

@@ -5,7 +5,9 @@ module MercariDeleteHelper
     ]
   end
 
-  def mercari_delete_format(products)
-    products.pluck(:SKU)
+  def mercari_delete_format(sold_products)
+    [
+      sold_products.pluck(:SKU)
+    ]
   end
 end

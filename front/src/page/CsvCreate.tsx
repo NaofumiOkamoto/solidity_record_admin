@@ -217,6 +217,7 @@ export const Csv = () => {
           </Container>
           <Hr />
           {(selectPlatform === 'discogs' ||
+            selectPlatform === 'yahoo' ||
             selectPlatform === 'yahoo_auction' ||
             selectPlatform === 'mercari') &&
             <Container>
