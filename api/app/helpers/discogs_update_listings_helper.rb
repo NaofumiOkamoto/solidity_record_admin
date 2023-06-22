@@ -14,7 +14,7 @@ module DiscogsUpdateListingsHelper
     listings = search.listings
 
     listings.each do |listing|
-      product = Product.find_by(discogs_release_id: listing.release.id)
+      product = Product.find_by(SKU: listing.external_id.to_i)
       if product
         product.update(discogs_listing_id: listing.id)
       end
