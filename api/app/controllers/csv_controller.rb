@@ -1,6 +1,7 @@
 class CsvController < ApplicationController
   require 'csv'
   require 'fileutils'
+  require 'discogs'
 
   def index
     render :json => {id: 1}
@@ -43,6 +44,10 @@ class CsvController < ApplicationController
     Product.new.spreadsheets_to_db_save(result.values)
 
     products = Product.new.csv_filter(params)
+
+    if params[:platform] == 'discogs'
+      discogs_update_listings
+    end
 
     respond_to do |format|
       format.html
