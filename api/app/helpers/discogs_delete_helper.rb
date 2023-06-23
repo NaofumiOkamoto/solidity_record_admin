@@ -31,9 +31,7 @@ module DiscogsDeleteHelper
     #   listings += result.listings
     # end
 
-    [
-      sold_products.pluck(:discogs_listing_id).compact
-    ]
+    sold_products.pluck(:discogs_listing_id).compact.map{ |id| [id] }
   end
 
   private

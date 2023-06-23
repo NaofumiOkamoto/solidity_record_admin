@@ -7,9 +7,7 @@ module YahooAuctionDeleteHelper
   end
 
   def yahoo_auction_delete_format(sold_products)
-    [
-      sold_products.pluck(:SKU)
-    ]
+    sold_products.pluck(:SKU).map{ |sku| [sku] }
   end
 
 end

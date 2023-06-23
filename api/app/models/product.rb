@@ -158,6 +158,16 @@ class Product < ApplicationRecord
     Rails.logger.info('DB情報取得完了')
     products = common_filter(products, params)
 
+    # quantity の絞り込み
+    quantity = params[:quantity].to_i
+    case quantity
+    when 0
+      products = products.where(quantity: quantity)
+    when 1
+      products = products.where(quantity: quantity..)
+    end
+    Rails.logger.info('quantiry絞り込み完了')
+
     # registration_date の絞り込み
     products = products.where('registration_date >= ?', params[:date].to_date)
     Rails.logger.info('registration_date絞り込み完了')
@@ -182,16 +192,6 @@ class Product < ApplicationRecord
   private
 
   def common_filter(products, params)
-    # quantity の絞り込み
-    quantity = params[:quantity].to_i
-    case quantity
-    when 0
-      products = products.where(quantity: quantity)
-    when 1
-      products = products.where(quantity: quantity..)
-    end
-    Rails.logger.info('quantiry絞り込み完了')
-
     # country の絞り込み
     case params['country']
     when 'japan'

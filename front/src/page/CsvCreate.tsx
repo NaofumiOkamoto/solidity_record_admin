@@ -151,7 +151,8 @@ export const Csv = () => {
       const downloadUrl = URL.createObjectURL( new Blob([res.data], { type: "text/csv" }) );
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.setAttribute("download", `${platform}.csv`);
+      const csvName = path === 'csv' ? `${platform}_upload.csv` : `${platform}_delete.csv`;
+      link.setAttribute("download", csvName);
       document.body.appendChild(link);
       link.click();
       URL.revokeObjectURL(downloadUrl);
