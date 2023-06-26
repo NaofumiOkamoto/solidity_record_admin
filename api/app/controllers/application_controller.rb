@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
   include MercariHelper
   include MercariDeleteHelper
   include ShopifyHelper
+  include ShopifyDeleteHelper
   include EbayHelper
   include YahooHelper
   include YahooDeleteHelper

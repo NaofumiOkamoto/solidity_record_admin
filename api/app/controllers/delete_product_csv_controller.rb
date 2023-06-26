@@ -14,7 +14,14 @@ class DeleteProductCsvController < ApplicationController
     result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AR"])
     # テストシート
     # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
+    genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:E"])
     Rails.logger.info('スプシ取得完了')
+
+    genre_map = {}
+    genre.values.each do |g|
+      next if g[0] == 'id'
+      genre_map[g[0]] = { main: g[1], sub: g[2], yahoo_path_genre: g[3] }
+    end
 
 
     if result.values[0] != Product::SP_HEADER
@@ -30,22 +37,28 @@ class DeleteProductCsvController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do |csv|
-        send_posts_csv(sold_products)
+        send_posts_csv(sold_products, genre_map)
       end
     end
   end
 
   private
 
-  def send_posts_csv(products)
+  def send_posts_csv(products, genre_map)
     platform = params[:platform]
     csv_data = CSV.generate do |csv|
       header = self.send("#{platform}_delete_header")
       csv << header
 
-      result = self.send("#{platform}_delete_format", products)
+      result = self.send("#{platform}_delete_format", products, genre_map)
       result.each do |r|
-        csv << r
+        if platform == 'shopify'
+          r.each do |s|
+            csv << s
+          end
+        else
+          csv << r
+        end
       end
     end
     if File.exist?("./tmp/#{platform}_csv")

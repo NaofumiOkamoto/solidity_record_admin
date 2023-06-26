@@ -13,6 +13,8 @@ class CsvController < ApplicationController
     # 本番シート
     Rails.logger.info('スプレットシート取得開始')
     result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AR"])
+    # テストシート
+    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
     genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:E"])
     Rails.logger.info('スプシ取得完了')
 
@@ -22,8 +24,6 @@ class CsvController < ApplicationController
       genre_map[g[0]] = { main: g[1], sub: g[2], yahoo_path_genre: g[3] }
     end
 
-    # テストシート
-    # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
 
     if result.values[0] != Product::SP_HEADER
       raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")

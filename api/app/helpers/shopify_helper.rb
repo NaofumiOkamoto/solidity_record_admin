@@ -60,7 +60,7 @@ module ShopifyHelper
       'Status',
     ]
   end
-  def shopify_format(value, genre_map)
+  def shopify_format(value, genre_map, quantity: nil)
     rows = []
     value['img_count']&.times do |i|
       if i == 0
@@ -82,7 +82,7 @@ module ShopifyHelper
           value['SKU'], # 'Variant SKU',
           value['weight'], # 'Variant Grams',
           'shopify', # 'Variant Inventory Tracker',
-          value['quantity'], # 'Variant Inventory Qty',
+          quantity.nil? ? value['quantity'] : quantity, # 'Variant Inventory Qty',
           'deny', # 'Variant Inventory Policy',
           'manual', # 'Variant Fulfillment Service',
           value['price'], # 'Variant Price',
