@@ -30,6 +30,12 @@ module DiscogsDeleteHelper
     #   )
     #   listings += result.listings
     # end
+    # listings.each do |listing|
+    #   product = Product.find_by(SKU: listing.external_id.to_i)
+    #   if product
+    #     product.update(discogs_listing_id: listing.id)
+    #   end
+    # end
 
     sold_products.pluck(:discogs_listing_id).compact.map{ |id| [id] }
   end

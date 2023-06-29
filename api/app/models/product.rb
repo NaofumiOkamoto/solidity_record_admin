@@ -41,7 +41,7 @@ class Product < ApplicationRecord
     'youtube_A',
     'youtube_B',
     'sold_date',
-    'sold_price',
+    'sold_site',
     'product_status',
     'sales_status',
     'ishii_memo',
@@ -88,7 +88,7 @@ class Product < ApplicationRecord
     :youtube_A,
     :youtube_B,
     :sold_date,
-    :sold_price,
+    :sold_site,
     :product_status,
     :sales_status,
     :ishii_memo
@@ -139,7 +139,7 @@ class Product < ApplicationRecord
         :youtube_A,
         :youtube_B,
         :sold_date,
-        :sold_price,
+        :sold_site,
         :product_status,
         :sales_status,
         :ishii_memo

@@ -51,7 +51,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_19_002326) do
     t.string "youtube_A"
     t.string "youtube_B"
     t.date "sold_date"
-    t.integer "sold_price"
+    t.string "sold_site"
     t.string "product_status"
     t.string "sales_status"
     t.string "ishii_memo"
