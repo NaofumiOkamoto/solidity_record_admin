@@ -12,7 +12,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :recoding_date
       t.string :genre
       t.string :format
-      t.string :tags
+      t.string :pic_url
       t.string :barcode
       t.string :track_list
       t.string :personnel
@@ -28,8 +28,8 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :record_grading
       t.integer :weight
       t.integer :img_count
-      t.integer :price
-      t.float :discogs_price
+      t.integer :price_jpy
+      t.float :price_usd
       t.integer :discogs_release_id
       t.bigint :discogs_listing_id
       t.float :ebay_price

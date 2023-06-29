@@ -49,8 +49,8 @@ module YahooAuctionHelper
       yahoo_auction_category(value), # カテゴリ
       product_name(value), # タイトル
       yahoo_auction_body(value, genre), # 説明
-      value['price'], # 開始価格
-      value['price'], # 即決価格
+      value['price_jpy'], # 開始価格
+      value['price_jpy'], # 即決価格
       value['quantity'], # 個数
       '7', # 開催期間
       '23', # 終了時間

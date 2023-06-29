@@ -28,7 +28,7 @@ module YahooHelper
       yahoo_path(value, genre),# path
       product_name(value),# name mercari_helperにあるメソッドを使用
       value['SKU'],# code
-      value['price'],# price
+      value['price_jpy'],# price
       yahoo_caption(value, genre),# caption
       product_name(value),# explanation
       value['weight'],# ship-weight

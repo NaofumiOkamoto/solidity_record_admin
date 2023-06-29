@@ -121,7 +121,7 @@ module MercariHelper
       '',
       '',
       '',
-      value['price'] + 185, # 販売価格
+      value['price_jpy'] + 185, # 販売価格
       'rQXZaxCTHYJwurBjB687QC', # カテゴリID
       mercari_condition(value), # 商品の状態
       '1', # 配送方法

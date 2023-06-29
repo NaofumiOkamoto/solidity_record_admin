@@ -16,7 +16,7 @@ module DiscogsHelper
   def discogs_format(value, genre)
     [
       value['discogs_release_id'],        # release_id
-      "%.15g"%value['discogs_price'],             # price
+      "%.15g"%value['price_usd'],             # price
       comments(value),                    # comments
       discogs_condition(value['record_grading']), # media_condition
       discogs_condition(value['cover_grading']),  # sleeve_condition
