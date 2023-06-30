@@ -181,6 +181,9 @@ class Product < ApplicationRecord
     Rails.logger.info('DB情報取得完了')
     products = common_filter(products, params)
 
+     # 自分のプラットフォーム以外を出力する
+    products = products.where.not(sold_site: params[:platform])
+
     # sold_date の絞り込み
     products = products.where('sold_date >= ?', params[:date].to_date)
     Rails.logger.info('sold_date')
