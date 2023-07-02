@@ -136,6 +136,13 @@ module EbayHelper
       ●Personnel: #{value['personnel']}
     PERSONNEL
 
+    record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
+    cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
+    cover_grading = <<~COVER
+
+      ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_jp}
+    COVER
+
     genre = []
     value['genre'].split('_').each do |id|
       genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
@@ -159,10 +166,8 @@ module EbayHelper
       ●Genre: #{genre.join(', ')}
       #{track_list if value['track_list'].present?}#{personnel if value['personnel'].present?}
       ●Item Condition: #{value['item_condition']}
-
-      ●Sleeve Condition: まだ
-
-      ●Vinyl Condition: まだ
+      #{cover_grading if value['cover_grading'].present?}
+      ●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}
 
       -Grading Policy-
 
