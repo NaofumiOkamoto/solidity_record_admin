@@ -85,7 +85,7 @@ module ShopifyHelper
           quantity.nil? ? value['quantity'] : quantity, # 'Variant Inventory Qty',
           'deny', # 'Variant Inventory Policy',
           'manual', # 'Variant Fulfillment Service',
-          quantity.nil? ? value['price'] : quantity, # 'Variant Price',
+          quantity.nil? ? value['price_jpy'] : quantity, # 'Variant Price',
           '', # 'Variant Compare At Price',
           'true', # 'Variant Requires Shipping',
           'true', # 'Variant Taxable	',
