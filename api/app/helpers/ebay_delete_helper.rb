@@ -1,7 +1,5 @@
 module EbayDeleteHelper
   require 'json'
-  require 'ebay/finding'
-  require 'ebay/shopping'
   require 'net/http'
   require 'uri'
   include HTTParty
