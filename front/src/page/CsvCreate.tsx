@@ -221,6 +221,7 @@ export const Csv = () => {
             selectPlatform === 'yahoo' ||
             selectPlatform === 'yahoo_auction' ||
             selectPlatform === 'shopify' ||
+            selectPlatform === 'ebay' ||
             selectPlatform === 'mercari') &&
             <Container>
               <DeleteFilter

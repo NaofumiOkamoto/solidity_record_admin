@@ -9,6 +9,7 @@ class ApplicationController < ActionController::API
   include ShopifyHelper
   include ShopifyDeleteHelper
   include EbayHelper
+  include EbayDeleteHelper
   include YahooHelper
   include YahooDeleteHelper
   include YahooAuctionHelper

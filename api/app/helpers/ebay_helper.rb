@@ -69,12 +69,12 @@ module EbayHelper
   # GenreがJazz以外のものはsubを表示？
   # Record SizeはLP 12inch 7inch 以外は空欄でOK?
 
-  private
-
   def ebay_title(value)
     obi = (value['cover_description_en'].include?('with insert and OB') || value['cover_description_en'].include?('with OBI')) ? ' OBI JAPAN VINYL LP JAZZ' : ''
     "#{value['artist']} #{value['title']} #{value['label']} #{value['number']}#{obi}"
   end
+
+  private
   
   def ebay_genre(value, genre_map)
     genre = []
