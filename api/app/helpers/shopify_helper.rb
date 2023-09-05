@@ -329,12 +329,16 @@ module ShopifyHelper
         tags << 'japanese-jazz'
       when 115
         tags << 'modal'
+      when 117
+        tags << 'jazz-other'
       when 201..299
         tags << 'reggae'
       when 301..398
         tags << 'latin'
       when 399
         tags << 'cumbia'
+      when 400
+        tags << 'world-music'
       when 2000
         tags << 'rock-pop'
       when 3000
