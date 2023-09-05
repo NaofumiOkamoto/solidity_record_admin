@@ -58,7 +58,9 @@ module YahooHelper
   def yahoo_genre_map(format, genre_id, genre_map)
     convert_format =  format.gsub(/ inch/, 'インチ')
     case genre_id.to_i
-    when 101..199
+    when 101
+      ["#{convert_format}:ジャズ"]
+    when 102..199
       ["#{convert_format}:ジャズ", "#{convert_format}:ジャズ:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
     when 10, 12, 14
       ["#{convert_format}:ファンク:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
