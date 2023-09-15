@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*", "src/parts/SelectBox/.tsx"]
 }

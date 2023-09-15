@@ -83,8 +83,11 @@ class CsvController < ApplicationController
     File.open("./tmp/#{platform}_csv/test.csv", 'w') do |file|
       file.write(csv_data)
     end
+    if platform == 'yahoo'
+      csv_data = csv_data.encode(Encoding::SHIFT_JIS)
+    end
+
     send_data(csv_data, filename: "test.csv")
-    # send_file("./tmp/#{platform}_csv/test.csv", filename: "test.csv")
   end
 
 end

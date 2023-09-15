@@ -189,6 +189,8 @@ module ShopifyHelper
   end
 
   def shopify_handle(value)
+    return value['SKU'] if 203823 <= value['SKU'].to_i
+
     handle = shopify_title(value).downcase
       .gsub(' ', '-')
       .gsub('(', '-')
