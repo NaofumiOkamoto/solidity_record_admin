@@ -203,6 +203,10 @@ module ShopifyHelper
       .gsub('\’', '')
       .squeeze('\-')
 
+    if value['SKU'].to_i <= 1679
+      handle = handle.gsub('7-inch', '7inchi')
+    end
+
     handle.chop! if handle[-1] == '-'
 
     # ishii_memoに「x枚目」があるときは「-x」をケツにつける
