@@ -203,7 +203,7 @@ module ShopifyHelper
       .gsub('\’', '')
       .squeeze('\-')
 
-    if value['SKU'].to_i <= 1679
+    if value['SKU'].to_i <= 201679
       handle = handle.gsub('7-inch', '7inchi')
     end
 
