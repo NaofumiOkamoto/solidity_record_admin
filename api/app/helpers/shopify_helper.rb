@@ -228,11 +228,16 @@ module ShopifyHelper
   end
 
   def shopify_img_src(value, i)
-    img_name = if i ==0
+    img_name = if i == 0
                  value['SKU']
                else
                  "#{value['SKU']}_#{i}"
                end
+
+    if value['SKU'].to_i <= 202296
+      img_name = "#{value['SKU']}_#{format("%02d", i + 1)}"
+    end
+
     "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{img_name}.jpg?v=#{params[:imgParams]}"
   end
 
