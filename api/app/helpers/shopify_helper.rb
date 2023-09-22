@@ -204,7 +204,7 @@ module ShopifyHelper
       .squeeze('\-')
 
     if value['SKU'].to_i <= 201679
-      handle = handle.gsub('7-inch', '7inchi')
+      handle = handle.gsub('7-inch', '7inch')
     end
 
     handle.chop! if handle[-1] == '-'
