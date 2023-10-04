@@ -130,7 +130,7 @@ module YahooHelper
 
       ●Grading Policy:<br><br>
 
-      M〜NM〜EX+〜EX〜EX-〜VG+〜VG〜VG-~G+~G (10 grades) <br><br>
+      M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades) <br><br>
 
       M to EX → 非常に良い。<br><br>
 

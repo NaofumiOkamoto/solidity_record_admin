@@ -222,7 +222,7 @@ module MercariHelper
 
       ●Grading Policy:
 
-      M～NM～EX+～EX～EX-～VG+～VG～VG-~G+~G (10 grades) 
+      M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades) 
 
       M to EX → 非常に良い。
 

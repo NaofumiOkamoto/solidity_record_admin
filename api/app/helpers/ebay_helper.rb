@@ -171,7 +171,7 @@ module EbayHelper
 
       -Grading Policy-
 
-      M～NM～EX+～EX～EX-～VG+～VG～VG-~G+~G (10 grades)
+      M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades)
 
       M → Still sealed.
 

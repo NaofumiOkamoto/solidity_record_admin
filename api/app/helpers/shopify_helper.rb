@@ -424,7 +424,7 @@ module ShopifyHelper
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Item Condition: #{value['item_condition']}</span></p>
       #{cover_grading if value['cover_grading'].present?}<p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_en}</span></p>
       <p data-mce-fragment="1">-Grading Policy-</p>
-      <p data-mce-fragment="1">M～NM～EX+～EX～EX-～VG+～VG～VG-~G+~G (10 grades)</p>
+      <p data-mce-fragment="1">M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades)</p>
       <p data-mce-fragment="1">M → Still sealed.</p>
       <p data-mce-fragment="1">NM → Nearly perfect. Great shape.</p>
       <p data-mce-fragment="1">EX+ → It might has very slight wear, stains or marks. But great shape. Close to NM.</p>
