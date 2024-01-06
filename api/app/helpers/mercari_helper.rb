@@ -262,7 +262,7 @@ module MercariHelper
       B. #{value['title'].split(' / ')[1]}
       https://drive.google.com/file/d/#{value['mp3_B']}/view?usp=sharing
 
-      ※PC以外の方は、画面上部中央にある下矢印のダウンロードボタンを押すと試聴が開始されます。表示orダウンロードと出ますので、表示をクリックしてください。試聴は実際のレコードから録音しています。
+      ※試聴は実際のレコードから録音しています。
     PRODUCT
 
     description

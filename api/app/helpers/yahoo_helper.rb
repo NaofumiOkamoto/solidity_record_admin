@@ -110,7 +110,7 @@ module YahooHelper
 
       ●Title: <A href="https://drive.google.com/file/d/#{value['mp3_A']}/view?usp=sharing">#{value['title'].split(' / ')[0]}</A> / <A href="https://drive.google.com/file/d/#{value['mp3_B']}/view?usp=sharing">#{value['title'].split(' / ')[1]}</A><br><br>
 
-      ※リンクのある曲名をクリックすると試聴ができます。PC以外の方は、画面上部中央にある下矢印のダウンロードボタンを押すと試聴が開始されます。環境によっては表示orダウンロードと出ますので、表示をクリックしてください。試聴は実際のレコードから録音しています。<br><br>
+      ※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。<br><br>
 
       ●Label: #{value['label']}<br><br>
 
