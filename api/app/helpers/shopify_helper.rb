@@ -437,9 +437,7 @@ module ShopifyHelper
       <p data-mce-fragment="1">*Also, you can order by e-mail. Please contact to solidityrecords@gmail.com</p>
       <p data-mce-fragment="1">*The listen sample is recorded from the actual item. Please click the song title.</p>
       <p data-mce-fragment="1">A. <a href="https://drive.google.com/file/d/#{value['mp3_A']}/view" target="_blank">#{value['title'].split(' / ')[0]}</a></p>
-      #{mp3_A if value['mp3_A'].present?}
       <p data-mce-fragment="1">B. <a href="https://drive.google.com/file/d/#{value['mp3_B']}/view" target="_blank">#{value['title'].split(' / ')[1]}</a></p>
-      #{mp3_B if value['mp3_B'].present?}
     BODY
   end
 
