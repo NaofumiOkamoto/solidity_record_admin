@@ -435,10 +435,10 @@ module ShopifyHelper
       <p data-mce-fragment="1">VG- to G → Bad condition. Too many wear, stains or marks. Record has loud noise.</p>
       <p data-mce-fragment="1">*Basically, our grading is based on 'Goldmine US' or 'Record Collector UK'. But our grading is more classified. Also, We check the condition of all items before listing(except sealed item). Our grading is visual. But the sound may be better than visual. Therefore, if there is an audio clip on the item page, we recommend that you listen to a sample of the item before purchasing. If you have any questions about grading, please feel free to contact us.</p>
       <p data-mce-fragment="1">*Also, you can order by e-mail. Please contact to solidityrecords@gmail.com</p>
-      <p data-mce-fragment="1">*The listen sample is recorded from the actual item.</p>
-      <p data-mce-fragment="1">A. #{value['title'].split(' / ')[0]}</p>
+      <p data-mce-fragment="1">*The listen sample is recorded from the actual item. Please click the song title.</p>
+      <p data-mce-fragment="1">A. <a href="https://drive.google.com/file/d/#{value['mp3_A']}/view" target="_blank">#{value['title'].split(' / ')[0]}</a></p>
       #{mp3_A if value['mp3_A'].present?}
-      <p data-mce-fragment="1">B. #{value['title'].split(' / ')[1]}</p>
+      <p data-mce-fragment="1">B. <a href="https://drive.google.com/file/d/#{value['mp3_B']}/view" target="_blank">#{value['title'].split(' / ')[1]}</a></p>
       #{mp3_B if value['mp3_B'].present?}
     BODY
   end
