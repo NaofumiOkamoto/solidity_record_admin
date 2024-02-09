@@ -108,7 +108,7 @@ module YahooHelper
 
       ●Artist: #{value['artist']}<br><br>
 
-      ●Title: <A href="https://drive.google.com/file/d/#{value['mp3_A']}/view?usp=sharing">#{value['title'].split(' / ')[0]}</A> / <A href="https://drive.google.com/file/d/#{value['mp3_B']}/view?usp=sharing">#{value['title'].split(' / ')[1]}</A><br><br>
+      ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> / <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
 
       ※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。<br><br>
 
@@ -132,7 +132,9 @@ module YahooHelper
 
       M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades) <br><br>
 
-      M to EX → 非常に良い。<br><br>
+      M → 新品同様、未開封。<br><br>
+
+      NM, EX+, EX → 非常に良い。<br><br>
 
       EX-, VG+ → 傷、ノイズが多少あるが、おおむね良い。<br><br>
 

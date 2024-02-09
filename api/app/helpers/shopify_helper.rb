@@ -396,7 +396,7 @@ module ShopifyHelper
   end
 
   def shopify_body(value, genre_map)
-    record_description_en = value['record_description_en'].present? ? "(#{value['record_description_en']})": ''
+    record_description = value['record_description_jp'].present? ? "(#{value['record_description_jp']}#{value['record_description_en']})" : ''
     cover_description_en = value['cover_description_en'].present? ? "(#{value['cover_description_en']})": ''
 
     cover_grading = <<~COVER
@@ -414,7 +414,8 @@ module ShopifyHelper
     description = <<~BODY
       <meta charset="utf-8">
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist'].gsub('_', ', ')}</span></p>
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{value['title']}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> / <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A></span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. The listen sample is recorded from the actual item.</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Label: #{value['label']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Country: #{value['country']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Number: #{value['number']}</span></p>
@@ -422,21 +423,7 @@ module ShopifyHelper
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Release Year: #{value['release_year'] || 'Unknown'}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Genre: #{genre.join(', ')}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Item Condition: #{value['item_condition']}</span></p>
-      #{cover_grading if value['cover_grading'].present?}<p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_en}</span></p>
-      <p data-mce-fragment="1">-Grading Policy-</p>
-      <p data-mce-fragment="1">M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades)</p>
-      <p data-mce-fragment="1">M → Still sealed.</p>
-      <p data-mce-fragment="1">NM → Nearly perfect. Great shape.</p>
-      <p data-mce-fragment="1">EX+ → It might has very slight wear, stains or marks. But great shape. Close to NM.</p>
-      <p data-mce-fragment="1">EX → Some very slight wear, stains or marks. But great shape.</p>
-      <p data-mce-fragment="1">EX- → Some(or slight) wear, stains or marks. Record might has some noise. But good shape.</p>
-      <p data-mce-fragment="1">VG+ → Some(or many) wear, stains or marks. Record might has some noise. But good shape.</p>
-      <p data-mce-fragment="1">VG → Many wear, stains or marks. Record might has loud noise.</p>
-      <p data-mce-fragment="1">VG- to G → Bad condition. Too many wear, stains or marks. Record has loud noise.</p>
-      <p data-mce-fragment="1">*Basically, our grading is based on 'Goldmine US' or 'Record Collector UK'. But our grading is more classified. Also, We check the condition of all items before listing(except sealed item). Our grading is visual. But the sound may be better than visual. Therefore, if there is an audio clip on the item page, we recommend that you listen to a sample of the item before purchasing. If you have any questions about grading, please feel free to contact us.</p>
-      <p data-mce-fragment="1">*The listen sample is recorded from the actual item. Please click the song title.</p>
-      <p data-mce-fragment="1">A. <a href="https://drive.google.com/file/d/#{value['mp3_A']}/view" target="_blank">#{value['title'].split(' / ')[0]}</a></p>
-      <p data-mce-fragment="1">B. <a href="https://drive.google.com/file/d/#{value['mp3_B']}/view" target="_blank">#{value['title'].split(' / ')[1]}</a></p>
+      #{cover_grading if value['cover_grading'].present?}<p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description}</span></p>
     BODY
   end
 

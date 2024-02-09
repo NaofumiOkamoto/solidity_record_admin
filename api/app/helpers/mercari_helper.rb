@@ -224,7 +224,9 @@ module MercariHelper
 
       M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades) 
 
-      M to EX → 非常に良い。
+      M → 新品同様、未開封。
+
+      NM, EX+, EX → 非常に良い。
 
       EX-, VG+ → 傷、ノイズが多少あるが、おおむね良い。
 
@@ -257,10 +259,10 @@ module MercariHelper
       ●試聴:
 
       A. #{value['title'].split(' / ')[0]}
-      https://drive.google.com/file/d/#{value['mp3_A']}/view?usp=sharing
+      #{value['mp3_A']}
 
       B. #{value['title'].split(' / ')[1]}
-      https://drive.google.com/file/d/#{value['mp3_B']}/view?usp=sharing
+      #{value['mp3_B']}
 
       ※試聴は実際のレコードから録音しています。
     PRODUCT
