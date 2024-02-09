@@ -414,7 +414,7 @@ module ShopifyHelper
     description = <<~BODY
       <meta charset="utf-8">
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist'].gsub('_', ', ')}</span></p>
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> / <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A></span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9" href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> / <A style="color: #2653D9" href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A></span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. The listen sample is recorded from the actual item.</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Label: #{value['label']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Country: #{value['country']}</span></p>
@@ -428,3 +428,4 @@ module ShopifyHelper
   end
 
 end
+# #2653D9
