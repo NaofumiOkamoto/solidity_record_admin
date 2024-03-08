@@ -411,12 +411,24 @@ module ShopifyHelper
     mp3_A = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_A']}\"></audio>"
     mp3_B = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_B']}\"></audio>"
 
+    is_link = ['2LP','3LP','Gatefold LP','LP'].exclude?(value['format'])
+
+    link_message = <<~LINK_MESSAGE
+      <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.</span></p>
+    LINK_MESSAGE
+
+    title_in_link = <<~TITLE
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{value['title'].split(' / ')[0]}</A> / <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{value['title'].split(' / ')[1]}</A></span></p>
+    TITLE
+
+    title_not_in_link = <<~TITLE
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{value['title'].split(' / ')[0]} / #{value['title'].split(' / ')[1]}</span></p>
+    TITLE
+
     description = <<~BODY
       <meta charset="utf-8">
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist'].gsub('_', ', ')}</span></p>
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{value['title'].split(' / ')[0]}</A> / <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{value['title'].split(' / ')[1]}</A></span></p>
-      <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. The listen sample is recorded from the actual item.</span></p>
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Label: #{value['label']}</span></p>
+      #{is_link ? title_in_link : title_not_in_link}#{link_message if is_link}<p data-mce-fragment="1"><span data-mce-fragment="1">●Label: #{value['label']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Country: #{value['country']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Number: #{value['number']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Format: #{value['format']}</span></p>
