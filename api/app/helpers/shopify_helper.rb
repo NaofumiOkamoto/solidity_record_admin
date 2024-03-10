@@ -189,31 +189,32 @@ module ShopifyHelper
   end
 
   def shopify_handle(value)
-    return value['SKU'] if 203823 <= value['SKU'].to_i
+    return value['SKU']
+    # return value['SKU'] if 203823 <= value['SKU'].to_i
 
-    handle = shopify_title(value).downcase
-      .gsub(' ', '-')
-      .gsub('(', '-')
-      .gsub(')', '-')
-      .gsub(',', '-')
-      .gsub('&', '-')
-      .gsub('/', '-')
-      .gsub('.', '-')
-      .gsub('\'', '')
-      .gsub('\’', '')
-      .squeeze('\-')
+    # handle = shopify_title(value).downcase
+    #   .gsub(' ', '-')
+    #   .gsub('(', '-')
+    #   .gsub(')', '-')
+    #   .gsub(',', '-')
+    #   .gsub('&', '-')
+    #   .gsub('/', '-')
+    #   .gsub('.', '-')
+    #   .gsub('\'', '')
+    #   .gsub('\’', '')
+    #   .squeeze('\-')
 
-    if value['SKU'].to_i <= 201679
-      handle = handle.gsub('7-inch', '7inch-vinyl')
-    end
+    # if value['SKU'].to_i <= 201679
+    #   handle = handle.gsub('7-inch', '7inch-vinyl')
+    # end
 
-    handle.chop! if handle[-1] == '-'
+    # handle.chop! if handle[-1] == '-'
 
-    # ishii_memoに「x枚目」があるときは「-x」をケツにつける
-    match = value['ishii_memo']&.match(/(\d+)枚目/)
-    handle << "-#{match[1]}" if match.present?
+    # # ishii_memoに「x枚目」があるときは「-x」をケツにつける
+    # match = value['ishii_memo']&.match(/(\d+)枚目/)
+    # handle << "-#{match[1]}" if match.present?
 
-    handle
+    # handle
   end
 
   def shopify_title(value)
@@ -234,9 +235,9 @@ module ShopifyHelper
                  "#{value['SKU']}_#{i}"
                end
 
-    if value['SKU'].to_i <= 202296
-      img_name = "#{value['SKU']}_#{format("%02d", i + 1)}"
-    end
+    # if value['SKU'].to_i <= 202296
+    #   img_name = "#{value['SKU']}_#{format("%02d", i + 1)}"
+    # end
 
     "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{img_name}.jpg?v=#{params[:imgParams]}"
   end
@@ -397,7 +398,7 @@ module ShopifyHelper
 
   def shopify_body(value, genre_map)
     record_description = value['record_description_jp'].present? ? "(#{value['record_description_jp']}#{value['record_description_en']})" : ''
-    cover_description_en = value['cover_description_en'].present? ? "(#{value['cover_description_en']})": ''
+    cover_description_en = value['cover_description_en'].present? ? "(#{value['cover_description_jp']}#{value['cover_description_en']})" : ''
 
     cover_grading = <<~COVER
      <p data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_en}

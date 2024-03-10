@@ -29,7 +29,7 @@ module DiscogsHelper
   private
 
   def comments(value)
-    sleeve = "Cover: #{value['cover_grading']&.gsub('_', '~')}. #{value['cover_description']}"
+    sleeve = "Cover: #{value['cover_grading']&.gsub('_', '~')}. #{value['cover_description_en']}"
     vinyl = "Record: #{value['record_grading']&.gsub('_', '~')}. #{value['record_description_en']}"
     comments = "#{value['cover_grading'].present? ? sleeve + ' ' : ''}#{vinyl}" 
     if value['item_condition'] == 'Used'
