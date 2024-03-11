@@ -222,7 +222,7 @@ module ShopifyHelper
     if value['format'].start_with?('7 inch')
       title += ' (7 inch Record / Used)'
     end
-    if value['format'].start_with?('LP')
+    if ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
       title += ' (LP Record / Used)'
     end
     title
@@ -256,10 +256,8 @@ module ShopifyHelper
     when 'LP'
       tags << 'lp'
       tags << 'new-arrivals'
-    when '2LP'
-      tags << '2-lp'
-    when '3LP'
-      tags << '3-lp'
+    when '2LP','2 LP','3LP','3 LP','Gatefold LP'
+      tags << 'new-arrivals'
     when '7 inch'
       tags << '7-inch'
       tags << 'new-arrivals-45'
@@ -267,8 +265,6 @@ module ShopifyHelper
       tags << '10-inch'
     when '12 inch'
       tags << '12-inch'
-    when 'Gatefold LP'
-      tags << 'gatefold-lp'
     when 'Laserdisc'
       tags << 'laserdisc'
     end
@@ -412,7 +408,7 @@ module ShopifyHelper
     mp3_A = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_A']}\"></audio>"
     mp3_B = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_B']}\"></audio>"
 
-    is_link = ['2LP','3LP','Gatefold LP','LP'].exclude?(value['format'])
+    is_link = ['2LP','3LP','Gatefold LP','LP','2 LP', '3 LP'].exclude?(value['format'])
 
     link_message = <<~LINK_MESSAGE
       <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.</span></p>
