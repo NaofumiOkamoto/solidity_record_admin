@@ -418,12 +418,13 @@ module ShopifyHelper
       <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.</span></p>
     LINK_MESSAGE
 
+    splited_title = value['title'].split(' / ')
     title_in_link = <<~TITLE
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{value['title'].split(' / ')[0]}</A> / <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{value['title'].split(' / ')[1]}</A></span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{splited_title[0]}</A> / <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{splited_title[1]}</A></span></p>
     TITLE
 
     title_not_in_link = <<~TITLE
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{value['title'].split(' / ')[0]} / #{value['title'].split(' / ')[1]}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{splited_title[0]}#{splited_title[1] ? ' / ' + splited_title[1] : ''}</span></p>
     TITLE
 
     description = <<~BODY
