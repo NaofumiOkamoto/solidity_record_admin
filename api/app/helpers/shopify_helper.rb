@@ -189,26 +189,26 @@ module ShopifyHelper
   end
 
   def shopify_handle(value)
-    return value['SKU']
-    # return value['SKU'] if 203823 <= value['SKU'].to_i
+    return value['SKU'] if 203823 <= value['SKU'].to_i
+    return value['SKU'] if 3278 <= value['SKU'].to_i <= 99999
 
-    # handle = shopify_title(value).downcase
-    #   .gsub(' ', '-')
-    #   .gsub('(', '-')
-    #   .gsub(')', '-')
-    #   .gsub(',', '-')
-    #   .gsub('&', '-')
-    #   .gsub('/', '-')
-    #   .gsub('.', '-')
-    #   .gsub('\'', '')
-    #   .gsub('\’', '')
-    #   .squeeze('\-')
+    handle = shopify_title(value).downcase
+      .gsub(' ', '-')
+      .gsub('(', '-')
+      .gsub(')', '-')
+      .gsub(',', '-')
+      .gsub('&', '-')
+      .gsub('/', '-')
+      .gsub('.', '-')
+      .gsub('\'', '')
+      .gsub('\’', '')
+      .squeeze('\-')
 
-    # if value['SKU'].to_i <= 201679
-    #   handle = handle.gsub('7-inch', '7inch-vinyl')
-    # end
+    if value['SKU'].to_i <= 201679
+      handle = handle.gsub('7-inch', '7inch-vinyl')
+    end
 
-    # handle.chop! if handle[-1] == '-'
+    handle.chop! if handle[-1] == '-'
 
     # # ishii_memoに「x枚目」があるときは「-x」をケツにつける
     # match = value['ishii_memo']&.match(/(\d+)枚目/)
@@ -235,9 +235,9 @@ module ShopifyHelper
                  "#{value['SKU']}_#{i}"
                end
 
-    # if value['SKU'].to_i <= 202296
-    #   img_name = "#{value['SKU']}_#{format("%02d", i + 1)}"
-    # end
+    if value['SKU'].to_i <= 202296 && 
+      img_name = "#{value['SKU']}_#{format("%02d", i + 1)}"
+    end
 
     "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{img_name}.jpg?v=#{params[:imgParams]}"
   end
@@ -408,7 +408,8 @@ module ShopifyHelper
     mp3_A = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_A']}\"></audio>"
     mp3_B = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_B']}\"></audio>"
 
-    is_link = ['2LP','3LP','Gatefold LP','LP','2 LP', '3 LP'].exclude?(value['format'])
+    # is_link = ['2LP','3LP','Gatefold LP','LP','2 LP', '3 LP'].exclude?(value['format'])
+    is_link = value['mp3_A'].present?
 
     link_message = <<~LINK_MESSAGE
       <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.</span></p>
