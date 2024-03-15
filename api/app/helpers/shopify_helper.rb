@@ -190,7 +190,7 @@ module ShopifyHelper
 
   def shopify_handle(value)
     return value['SKU'] if 203823 <= value['SKU'].to_i
-    return value['SKU'] if 3278 <= value['SKU'].to_i <= 99999
+    return value['SKU'] if 3278 <= value['SKU'].to_i && value['SKU'].to_i <= 99999
 
     handle = shopify_title(value).downcase
       .gsub(' ', '-')
@@ -235,7 +235,7 @@ module ShopifyHelper
                  "#{value['SKU']}_#{i}"
                end
 
-    if value['SKU'].to_i <= 202296 && 
+    if (value['SKU'].to_i <= 202296 && 99999 <= value['SKU'].to_i) || value['SKU'].to_i <= 3278
       img_name = "#{value['SKU']}_#{format("%02d", i + 1)}"
     end
 
