@@ -170,6 +170,8 @@ module MercariHelper
       return "#{base} FOLK COUNTRY レコード #{format}"
     when 4000..4099 
       return "#{base} HIP HOP R&B レコード #{format}"
+    when 5000
+      return "#{base} HOUSE TECHNO ハウス テクノ レコード#{format}"
     end
   end
 
