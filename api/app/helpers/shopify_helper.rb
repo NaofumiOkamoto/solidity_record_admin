@@ -353,6 +353,8 @@ module ShopifyHelper
         tags << 'folk-country'
       when 4000
         tags << 'hip-hop-r-b'
+      when 5000
+        tags << 'house-techno'
       end
     end
 
