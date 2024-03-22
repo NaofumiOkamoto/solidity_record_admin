@@ -71,7 +71,7 @@ module ShopifyHelper
           'Solidity Records', # 'Vendor',
           '', # 'Product Category',
           value['format'], # 'Type',
-          shopify_tags(value), # 'Tags',
+          shopify_tags(value, genre_map), # 'Tags',
           'true', # 'Published',
           'Title', # 'Option1 Name',
           'Default Title', # 'Option1 Value',
@@ -242,7 +242,7 @@ module ShopifyHelper
     "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{img_name}.jpg?v=#{params[:imgParams]}"
   end
 
-  def shopify_tags(value)
+  def shopify_tags(value, genre_map)
     tags = []
 
     case value['quantity']
@@ -270,92 +270,93 @@ module ShopifyHelper
     end
 
     value['genre'].split('_').each do |genre_id|
-      case genre_id.to_i
-      when 1
-        tags << 'soul'
-      when 2
-        tags << 'funk'
-      when 3
-        tags << 'blues'
-      when 4
-        tags << 'disco'
-      when 5
-        tags << 'gospel'
-      when 6
-        tags << 'rhythm-blues'
-      when 10
-        tags << '60s-funk'
-      when 11
-        tags << '60s-soul'
-      when 12
-        tags << '70s-funk'
-      when 13
-        tags << '70s-soul'
-      when 14
-        tags << '80s-funk'
-      when 15
-        tags << '80s-soul'
-      when 101
-        tags << 'swing-jazz'
-      when 102
-        tags << 'big-band'
-      when 103
-        tags << 'modern-jazz'
-      when 104
-        tags << 'bop'
-      when 105
-        tags << 'hard-bop'
-      when 106
-        tags << 'post-bop'
-      when 107
-        tags << 'cool-jazz'
-      when 108
-        tags << 'latin-jazz'
-      when 109
-        if value['item_condition'] == 'New'
-          tags << 'free-jazz-spiritual-jazz'
-        else
-          tags << 'free-jazz-spiritual-jazz-new'
-        end
-      when 110
-        if value['item_condition'] == 'New'
-          tags << 'jazz-funk-soul-jazz-new'
-        else
-          tags << 'soul-jazz'
-        end
-      when 111
-        tags << 'jazz-rock-fusion'
-      when 112
-        if value['item_condition'] == 'New'
-          tags << 'contemporary-jazz-new'
-        else
-          tags << 'contemporary-jazz'
-        end
-      when 113
-        tags << 'vocal-jazz'
-      when 114
-        tags << 'japanese-jazz'
-      when 115
-        tags << 'modal'
-      when 117
-        tags << 'jazz-other'
-      when 201..299
-        tags << 'reggae'
-      when 301..398
-        tags << 'latin'
-      when 399
-        tags << 'cumbia'
-      when 400
-        tags << 'world-music'
-      when 2000
-        tags << 'rock-pop'
-      when 3000
-        tags << 'folk-country'
-      when 4000
-        tags << 'hip-hop-r-b'
-      when 5000
-        tags << 'house-techno'
-      end
+      tags << genre_map[genre_id.to_s][:tags]
+      # case genre_id.to_i
+      # when 1
+      #   tags << 'soul'
+      # when 2
+      #   tags << 'funk'
+      # when 3
+      #   tags << 'blues'
+      # when 4
+      #   tags << 'disco'
+      # when 5
+      #   tags << 'gospel'
+      # when 6
+      #   tags << 'rhythm-blues'
+      # when 10
+      #   tags << '60s-funk'
+      # when 11
+      #   tags << '60s-soul'
+      # when 12
+      #   tags << '70s-funk'
+      # when 13
+      #   tags << '70s-soul'
+      # when 14
+      #   tags << '80s-funk'
+      # when 15
+      #   tags << '80s-soul'
+      # when 101
+      #   tags << 'swing-jazz'
+      # when 102
+      #   tags << 'big-band'
+      # when 103
+      #   tags << 'modern-jazz'
+      # when 104
+      #   tags << 'bop'
+      # when 105
+      #   tags << 'hard-bop'
+      # when 106
+      #   tags << 'post-bop'
+      # when 107
+      #   tags << 'cool-jazz'
+      # when 108
+      #   tags << 'latin-jazz'
+      # when 109
+      #   if value['item_condition'] == 'New'
+      #     tags << 'free-jazz-spiritual-jazz'
+      #   else
+      #     tags << 'free-jazz-spiritual-jazz-new'
+      #   end
+      # when 110
+      #   if value['item_condition'] == 'New'
+      #     tags << 'jazz-funk-soul-jazz-new'
+      #   else
+      #     tags << 'soul-jazz'
+      #   end
+      # when 111
+      #   tags << 'jazz-rock-fusion'
+      # when 112
+      #   if value['item_condition'] == 'New'
+      #     tags << 'contemporary-jazz-new'
+      #   else
+      #     tags << 'contemporary-jazz'
+      #   end
+      # when 113
+      #   tags << 'vocal-jazz'
+      # when 114
+      #   tags << 'japanese-jazz'
+      # when 115
+      #   tags << 'modal'
+      # when 117
+      #   tags << 'jazz-other'
+      # when 201..299
+      #   tags << 'reggae'
+      # when 301..398
+      #   tags << 'latin'
+      # when 399
+      #   tags << 'cumbia'
+      # when 400
+      #   tags << 'world-music'
+      # when 2000
+      #   tags << 'rock-pop'
+      # when 3000
+      #   tags << 'folk-country'
+      # when 4000
+      #   tags << 'hip-hop-r-b'
+      # when 5000
+      #   tags << 'house-techno'
+      # end
     end
 
     case value['label']
