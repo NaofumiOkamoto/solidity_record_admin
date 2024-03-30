@@ -40,7 +40,7 @@ module EbayHelper
       '176985', # Category
       ebay_title(value), # Title
       '3000', # ConditionID
-      value['artist'], # Artist
+      value['artist']&.gsub('_', ', '), # Artist
       'Record', # Format1
       value['title'], # Release Title
       'Vinyl', # Material
@@ -51,7 +51,7 @@ module EbayHelper
       ebay_speed(value), # Speed
       record_grading(value), # Record Grading
       value['release_year'],
-      value['cover_grading']&.gsub('_', '~'), # Sleeve Grading
+      record_grading(value), # Sleeve Grading
       value['country'], # Country/Region of Manufacture
       ebay_description(value, genre_map), # Description
       'FixedPrice', # Format2
@@ -73,13 +73,15 @@ module EbayHelper
 
   def ebay_title(value)
     obi = (value['cover_description_en'].include?('With insert and OB') || value['cover_description_en'].include?('With OBI')) ? ' OBI JAPAN VINYL LP JAZZ' : ' JAPAN VINYL LP JAZZ'
-    "#{value['artist']} #{value['title']} #{value['label']} #{value['number']}#{obi}"
+    "#{value['artist'].gsub('_', ', ')} #{value['title']} #{value['label']} #{value['number']}#{obi}"
   end
 
   private
 
   def record_grading(value)
-    case value['record_grading'].split('_')
+    p '#################'
+    p value['record_grading']
+    case value['record_grading'].split('_')[0]
     when 'M'
       return 'Mint (M)'
     when 'NM', 'EX+'
