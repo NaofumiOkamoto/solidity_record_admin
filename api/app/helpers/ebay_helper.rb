@@ -163,7 +163,7 @@ module EbayHelper
     cover_description_en = value['cover_description_en'].present? ? "(#{value['cover_description_en']})": ''
     cover_grading = <<~COVER
 
-      ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_en}
+      #{value['cover_grading']&.gsub('_', '~')} #{cover_description_en}
     COVER
 
     genre = []
