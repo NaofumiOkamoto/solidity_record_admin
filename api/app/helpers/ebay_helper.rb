@@ -49,9 +49,9 @@ module EbayHelper
       value['label'], # Record Label
       ebay_record_size(value), # Record Size
       ebay_speed(value), # Speed
-      record_grading(value), # Record Grading
+      record_grading(value, 'record_grading'), # Record Grading
       value['release_year'],
-      record_grading(value), # Sleeve Grading
+      record_grading(value, 'cover_grading'), # Sleeve Grading
       value['country'], # Country/Region of Manufacture
       ebay_description(value, genre_map), # Description
       'FixedPrice', # Format2
@@ -78,10 +78,8 @@ module EbayHelper
 
   private
 
-  def record_grading(value)
-    p '#################'
-    p value['record_grading']
-    case value['record_grading'].split('_')[0]
+  def record_grading(value, grading)
+    case value[grading].split('_')[0]
     when 'M'
       return 'Mint (M)'
     when 'NM', 'EX+'
