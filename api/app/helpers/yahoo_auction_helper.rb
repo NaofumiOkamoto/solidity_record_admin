@@ -188,7 +188,7 @@ module YahooAuctionHelper
 
     ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> / <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
 
-    ※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。<br><br>
+    ※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。#{'LPレコードの試聴はA1→B1です。' if value['format'] == 'LP'}<br><br>
 
     ●Label: #{value['label']}<br><br>
 
