@@ -171,6 +171,7 @@ module YahooAuctionHelper
   def yahoo_auction_body(value, genre_map)
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
     cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
+    is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
 
     cover_grading = <<~COVER
 
@@ -186,7 +187,7 @@ module YahooAuctionHelper
 
     ●Artist: #{value['artist']}<br><br>
 
-    ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> / <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
+    ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> #{'/' if value['mp3_B'].present?} <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
 
     ※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。#{'LPレコードの試聴はA1→B1です。' if value['format'] == 'LP'}<br><br>
 
@@ -224,9 +225,9 @@ module YahooAuctionHelper
     
     ●配送方法:<br><br>
     
-    ゆうパケット or ゆうパック<br><br>
+    #{'ゆうパケット or ゆうパック<br><br>' if !is_lp} #{'ゆうパック<br><br>' if is_lp}
     
-    すべての商品同梱可能です。7インチ6枚までゆうパケットで発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。ゆうパックの料金は地域、サイズにより異なりますので、ご注文後のご案内となります。<br><br>
+    #{'すべての商品同梱可能です。7インチ6枚までゆうパケットで発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。ゆうパックの料金は地域、サイズにより異なりますので、ご注文後のご案内となります。<br><br>' if !is_lp}#{'すべての商品同梱可能です。ゆうパックの料金は地域、サイズにより異なります。' if is_lp}
     
     また、同梱をご希望の際は、落札後に「まとめて取引」 をご利用くださいますようお願いいたします。もし単品で住所確定後等、「まとめて取引」ができない際は、お支払い前にメッセージにて同梱希望のご連絡をお願いいたします。単品ごとに送料をお支払いした場合は、単品での取引となり同梱いたしかねますのでご注意ください。<br><br>
     

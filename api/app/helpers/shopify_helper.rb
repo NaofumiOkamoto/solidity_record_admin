@@ -398,6 +398,7 @@ module ShopifyHelper
   def shopify_body(value, genre_map)
     record_description = value['record_description_jp'].present? ? "(#{value['record_description_jp']}#{value['record_description_en']})" : ''
     cover_description_en = value['cover_description_en'].present? ? "(#{value['cover_description_jp']}#{value['cover_description_en']})" : ''
+    is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
 
     cover_grading = <<~COVER
      <p data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_en}
@@ -415,12 +416,12 @@ module ShopifyHelper
     is_link = value['mp3_A'].present?
 
     link_message = <<~LINK_MESSAGE
-      <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。#{'LPレコードの試聴はA1→B1です。' if is_lp}Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.#{'The audio sample of the LP record is A1→B1.' if is_lp}</span></p>
     LINK_MESSAGE
 
     splited_title = value['title'].split(' / ')
     title_in_link = <<~TITLE
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{splited_title[0]}</A> / <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{splited_title[1]}</A></span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{splited_title[0]}</A> #{'/' if value['mp3_B'].present?} <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{splited_title[1]}</A></span></p>
     TITLE
 
     title_not_in_link = <<~TITLE

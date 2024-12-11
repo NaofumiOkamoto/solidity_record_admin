@@ -77,6 +77,7 @@ module MercariHelper
     value['genre'].split('_').each do |id|
       genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
     end
+    is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
     row = [
       product_name(value), # 商品名
       product_description(value, genre), # 商品説明
@@ -121,10 +122,10 @@ module MercariHelper
       '',
       '',
       '',
-      value['price_jpy'] + 185, # 販売価格
+      value['price_jpy'] + (is_lp ? 850 : 185), # 販売価格
       'rQXZaxCTHYJwurBjB687QC', # カテゴリID
       mercari_condition(value), # 商品の状態
-      '1', # 配送方法
+      is_lp ? '3' : '1', # 配送方法
       'jp13', # 発送元の地域
       '1', # 発送までの日数
       '2', # 商品ステータス
@@ -195,6 +196,7 @@ module MercariHelper
   def product_description(value, genre)
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
     cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
+    is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
 
     cover_grading = <<~COVER
 
@@ -203,9 +205,35 @@ module MercariHelper
 
     mp3_B = <<~B
 
-      #{value['format'] == 'LP' ? '' : 'B. '}#{value['title'].split(' / ')[1]}
+      #{'B. ' if !is_lp}#{value['title'].split(' / ')[1]}
       #{value['mp3_B']}
     B
+
+    non_lp = <<~NONLP
+      クリックポスト or ゆうパック
+
+      すべての商品同梱可能です。複数枚ご購入の際は、ページをおまとめしますので、ご購入前に商品ページ内の「質問する」より同梱希望商品のご連絡をお願いいたします。2枚目より185円値引きさせていただきます。
+
+      単品ごとにお支払いした場合は、単品での取引となり同梱いたしかねますのでご注意ください。
+
+      複数枚ご購入の場合、7インチ6枚までクリックポスト(185円)で発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。
+
+      ゆうパックの料金につきましては以下のリンクよりご確認ください。
+
+      https://www.post.japanpost.jp/service/you_pack/charge/ichiran/13.html
+
+      購入金額10,000円以上で、送料無料となります。(各商品金額には送料185円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から送料185円を引いた金額の合計となります。)
+    NONLP
+
+    lp = <<~LP
+      らくらくメルカリ便
+
+      すべての商品同梱可能です。複数枚ご購入の際は、ページをおまとめしますので、ご購入前に商品ページ内の「質問する」より同梱希望商品のご連絡をお願いいたします。2枚目より7インチは185円、LPは850円値引きさせていただきます。
+
+      単品ごとにお支払いした場合は、単品での取引となり同梱いたしかねますのでご注意ください。
+
+      購入金額10,000円以上で、送料無料となります。(各商品金額には7インチは送料185円、LPは送料850円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から各送料を引いた金額の合計となります。)
+    LP
 
     description = <<~PRODUCT
       ●Artist: #{value['artist'].gsub('_', ', ')}
@@ -245,31 +273,17 @@ module MercariHelper
       ※当店の商品はすべて洗浄、再生確認済みです(新品、未開封品を除く)。グレーディングについては、原則、傷やダメージなど見た目での評価となります。傷の量に比べ、ノイズが比較的少ない盤もございますので、商品ページに試聴音源がある商品につきましては、ご購入前に試聴をおすすめいたします。
 
       ●配送方法:
-
-      クリックポスト or ゆうパック
-
-      すべての商品同梱可能です。複数枚ご購入の際は、ページをおまとめしますので、ご購入前に商品ページ内の「質問する」より同梱希望商品のご連絡をお願いいたします。2枚目より185円値引きさせていただきます。
-
-      単品ごとにお支払いした場合は、単品での取引となり同梱いたしかねますのでご注意ください。
-
-      複数枚ご購入の場合、7インチ6枚までクリックポスト(185円)で発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。
-
-      ゆうパックの料金につきましては以下のリンクよりご確認ください。
-
-      https://www.post.japanpost.jp/service/you_pack/charge/ichiran/13.html
-
-      購入金額10,000円以上で、送料無料となります。(各商品金額には送料185円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から送料185円を引いた金額の合計となります。)
-
+      #{non_lp if !is_lp}#{lp if is_lp}
       発送につきましては、平日のみ行っております。大変申し訳ございませんが、土曜日・日曜日・祝日の発送は行っておりませんので、何卒ご理解のほどよろしくお願い申し上げます。
 
       その他ご不明な点やご要望などございましたら、お気軽にご連絡ください。
 
       ●試聴:
 
-      #{value['format'] == 'LP' ? '' : 'A. '}#{value['title'].split(' / ')[0]}
+      #{'A. ' if !is_lp}#{value['title'].split(' / ')[0]}
       #{value['mp3_A']}
       #{mp3_B if value['mp3_B'].present?}
-      ※試聴は実際のレコードから録音しています。
+      ※試聴は実際のレコードから録音しています。#{'LPレコードの試聴はA1→B1です。' if value['format'] == 'LP'}
     PRODUCT
 
     description
