@@ -201,6 +201,12 @@ module MercariHelper
       ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_jp}
     COVER
 
+    mp3_B = <<~B
+
+      #{value['format'] == 'LP' ? '' : 'B. '}#{value['title'].split(' / ')[1]}
+      #{value['mp3_B']}
+    B
+
     description = <<~PRODUCT
       ●Artist: #{value['artist'].gsub('_', ', ')}
 
@@ -260,12 +266,9 @@ module MercariHelper
 
       ●試聴:
 
-      A. #{value['title'].split(' / ')[0]}
+      #{value['format'] == 'LP' ? '' : 'A. '}#{value['title'].split(' / ')[0]}
       #{value['mp3_A']}
-
-      B. #{value['title'].split(' / ')[1]}
-      #{value['mp3_B']}
-
+      #{mp3_B if value['mp3_B'].present?}
       ※試聴は実際のレコードから録音しています。
     PRODUCT
 
