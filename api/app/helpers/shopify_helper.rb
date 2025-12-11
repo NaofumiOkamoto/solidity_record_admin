@@ -219,11 +219,12 @@ module ShopifyHelper
 
   def shopify_title(value)
     title = "#{value['artist'].gsub('_', ', ')} - #{value['title']}" 
+    new_or_used = value['item_condition'] == 'New' ? 'New' : 'Used'
     if value['format'].start_with?('7 inch')
-      title += ' (7 inch Record / Used)'
+      title += " (7 inch Record / #{new_or_used})"
     end
     if ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
-      title += ' (LP Record / Used)'
+      title += " (LP Record / #{new_or_used})"
     end
     title
   end
