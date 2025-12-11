@@ -29,6 +29,9 @@ module DiscogsHelper
   private
 
   def comments(value)
+    if value['item_condition'] == 'New'
+      return ""
+    end
     sleeve = "Cover: #{value['cover_grading']&.gsub('_', '~')}. #{value['cover_description_en']}"
     vinyl = "Record: #{value['record_grading']&.gsub('_', '~')}. #{value['record_description_en']}"
     comments = "#{value['cover_grading'].present? ? sleeve + ' ' : ''}#{vinyl}" 
