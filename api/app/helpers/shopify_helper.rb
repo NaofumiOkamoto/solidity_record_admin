@@ -405,6 +405,10 @@ module ShopifyHelper
      <p data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_en}
     COVER
 
+    grading = <<~GRADING
+      #{cover_grading if value['cover_grading'].present?}<p data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description}</span></p>
+    GRADING
+
     genre = []
     value['genre'].split('_').each do |id|
       genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
@@ -439,7 +443,7 @@ module ShopifyHelper
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Release Year: #{value['release_year'] || 'Unknown'}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Genre: #{genre.join(', ')}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Item Condition: #{value['item_condition']}</span></p>
-      #{cover_grading if value['cover_grading'].present?}<p data-mce-fragment="1"><span data-mce-fragment="1">●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description}</span></p>
+      #{grading if value['item_condition'] == 'Used'}
     BODY
   end
 

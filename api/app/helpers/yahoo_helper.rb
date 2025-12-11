@@ -99,6 +99,11 @@ module YahooHelper
       ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_jp}<br><br>
     COVER
 
+    grading = <<~GRADING
+      #{cover_grading if value['cover_grading'].present?}
+      ●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}
+    GRADING
+
     genre = []
     value['genre'].split('_').each do |id|
       genre << genre_map[id.to_s][:sub] if genre_map[id.to_s].present?
@@ -125,9 +130,7 @@ module YahooHelper
       ●Genre: #{genre.join(', ')}<br><br>
 
       ●Item Condition: #{value['item_condition']}<br><br>
-      #{cover_grading if value['cover_grading'].present?}
-      ●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}<br><br>
-
+      #{grading if value['item_condition'] == 'Used'}
       ●Grading Policy:<br><br>
 
       M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades) <br><br>

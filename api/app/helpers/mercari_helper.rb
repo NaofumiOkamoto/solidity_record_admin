@@ -206,6 +206,11 @@ module MercariHelper
       ●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_jp}
     COVER
 
+    grading = <<~GRADING
+      #{cover_grading if value['cover_grading'].present?}
+      ●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}
+    GRADING
+
     mp3_B = <<~B
 
       #{'B. ' if !is_lp}#{value['title'].split(' / ')[1]}
@@ -256,9 +261,7 @@ module MercariHelper
       ●Genre: #{genre.join(', ')}
 
       ●Item Condition: #{value['item_condition']}
-      #{cover_grading if value['cover_grading'].present?}
-      ●Record Grading: #{value['record_grading']&.gsub('_', '~')} #{record_description_jp}
-
+      #{grading if value['item_condition'] == 'Used'}
       ●Grading Policy:
 
       M~NM~EX+~EX~EX-~VG+~VG~VG-~G+~G (10 grades) 
