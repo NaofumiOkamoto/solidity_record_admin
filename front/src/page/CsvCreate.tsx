@@ -115,7 +115,7 @@ export const Csv = () => {
     },
     ebay: {
       date: new Date(),
-      country: 'japan', // 全ての国
+      country: 'except_japan', // 日本以外
       quantity: 1, // 在庫1以上
     },
     yahoo: {
