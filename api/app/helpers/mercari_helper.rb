@@ -179,6 +179,9 @@ module MercariHelper
   private
 
   def mercari_condition(value)
+    if value['item_condition'] == 'New'
+      return 1
+    end
     grading = value['record_grading']
     return if grading.nil?
     case grading.split('_')[0]
