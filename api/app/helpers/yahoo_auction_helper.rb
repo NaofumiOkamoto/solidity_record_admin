@@ -1,6 +1,10 @@
 module YahooAuctionHelper
 
-  def yahoo_auction_header
+  def yahoo_auction_header(max_img_count)
+    img_array = []
+    max_img_count.times do |i|
+      img_array << "画像#{i + 1}"
+    end
     [
       'カテゴリ',
       'タイトル',
@@ -10,8 +14,7 @@ module YahooAuctionHelper
       '個数',
       '開催期間',
       '終了時間',
-      '画像1',
-      '画像2',
+      *img_array,
       '商品発送元の都道府県',
       '送料負担',
       '代金支払い',
@@ -44,8 +47,20 @@ module YahooAuctionHelper
     ]
   end
 
-  def yahoo_auction_format(value, genre)
+  def yahoo_auction_format(value, genre, max_img_count)
     is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
+    img_array = []
+    max_img_count.times do |i|
+      if value['img_count'].to_i > i
+        if i == 0
+          img_array << "#{value['SKU']}.jpg"
+        else
+          img_array << "#{value['SKU']}_#{i}.jpg"
+        end
+      else
+        img_array << ''
+      end
+    end
 
     return [
       yahoo_auction_category(value), # カテゴリ
@@ -56,8 +71,7 @@ module YahooAuctionHelper
       value['quantity'], # 個数
       '7', # 開催期間
       '23', # 終了時間
-      value['img_count'].to_i > 0 ? "#{value['SKU']}.jpg" : '', # 画像1
-      value['img_count'].to_i > 1 ? "#{value['SKU']}_1.jpg" : '', # 画像2
+      *img_array,
       '東京都', # 商品発送元の都道府県
       '落札者', # 送料負担
       '先払い', # 代金支払い
@@ -187,7 +201,7 @@ module YahooAuctionHelper
 
     caption = <<~CAPTION
 
-    ●Artist: #{value['artist']}<br><br>
+    ●Artist: #{value['artist'].gsub('_', ', ')}<br><br>
 
     ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> #{'/' if value['mp3_B'].present?} <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
 

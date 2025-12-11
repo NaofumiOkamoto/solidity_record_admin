@@ -62,16 +62,28 @@ class CsvController < ApplicationController
   def send_posts_csv(products, genre_map)
     platform = params[:platform]
     csv_data = CSV.generate do |csv|
-      header = self.send("#{platform}_header")
-      csv << header
+      case platform
+      when 'yahoo_auction'
+        # productsからimg_countの最大値を取得
+        max_img_count = products.map { |p| p['img_count'].to_i }.max
+        header = self.send("#{platform}_header", max_img_count)
+        csv << header
+      else
+        header = self.send("#{platform}_header")
+        csv << header
+      end
       products.each do |value|
-        line = self.send("#{platform}_format", value, genre_map)
         case platform
         when 'shopify'
+          line = self.send("#{platform}_format", value, genre_map)
           line.each do |l|
             csv << l
           end
+        when 'yahoo_auction'
+          line = self.send("#{platform}_format", value, genre_map, max_img_count)
+          csv << line
         else
+          line = self.send("#{platform}_format", value, genre_map)
           csv << line
         end
       end
