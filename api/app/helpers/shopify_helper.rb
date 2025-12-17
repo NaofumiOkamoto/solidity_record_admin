@@ -399,7 +399,9 @@ module ShopifyHelper
   def shopify_body(value, genre_map)
     record_description = value['record_description_jp'].present? ? "(#{value['record_description_jp']}#{value['record_description_en']})" : ''
     cover_description_en = value['cover_description_en'].present? ? "(#{value['cover_description_jp']}#{value['cover_description_en']})" : ''
-    is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
+    # is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
+    is_lp = value['format'].include?('LP')
+    is_inch = value['format'].include?('inch')
 
     cover_grading = <<~COVER
      <p data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">●Cover Grading: #{value['cover_grading']&.gsub('_', '~')} #{cover_description_en}
@@ -420,9 +422,31 @@ module ShopifyHelper
     # is_link = ['2LP','3LP','Gatefold LP','LP','2 LP', '3 LP'].exclude?(value['format'])
     is_link = value['mp3_A'].present?
 
-    link_message = <<~LINK_MESSAGE
-      <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。#{'LPレコードの試聴はA1→B1です。' if is_lp}Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.#{'The audio sample of the LP record is A1→B1.' if is_lp}</span></p>
-    LINK_MESSAGE
+    link_message_new = if is_inch
+      <<~LINK_MESSAGE
+        <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。新品のため、サンプル音源となります。Please click the song title with the link. You can listen to the audio sample.</span></p>
+      LINK_MESSAGE
+    else
+      <<~LINK_MESSAGE
+        <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのあるタイトルをクリックすると試聴ができます。新品のため、サンプル音源となります。LPレコードの試聴はA1です。Please click the title with the link. You can listen to the audio sample. The audio sample of the LP record is A1.</span></p>
+      LINK_MESSAGE
+    end
+    link_message_used =  if is_inch
+      <<~LINK_MESSAGE_USED
+        <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item.</span></p>
+      LINK_MESSAGE_USED
+    else
+      <<~LINK_MESSAGE_USED
+        <p data-mce-fragment="1"><span data-mce-fragment="1">※リンクのあるタイトルをクリックすると試聴ができます。試聴は実際のレコードから録音しています。LPレコードの試聴はA1→B1です。Please click the song title with the link. You can listen to the audio sample. The audio sample is recorded from the actual item. The audio sample of the LP record is A1→B1.</span></p>
+      LINK_MESSAGE_USED
+    end
+
+
+    link_message = if value['item_condition'] == 'New'
+      link_message_new
+    else
+      link_message_used
+    end
 
     splited_title = value['title'].split(' / ')
     title_in_link = <<~TITLE
