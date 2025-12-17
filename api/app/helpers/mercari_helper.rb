@@ -137,9 +137,13 @@ module MercariHelper
     genre, _ =  value['genre'].split('_')
     format = ''
     case value['format']
-    when '7 inch'
-      format = '7インチ 45' 
-    when 'LP'
+    when '7 inch', '7inch'
+      format = '7インチ 45'
+    when '10 inch', '10inch'
+      format = '10インチ'
+    when '12 inch','12inch'
+      format = '12インチ'
+    else
       format = 'LP'
     end
 
