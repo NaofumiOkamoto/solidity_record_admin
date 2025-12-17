@@ -48,7 +48,7 @@ module YahooAuctionHelper
   end
 
   def yahoo_auction_format(value, genre, max_img_count)
-    is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
+    is_lp = value['format']&.include?('LP')
     img_array = []
     max_img_count.times do |i|
       if value['img_count'].to_i > i
@@ -187,7 +187,27 @@ module YahooAuctionHelper
   def yahoo_auction_body(value, genre_map)
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
     cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
-    is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
+    is_lp = value['format']&.include?('LP')
+    is_inch = value['format']&.include?('inch')
+    
+    # 試聴音源の注釈を条件に応じて設定
+    listening_note = if value['item_condition'] == 'New'
+                       if is_inch
+                         '※リンクのある曲名をクリックすると試聴ができます。新品のため、サンプル音源となります。'
+                       elsif is_lp
+                         '※リンクのあるタイトルをクリックすると試聴ができます。新品のため、サンプル音源となります。LPレコードの試聴はA1です。'
+                       else
+                         ''
+                       end
+                     else
+                       if is_inch
+                         '※リンクのあるタイトルをクリックすると試聴ができます。試聴は実際のレコードから録音しています。'
+                       elsif is_lp
+                         '※リンクのあるタイトルをクリックすると試聴ができます。試聴は実際のレコードから録音しています。LPレコードの試聴はA1→B1です。'
+                       else
+                         ''
+                       end
+                     end
 
     cover_grading = <<~COVER
 
@@ -210,7 +230,7 @@ module YahooAuctionHelper
 
     ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> #{'/' if value['mp3_B'].present?} <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
 
-    ※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。#{'LPレコードの試聴はA1→B1です。' if value['format'] == 'LP'}<br><br>
+    #{listening_note}<br><br>
 
     ●Label: #{value['label']}<br><br>
 
