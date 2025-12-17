@@ -200,6 +200,25 @@ module MercariHelper
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
     cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
     is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
+    
+    # 試聴音源の注釈を条件に応じて設定
+    listening_note = if value['item_condition'] == 'New'
+                       if value['format']&.include?('inch')
+                         '※新品のため、サンプル音源となります。'
+                       elsif value['format']&.include?('LP')
+                         '※新品のため、サンプル音源となります。LPレコードの試聴はA1です。'
+                       else
+                         ''
+                       end
+                     else
+                       if value['format']&.include?('inch')
+                         '※試聴は実際のレコードから録音しています。'
+                       elsif value['format']&.include?('LP')
+                         '※LPレコードの試聴はA1→B1です。'
+                       else
+                         ''
+                       end
+                     end
 
     cover_grading = <<~COVER
 
@@ -290,7 +309,7 @@ module MercariHelper
       #{'A. ' if !is_lp}#{value['title'].split(' / ')[0]}
       #{value['mp3_A']}
       #{mp3_B if value['mp3_B'].present?}
-      ※試聴は実際のレコードから録音しています。#{'LPレコードの試聴はA1→B1です。' if value['format'] == 'LP'}
+      #{listening_note}
     PRODUCT
 
     description
