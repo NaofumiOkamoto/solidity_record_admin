@@ -204,6 +204,7 @@ module MercariHelper
     record_description_jp = value['record_description_jp'].present? ? "(#{value['record_description_jp']})": ''
     cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
     is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
+    is_7inch = ['7inch', '7 inch'].include?(value['format'])
     
     # 試聴音源の注釈を条件に応じて設定
     listening_note = if value['item_condition'] == 'New'
@@ -240,7 +241,7 @@ module MercariHelper
       #{value['mp3_B']}
     B
 
-    non_lp = <<~NONLP
+    inch_7 = <<~NONLP
       クリックポスト or ゆうパック
 
       すべての商品同梱可能です。複数枚ご購入の際は、ページをおまとめしますので、ご購入前に商品ページ内の「質問する」より同梱希望商品のご連絡をお願いいたします。2枚目より185円値引きさせていただきます。
@@ -256,7 +257,7 @@ module MercariHelper
       購入金額10,000円以上で、送料無料となります。(各商品金額には送料185円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から送料185円を引いた金額の合計となります。)
     NONLP
 
-    lp = <<~LP
+    non_inch_7 = <<~LP
       らくらくメルカリ便
 
       すべての商品同梱可能です。複数枚ご購入の際は、ページをおまとめしますので、ご購入前に商品ページ内の「質問する」より同梱希望商品のご連絡をお願いいたします。2枚目より7インチは185円、LPは850円値引きさせていただきます。
@@ -303,7 +304,7 @@ module MercariHelper
 
       ●配送方法:
 
-      #{non_lp if !is_lp}#{lp if is_lp}
+      #{non_inch_7 if !is_7inch}#{inch_7 if is_7inch}
       発送につきましては、平日のみ行っております。大変申し訳ございませんが、土曜日・日曜日・祝日の発送は行っておりませんので、何卒ご理解のほどよろしくお願い申し上げます。
 
       その他ご不明な点やご要望などございましたら、お気軽にご連絡ください。

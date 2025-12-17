@@ -189,6 +189,7 @@ module YahooAuctionHelper
     cover_description_jp = value['cover_description_jp'].present? ? "(#{value['cover_description_jp']})": ''
     is_lp = value['format']&.include?('LP')
     is_inch = value['format']&.include?('inch')
+    is_7inch = ['7inch', '7 inch'].include?(value['format'])
     
     # 試聴音源の注釈を条件に応じて設定
     listening_note = if value['item_condition'] == 'New'
@@ -264,10 +265,10 @@ module YahooAuctionHelper
     
     ●配送方法:<br><br>
     
-    #{'ゆうパケット or ゆうパック<br><br>' if !is_lp} #{'ゆうパック<br><br>' if is_lp}
-    
-    #{'すべての商品同梱可能です。7インチ6枚までゆうパケットで発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。ゆうパックの料金は地域、サイズにより異なりますので、ご注文後のご案内となります。<br><br>' if !is_lp}#{'すべての商品同梱可能です。ゆうパックの料金は地域、サイズにより異なります。<br><br>' if is_lp}
-    
+    #{'ゆうパケット or ゆうパック<br><br>' if is_7inch} #{'ゆうパック<br><br>' if !is_7inch}
+
+    #{'すべての商品同梱可能です。7インチ6枚までゆうパケットで発送可能です。7インチ7枚以上ご購入の際は、ゆうパックでの発送となります。ゆうパックの料金は地域、サイズにより異なりますので、ご注文後のご案内となります。<br><br>' if is_7inch}#{'すべての商品同梱可能です。ゆうパックの料金は地域、サイズにより異なります。<br><br>' if !is_7inch}
+
     また、同梱をご希望の際は、落札後に「まとめて取引」 をご利用くださいますようお願いいたします。もし単品で住所確定後等、「まとめて取引」ができない際は、お支払い前にメッセージにて同梱希望のご連絡をお願いいたします。単品ごとに送料をお支払いした場合は、単品での取引となり同梱いたしかねますのでご注意ください。<br><br>
     
     なお、発送は平日のみ行っております。大変申し訳ございませんが、土曜日・日曜日・祝日の発送は行っておりませんので、何卒ご理解のほどよろしくお願い申し上げます。<br><br>
