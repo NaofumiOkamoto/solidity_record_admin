@@ -229,7 +229,7 @@ module YahooAuctionHelper
 
     ●Artist: #{value['artist'].gsub('_', ', ')}<br><br>
 
-    ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> #{'/' if value['mp3_B'].present?} <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
+    ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> #{'/' if value['mp3_B'].present? && value['title'].split(' / ')[1].present?} <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
 
     #{listening_note}<br><br>
 

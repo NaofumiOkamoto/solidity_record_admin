@@ -113,7 +113,7 @@ module YahooHelper
 
       ●Artist: #{value['artist']}<br><br>
 
-      ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> / <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
+      ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> #{'/' if value['mp3_B'].present? && value['title'].split(' / ')[1].present?} <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
 
       ※リンクのある曲名をクリックすると試聴ができます。試聴は実際のレコードから録音しています。<br><br>
 

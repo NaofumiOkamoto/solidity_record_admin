@@ -452,7 +452,7 @@ module ShopifyHelper
 
     splited_title = value['title'].split(' / ')
     title_in_link = <<~TITLE
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{splited_title[0]}</A> #{'/' if value['mp3_B'].present?} <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{splited_title[1]}</A></span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{splited_title[0]}</A> #{'/' if value['mp3_B'].present? && splited_title[1].present?} <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{splited_title[1]}</A></span></p>
     TITLE
 
     title_not_in_link = <<~TITLE
