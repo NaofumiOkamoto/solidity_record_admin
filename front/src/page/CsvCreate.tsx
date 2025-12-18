@@ -7,9 +7,10 @@ import { DeleteFilter } from '../parts/DeleteFilter';
 import { ImgParams } from '../parts/ImgParams';
 
 
-export type Platforms = 'discogs' | 'mercari' | 'shopify' | 'ebay' | 'yahoo' | 'yahoo_auction'
+export type Platforms = 'picking_item' | 'discogs' | 'mercari' | 'shopify' | 'ebay' | 'yahoo' | 'yahoo_auction'
 
 const platforms: Array<Platforms> = [
+  'picking_item',
   'discogs',
   'mercari',
   'shopify',
@@ -68,6 +69,11 @@ const Tab = styled.button`
   // border-top: solid 3px ${p => p.theme.selectPlatform ? "#b0e0e9" : '#fff'};
 
 export type FilterState = {
+  picking_item: {
+    date: Date,
+    country: string,
+    quantity: number,
+  },
   discogs: {
     date: Date,
     country: string, // 全ての国
@@ -98,6 +104,11 @@ export type FilterState = {
 export const Csv = () => {
 
   const filterData = {
+    picking_item: {
+      date: new Date(), // 使ってないけど一応
+      country: 'all', // 使ってないけど一応
+      quantity: 1, // 使ってないけど一応
+    },
     discogs: {
       date: new Date(),
       country: 'all', // 全ての国
@@ -132,7 +143,7 @@ export const Csv = () => {
   const [filterState, setFilterState] = useState(filterData)
   const [imgParams, setImgParams] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [selectPlatform, setSelectPlatform] = useState<Platforms>('discogs')
+  const [selectPlatform, setSelectPlatform] = useState<Platforms>('picking_item')
   const imgParameter = imgParams ? `&imgParams=${imgParams}` : '';
   const envUrl = process.env.REACT_APP_API_URL
   const envPort = process.env.REACT_APP_API_PORT
@@ -199,22 +210,26 @@ export const Csv = () => {
         <div key={selectPlatform}>
           <Container>
             <h2>{selectPlatform}</h2>
-            <Filter
-              platform={selectPlatform}
-              filterState={filterState}
-              setFilterState={setFilterState}
-            />
-            {selectPlatform === 'shopify' &&
-            <ImgParams
-              imgParams={imgParams}
-              setImgParams={setImgParams}
-            />
+            {selectPlatform !== 'picking_item' &&
+              <>
+                <Filter
+                  platform={selectPlatform}
+                  filterState={filterState}
+                  setFilterState={setFilterState}
+                />
+                {selectPlatform === 'shopify' &&
+                <ImgParams
+                  imgParams={imgParams}
+                  setImgParams={setImgParams}
+                />
+                }
+                <Button
+                  onClick={() => getApi(selectPlatform, 'csv')}
+                >
+                  export upload csv
+                </Button>
+              </>
             }
-            <Button
-              onClick={() => getApi(selectPlatform, 'csv')}
-            >
-              export upload csv
-            </Button>
           </Container>
           <Hr />
           {(selectPlatform === 'discogs' ||
@@ -222,7 +237,8 @@ export const Csv = () => {
             selectPlatform === 'yahoo_auction' ||
             selectPlatform === 'shopify' ||
             selectPlatform === 'ebay' ||
-            selectPlatform === 'mercari') &&
+            selectPlatform === 'mercari' ||
+            selectPlatform === 'picking_item') &&
             <Container>
               <DeleteFilter
                 platform={selectPlatform}
