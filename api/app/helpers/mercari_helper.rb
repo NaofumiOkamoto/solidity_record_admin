@@ -61,7 +61,7 @@ module MercariHelper
     img_array + header
   end
 
-  def mercari_format(value, genre_map)
+  def mercari_format(value, genre_map, label_map)
     img_row = Array.new(IMG_COUNT)
     img_count = value['img_count']
     IMG_COUNT.to_i.times do |i|

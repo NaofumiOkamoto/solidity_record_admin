@@ -7,7 +7,7 @@ module PickingItemDeleteHelper
     ]
   end
 
-  def picking_item_delete_format(sold_products, _)
+  def picking_item_delete_format(sold_products, _, label_map)
     sold_products.map do |product|
       [
         product['SKU'],

@@ -60,7 +60,7 @@ module ShopifyHelper
       'Status',
     ]
   end
-  def shopify_format(value, genre_map, quantity: nil)
+  def shopify_format(value, genre_map, label_map, quantity: nil)
     rows = []
     value['img_count']&.times do |i|
       if i == 0
@@ -71,7 +71,7 @@ module ShopifyHelper
           'Solidity Records', # 'Vendor',
           '', # 'Product Category',
           value['format'], # 'Type',
-          shopify_tags(value, genre_map), # 'Tags',
+          shopify_tags(value, genre_map, label_map), # 'Tags',
           'true', # 'Published',
           'Title', # 'Option1 Name',
           'Default Title', # 'Option1 Value',
@@ -243,7 +243,7 @@ module ShopifyHelper
     "https://cdn.shopify.com/s/files/1/0415/0791/3886/files/#{img_name}.jpg?v=#{params[:imgParams]}"
   end
 
-  def shopify_tags(value, genre_map)
+  def shopify_tags(value, genre_map, label_map)
     tags = []
 
     case value['quantity']
@@ -360,24 +360,26 @@ module ShopifyHelper
       # end
     end
 
-    case value['label']
-    when 'Blue Note'
-      tags << 'blue-note-records'
-    when 'ECM'
-      tags << 'ecm-records'
-    when 'Impulse!'
-      tags << 'impulse-records'
-    when 'International Anthem'
-      tags << 'international-anthem-recording-company'
-    when 'Jazzman'
-      tags << 'jazzman-records'
-    when 'Prestige'
-      tags << 'prestige-records'
-    when 'Riverside'
-      tags << 'riverside-records'
-    when 'Three Blind Mice'
-      tags << 'three-blind-mice'
-    end
+    labels = label_map[value['label']]
+    tags << labels[:tag] if labels.present?
+    # case value['label']
+    # when 'Blue Note'
+    #   tags << 'blue-note-records'
+    # when 'ECM'
+    #   tags << 'ecm-records'
+    # when 'Impulse!'
+    #   tags << 'impulse-records'
+    # when 'International Anthem'
+    #   tags << 'international-anthem-recording-company'
+    # when 'Jazzman'
+    #   tags << 'jazzman-records'
+    # when 'Prestige'
+    #   tags << 'prestige-records'
+    # when 'Riverside'
+    #   tags << 'riverside-records'
+    # when 'Three Blind Mice'
+    #   tags << 'three-blind-mice'
+    # end
 
     case value['artist']
     when 'Bill Evans'

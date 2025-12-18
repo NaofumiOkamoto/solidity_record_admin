@@ -7,7 +7,7 @@ module DiscogsDeleteHelper
     ]
   end
 
-  def discogs_delete_format(sold_products, _)
+  def discogs_delete_format(sold_products, _, label_map)
     # auth_wrapper = Discogs::Wrapper.new(
     #   "solidityrecords", user_token: "liQrPFTmGUPoCNAtXHmwAbJPpcMpIDYhBmpqsiQR"
     #   )

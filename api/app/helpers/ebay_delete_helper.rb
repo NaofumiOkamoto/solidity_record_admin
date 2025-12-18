@@ -12,7 +12,7 @@ module EbayDeleteHelper
     ]
   end
 
-  def ebay_delete_format(sold_products, _)
+  def ebay_delete_format(sold_products, _, label_map)
 
     ebay_solid_products = []
     begin

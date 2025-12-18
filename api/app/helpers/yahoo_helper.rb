@@ -23,7 +23,7 @@ module YahooHelper
     ]
   end
 
-  def yahoo_format(value, genre)
+  def yahoo_format(value, genre, label_map)
     [
       yahoo_path(value, genre),# path
       product_name(value),# name mercari_helperにあるメソッドを使用

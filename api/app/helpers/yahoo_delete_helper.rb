@@ -6,7 +6,7 @@ module YahooDeleteHelper
     ]
   end
 
-  def yahoo_delete_format(sold_products, _)
+  def yahoo_delete_format(sold_products, _, label_map)
     sold_products.pluck(:SKU).map { |sku| [sku]}
   end
 

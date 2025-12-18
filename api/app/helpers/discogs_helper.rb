@@ -13,7 +13,7 @@ module DiscogsHelper
     ]
   end
 
-  def discogs_format(value, genre)
+  def discogs_format(value, genre, label_map)
     [
       value['discogs_release_id'],        # release_id
       "%.15g"%value['price_usd'],             # price

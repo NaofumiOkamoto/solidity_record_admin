@@ -24,6 +24,13 @@ class CsvController < ApplicationController
       genre_map[g[0]] = { main: g[1], sub: g[2], yahoo_path_genre: g[3], tags: g[4] }
     end
 
+    label_map = {}
+    puts label.values
+    label.values.each do |l|
+      next if l[0] == 'label'
+      puts l
+      label_map[l[0]] = { label: l[0], tag: l[1] }
+    end
 
     if result.values[0] != Product::SP_HEADER
       raise ActionController::BadRequest.new("スプレットシートのヘッダーが正しくありません")
@@ -52,14 +59,14 @@ class CsvController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do |csv|
-        send_posts_csv(products, genre_map)
+        send_posts_csv(products, genre_map, label_map)
       end
     end
   end
 
   private
 
-  def send_posts_csv(products, genre_map)
+  def send_posts_csv(products, genre_map, label_map)
     platform = params[:platform]
     csv_data = CSV.generate do |csv|
       case platform
@@ -75,15 +82,15 @@ class CsvController < ApplicationController
       products.each do |value|
         case platform
         when 'shopify'
-          line = self.send("#{platform}_format", value, genre_map)
+          line = self.send("#{platform}_format", value, genre_map, label_map)
           line.each do |l|
             csv << l
           end
         when 'yahoo_auction'
-          line = self.send("#{platform}_format", value, genre_map, max_img_count)
+          line = self.send("#{platform}_format", value, genre_map, label_map, max_img_count)
           csv << line
         else
-          line = self.send("#{platform}_format", value, genre_map)
+          line = self.send("#{platform}_format", value, genre_map, label_map)
           csv << line
         end
       end

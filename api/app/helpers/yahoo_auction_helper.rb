@@ -47,7 +47,7 @@ module YahooAuctionHelper
     ]
   end
 
-  def yahoo_auction_format(value, genre, max_img_count)
+  def yahoo_auction_format(value, genre, label_map, max_img_count)
     is_lp = value['format']&.include?('LP')
     img_array = []
     max_img_count.times do |i|

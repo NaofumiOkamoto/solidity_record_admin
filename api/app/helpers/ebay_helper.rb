@@ -33,7 +33,7 @@ module EbayHelper
     ]
   end
 
-  def ebay_format(value, genre_map)
+  def ebay_format(value, genre_map, label_map)
     [
       'Add', # Action(SiteID=US|Country=Japan|Currency=USD|Version=1193|CC=UTF-8)
       value['SKU'], # CustomLabel
