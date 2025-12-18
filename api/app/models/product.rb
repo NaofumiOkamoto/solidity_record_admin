@@ -95,62 +95,60 @@ class Product < ApplicationRecord
   )
 
   def spreadsheets_to_db_save(result_values)
-    products_attributes = []
-    result_values.drop(1).each do |row_data|
-      row = Row.new(*row_data)
-      products_attributes << row.to_h.slice(
-        :SKU,
-        :artist,
-        :title,
-        :label,
-        :country,
-        :number,
-        :release_year,
-        :recoding_date,
-        :genre,
-        :format,
-        :pic_url,
-        :barcode,
-        :track_list,
-        :personnel,
-        :musical_instrument,
-        :item_condition,
-        :cover_grading,
-        :cover_description_en,
-        :cover_description_jp,
-        :mp3_A,
-        :mp3_B,
-        :record_description_jp,
-        :record_description_en,
-        :record_grading,
-        :weight,
-        :img_count,
-        :price_jpy,
-        :price_usd,
-        :discogs_release_id,
-        # :discogs_listing_id, # NULLで更新したくないためコメントアウト
-        :ebay_price,
-        :ebay_id,
-        :master_id,
-        :cost_price,
-        :buying_date,
-        :registration_date,
-        :quantity,
-        :youtube_A,
-        :youtube_B,
-        :sold_date,
-        :sold_site,
-        :product_status,
-        :sales_status,
-        :ishii_memo
-      )
-      # sku_attributes = row.to_h.slice(:SKU)
-      # products = Product.find_or_initialize_by(sku_attributes)
-      # products.update(attributes)
-      # products.save
+    # 大量データ向けの改善: 1000行ずつバッチ処理
+    result_values.drop(1).each_slice(1000) do |batch|
+      products_attributes = batch.map do |row_data|
+        row = Row.new(*row_data)
+        row.to_h.slice(
+          :SKU,
+          :artist,
+          :title,
+          :label,
+          :country,
+          :number,
+          :release_year,
+          :recoding_date,
+          :genre,
+          :format,
+          :pic_url,
+          :barcode,
+          :track_list,
+          :personnel,
+          :musical_instrument,
+          :item_condition,
+          :cover_grading,
+          :cover_description_en,
+          :cover_description_jp,
+          :mp3_A,
+          :mp3_B,
+          :record_description_jp,
+          :record_description_en,
+          :record_grading,
+          :weight,
+          :img_count,
+          :price_jpy,
+          :price_usd,
+          :discogs_release_id,
+          # :discogs_listing_id, # NULLで更新したくないためコメントアウト
+          :ebay_price,
+          :ebay_id,
+          :master_id,
+          :cost_price,
+          :buying_date,
+          :registration_date,
+          :quantity,
+          :youtube_A,
+          :youtube_B,
+          :sold_date,
+          :sold_site,
+          :product_status,
+          :sales_status,
+          :ishii_memo
+        )
+      end
+      
+      Product.upsert_all(products_attributes)
     end
-
-    Product.upsert_all(products_attributes)
   end
 
   def csv_filter(params)

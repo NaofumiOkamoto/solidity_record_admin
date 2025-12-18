@@ -26,7 +26,6 @@ class CsvController < ApplicationController
     end
 
     label_map = {}
-    puts label.values
     label.values.each do |l|
       next if l[0] == 'label'
       puts l
