@@ -182,7 +182,13 @@ class Product < ApplicationRecord
     products = common_filter(products, params)
 
      # 自分のプラットフォーム以外を出力する
-    products = products.where.not(sold_site: params[:platform])
+    platform = params[:platform]
+    if platform == 'yahoo_auction'
+      # yahoo_auction, yahoo_auction_2, yahoo_auction_3 などを除外
+      products = products.where.not("sold_site LIKE ?", "yahoo_auction%")
+    else
+      products = products.where.not(sold_site: platform)
+    end
 
     # sold_date の絞り込み
     products = products.where('sold_date >= ?', params[:date].to_date)
