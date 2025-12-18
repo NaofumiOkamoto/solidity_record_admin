@@ -16,6 +16,7 @@ class CsvController < ApplicationController
     # テストシート
     # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
     genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:F"])
+    label = GoogleApi::Spreadsheets.new.get_values(ENV['LABEL_SHEET'], ["label!A:B"])
     Rails.logger.info('スプシ取得完了')
 
     genre_map = {}
