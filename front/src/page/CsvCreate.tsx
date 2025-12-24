@@ -126,17 +126,17 @@ export const Csv = () => {
     },
     ebay: {
       date: new Date(),
-      country: 'except_japan', // 日本以外
+      country: 'japan', // 日本のみ
       quantity: 1, // 在庫1以上
     },
     yahoo: {
       date: new Date(),
-      country: 'except_japan', // 全ての国
+      country: 'except_japan', // 日本以外
       quantity: 1, // 在庫1以上
     },
     yahoo_auction: {
       date: new Date(),
-      country: 'except_japan', // 全ての国
+      country: 'except_japan', // 日本以外
       quantity: 1, // 在庫1以上
     },
   }

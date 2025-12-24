@@ -177,7 +177,7 @@ class Product < ApplicationRecord
   def delete_csv_filter(params)
     products = Product.all
     Rails.logger.info('DB情報取得完了')
-    # products = common_filter(products, params)
+    products = common_filter(products, params)
 
      # 自分のプラットフォーム以外を出力する
     platform = params[:platform]
