@@ -95,8 +95,11 @@ class Product < ApplicationRecord
   )
 
   def spreadsheets_to_db_save(result_values)
+    valid_rows, skipped_rows = result_values.drop(1).partition { |row| valid_sku?(row) }
+    log_skipped_rows(skipped_rows)
+
     # 大量データ向けの改善: 1000行ずつバッチ処理
-    result_values.drop(1).each_slice(1000) do |batch|
+    valid_rows.each_slice(1000) do |batch|
       products_attributes = batch.map do |row_data|
         row = Row.new(*row_data)
         row.to_h.slice(
@@ -197,6 +200,24 @@ class Product < ApplicationRecord
   end
 
   private
+
+  # SKU が数値として入っていない行は取り込まない。
+  # 入荷登録の途中（artist, title だけ記入して SKU は未記入）の状態でCSVを出力すると、
+  # SKU が NULL のまま INSERT され、AUTO_INCREMENT によって毎回別レコードが作られてしまうため。
+  # SKU が記入された時点で正常に upsert されるので、この行を飛ばしてもデータは失われない。
+  def valid_sku?(row)
+    row.present? && row[0].to_s.strip.match?(/\A\d+\z/)
+  end
+
+  def log_skipped_rows(skipped_rows)
+    return if skipped_rows.empty?
+
+    blank_rows, invalid_rows = skipped_rows.partition { |row| row.compact.empty? }
+    Rails.logger.warn("取込スキップ: 空行 #{blank_rows.size}件 / SKU未記入 #{invalid_rows.size}件")
+    invalid_rows.each do |row|
+      Rails.logger.warn("  SKU未記入のためスキップ: artist=#{row[1].inspect} title=#{row[2].inspect}")
+    end
+  end
 
   def common_filter(products, params)
     # country の絞り込み
