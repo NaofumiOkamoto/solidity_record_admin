@@ -8,10 +8,9 @@ import { Button, FieldLabel, Input, PrimaryButton, Select } from './ui';
 export type SearchValues = { [key: string]: string };
 
 // 入力欄の種類。
-//   text    … 部分一致のテキスト（SKU / discogs_release_id は数値の完全一致）
-//   suggest … 実データを入力候補に出すテキスト（部分一致）
-//   select  … 実データから作るプルダウン（完全一致。sold_site のみ前方一致）
-type FieldKind = 'text' | 'suggest' | 'select';
+//   text   … 部分一致のテキスト（SKU / discogs_release_id は数値の完全一致）
+//   select … 実データから作るプルダウン（完全一致。sold_site のみ前方一致）
+type FieldKind = 'text' | 'select';
 type FieldDef = { key: string; kind: FieldKind };
 
 // 3カラムのうち1列目。商品を特定するための項目
@@ -20,14 +19,14 @@ const IDENTITY_FIELDS: FieldDef[] = [
   { key: 'artist', kind: 'text' },
   { key: 'title', kind: 'text' },
   { key: 'label', kind: 'text' },
-  { key: 'country', kind: 'suggest' },
+  { key: 'country', kind: 'select' },
   { key: 'number', kind: 'text' },
 ];
 
 // 2列目。分類・状態
 const ATTRIBUTE_FIELDS: FieldDef[] = [
   { key: 'genre', kind: 'text' },
-  { key: 'format', kind: 'suggest' },
+  { key: 'format', kind: 'select' },
   { key: 'item_condition', kind: 'select' },
   { key: 'sales_status', kind: 'select' },
   { key: 'sold_site', kind: 'select' },
@@ -176,25 +175,6 @@ export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props)
       />,
     );
 
-  const suggestField = (key: keyof FilterOptions) =>
-    layout(
-      key,
-      <>
-        <Input
-          id={`search-${key}`}
-          list={`options-${key}`}
-          value={draft[key] || ''}
-          onChange={(e) => set(key, e.target.value)}
-        />
-        {/* datalist は display:none なのでレイアウトを占有しない */}
-        <datalist id={`options-${key}`}>
-          {(options?.[key] || []).map((option) => (
-            <option key={option.value} value={option.value} />
-          ))}
-        </datalist>
-      </>,
-    );
-
   const selectField = (key: keyof FilterOptions) =>
     layout(
       key,
@@ -212,11 +192,8 @@ export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props)
       </Select>,
     );
 
-  const renderField = ({ key, kind }: FieldDef) => {
-    if (kind === 'suggest') return suggestField(key as keyof FilterOptions);
-    if (kind === 'select') return selectField(key as keyof FilterOptions);
-    return textField(key);
-  };
+  const renderField = ({ key, kind }: FieldDef) =>
+    kind === 'select' ? selectField(key as keyof FilterOptions) : textField(key);
 
   const numberRangeField = (key: string, step: string) => (
     <FieldRow key={key}>

@@ -5,10 +5,13 @@
 # 解釈されることはない。
 class ProductSearch
   # 部分一致。照合順序が utf8mb4_0900_ai_ci のため大文字小文字は区別されない
-  LIKE_COLUMNS = %w[artist title label country number genre format].freeze
+  LIKE_COLUMNS = %w[artist title label number genre].freeze
 
-  # 完全一致
-  EXACT_COLUMNS = %w[item_condition sales_status].freeze
+  # 完全一致。値の種類が限られていて画面ではプルダウンで選ぶ列。
+  # country と format は当初部分一致にしていたが、候補から選んだ値より広くヒットしてしまう
+  # （country=US が Australia に、format=LP が Gatefold LP / 2LP に当たる）ため
+  # 2026-09-20 に完全一致へ変更した。
+  EXACT_COLUMNS = %w[country format item_condition sales_status].freeze
 
   # 完全一致の整数列。値が数値でなければ「指定なし」として無視する
   INTEGER_COLUMNS = %w[SKU discogs_release_id].freeze
@@ -38,17 +41,31 @@ class ProductSearch
   DEFAULT_PER_PAGE = 50
   MAX_PER_PAGE = 100
 
-  # プルダウンの選択肢を実データから組み立てる。
+  # プルダウン・入力候補の選択肢を実データから組み立てる。
   # 想定値を決め打ちにすると表記ゆれ（yahoo_auction_2 など）を取りこぼすため、
   # DB の実データをそのまま選択肢にする。
+  #
+  # count は画面には出さない（他の検索条件を反映しない数字のため誤解を招く）。
+  # 実データの分布を調べるときに使えるので返してはいる。
   def self.filter_options
     FILTER_OPTION_COLUMNS.to_h do |column|
       counts = Product.where.not(column => [nil, '']).group(column).count
-      options = counts.sort_by { |_value, count| -count }
+      options = counts.sort_by { |value, _count| natural_sort_key(value) }
                       .map { |value, count| { value: value, count: count } }
       [column, options]
     end
   end
+
+  # 数字を含む値を見た目どおりに並べるためのキー。
+  # 単純な文字列比較だと 10inch < 2LP < 7 inch となってしまうため、
+  # 数字の連なりは数値として比較する（2LP → 3LP → 7 inch → 10inch → 12inch）。
+  # 数字始まりの値を英字始まりより前に置き、英字は大文字小文字を区別しない。
+  def self.natural_sort_key(value)
+    value.to_s.downcase.scan(/\d+|\D+/).map do |chunk|
+      chunk.match?(/\A\d+\z/) ? [0, chunk.to_i, ''] : [1, 0, chunk]
+    end
+  end
+  private_class_method :natural_sort_key
 
   def initialize(params)
     @params = params
