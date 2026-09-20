@@ -1,4 +1,8 @@
-FROM ruby:3.1
+# ベースイメージはパッチバージョンまで固定する。
+# `ruby:3.1` のような流動タグにすると、イメージ側の Ruby が勝手に上がって
+# Gemfile の ruby 指定と食い違い、コンテナが起動しなくなる（2026-09 に発生）。
+# bullseye 版は Debian のリポジトリが archive に移り apt が 404 になるため bookworm を使う。
+FROM ruby:3.1.7-bookworm
 ARG RUBYGEMS_VERSION=3.3.20
 
 # WORKDIRは指定したディレクトリがなければ自動で作成する

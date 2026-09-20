@@ -6,8 +6,17 @@
 
 tmp/db/
 node_modules
-package-lock.json
-package.json
+
+# リポジトリ直下の package.json / package-lock.json のみ無視する（実体は front/ 配下）。
+# アンカー無しで書くと front/package.json まで対象になり、事故の元になる。
+/package-lock.json
+/package.json
+
+# パッケージ管理は npm に統一している（package-lock.json が正）。
+# yarn と混在させると node_modules のレイアウトが壊れるため、
+# 誤って yarn install してもコミットされないようにしておく。
+yarn.lock
+
 # Ignore bundler config.
 /api/.bundle
 
