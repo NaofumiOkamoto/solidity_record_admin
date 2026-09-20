@@ -58,3 +58,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+
+# 社内向けドキュメント。本番サーバーの接続情報やクライアントの業務情報を含むため、
+# リポジトリが public の間はコミットしない。
+/README.md
+/docs/

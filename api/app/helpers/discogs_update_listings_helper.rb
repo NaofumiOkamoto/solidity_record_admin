@@ -3,7 +3,7 @@ module DiscogsUpdateListingsHelper
 
   def discogs_update_listings
     auth_wrapper = Discogs::Wrapper.new(
-      "solidityrecords", user_token: "liQrPFTmGUPoCNAtXHmwAbJPpcMpIDYhBmpqsiQR"
+      "solidityrecords", user_token: ENV['DISCOGS_USER_TOKEN']
       )
     search = auth_wrapper.get_user_inventory("solidityrecords",
       :sort => 'listed',

@@ -7,4 +7,12 @@ Rails.application.routes.draw do
   get 'csv', to: 'csv#index'
   get 'csv/new', to: 'csv#new'
   get 'delete_product_csv/new', to: 'delete_product_csv#new'
+
+  namespace :api do
+    resources :products, only: [:index] do
+      collection do
+        get :filter_options
+      end
+    end
+  end
 end

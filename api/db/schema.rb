@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_19_134547) do
+ActiveRecord::Schema[7.0].define(version: 2026_09_20_010000) do
   create_table "products", primary_key: "SKU", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "artist"
     t.string "title"
@@ -57,6 +57,11 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_19_134547) do
     t.string "ishii_memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["discogs_release_id"], name: "index_products_on_discogs_release_id"
+    t.index ["registration_date"], name: "index_products_on_registration_date"
+    t.index ["sales_status"], name: "index_products_on_sales_status"
+    t.index ["sold_date"], name: "index_products_on_sold_date"
+    t.index ["sold_site"], name: "index_products_on_sold_site"
   end
 
 end
