@@ -10,6 +10,9 @@ class ProductSearch
   # 完全一致
   EXACT_COLUMNS = %w[item_condition sales_status].freeze
 
+  # 完全一致の整数列。値が数値でなければ「指定なし」として無視する
+  INTEGER_COLUMNS = %w[SKU discogs_release_id].freeze
+
   # 範囲検索。パラメータ名は <列名>_from / <列名>_to。値は型に合わせてキャストする
   RANGE_COLUMNS = {
     'release_year' => :integer,
@@ -23,10 +26,10 @@ class ProductSearch
   SORTABLE = %w[SKU artist title release_year price_jpy registration_date sold_date].freeze
   DEFAULT_SORT = 'SKU'.freeze
 
-  # 一覧に返す列（A-2 でクライアント確定）
+  # 一覧に返す列（A-2 でクライアント確定。2026-09-20 に見直し）
   LIST_COLUMNS = %w[
-    SKU artist title label number country
-    price_jpy quantity sales_status registration_date sold_date
+    SKU artist title label country number
+    release_year genre format item_condition quantity
   ].freeze
 
   # プルダウンの選択肢を実データから作る列
@@ -103,7 +106,7 @@ class ProductSearch
       scope = apply_like(scope)
       scope = apply_exact(scope)
       scope = apply_sold_site(scope)
-      scope = apply_discogs_release_id(scope)
+      scope = apply_integers(scope)
       apply_ranges(scope)
     end
   end
@@ -141,11 +144,13 @@ class ProductSearch
     scope.where(table['sold_site'].matches("#{escape_like(value)}%"))
   end
 
-  def apply_discogs_release_id(scope)
-    value = cast(@params[:discogs_release_id], :integer)
-    return scope if value.nil?
+  def apply_integers(scope)
+    INTEGER_COLUMNS.reduce(scope) do |result, column|
+      value = cast(@params[column], :integer)
+      next result if value.nil?
 
-    scope.where(discogs_release_id: value)
+      result.where(column => value)
+    end
   end
 
   def apply_ranges(scope)

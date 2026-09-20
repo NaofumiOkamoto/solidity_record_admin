@@ -7,24 +7,21 @@ type Column = {
   sortable?: boolean;
   align?: 'left' | 'right';
   maxWidth?: string;
-  format?: (value: any) => string;
 };
 
-const yen = (value: number | null) => (value == null ? '' : `¥${value.toLocaleString()}`);
-
-// 表示する列は docs/02-product-list.md A-2 でクライアント確定
+// 表示する列は docs/02-product-list.md A-2 でクライアント確定（2026-09-20 見直し）
 const COLUMNS: Column[] = [
   { key: 'SKU', label: 'SKU', sortable: true, align: 'right', maxWidth: '80px' },
-  { key: 'artist', label: 'artist', sortable: true, maxWidth: '200px' },
-  { key: 'title', label: 'title', sortable: true, maxWidth: '260px' },
-  { key: 'label', label: 'label', maxWidth: '160px' },
+  { key: 'artist', label: 'artist', sortable: true, maxWidth: '180px' },
+  { key: 'title', label: 'title', sortable: true, maxWidth: '240px' },
+  { key: 'label', label: 'label', maxWidth: '150px' },
+  { key: 'country', label: 'country', maxWidth: '100px' },
   { key: 'number', label: 'number', maxWidth: '120px' },
-  { key: 'country', label: 'country', maxWidth: '110px' },
-  { key: 'price_jpy', label: '価格', sortable: true, align: 'right', maxWidth: '100px', format: yen },
+  { key: 'release_year', label: 'release_year', sortable: true, align: 'right', maxWidth: '90px' },
+  { key: 'genre', label: 'genre', maxWidth: '130px' },
+  { key: 'format', label: 'format', maxWidth: '110px' },
+  { key: 'item_condition', label: 'item_condition', maxWidth: '110px' },
   { key: 'quantity', label: '在庫', align: 'right', maxWidth: '60px' },
-  { key: 'sales_status', label: '販売状況', maxWidth: '110px' },
-  { key: 'registration_date', label: '登録日', sortable: true, maxWidth: '110px' },
-  { key: 'sold_date', label: '売却日', sortable: true, maxWidth: '110px' },
 ];
 
 const Scroll = styled.div`
@@ -42,6 +39,8 @@ const Table = styled.table`
 const Th = styled.th<{ $align?: string; $sortable?: boolean }>`
   position: sticky;
   top: 0;
+  /* 一覧の行より前面、検索フォームのカレンダーより背面に置く
+     （カレンダー側は ProductSearchForm の .react-datepicker-popper で 20） */
   z-index: 1;
   background-color: #f5f5f5;
   border-bottom: solid 2px #e0e0e0;
@@ -112,7 +111,7 @@ export const ProductTable = ({ products, sort, order, onSortChange }: Props) => 
           <Row key={product.SKU}>
             {COLUMNS.map((column) => {
               const raw = product[column.key];
-              const text = column.format ? column.format(raw) : raw == null ? '' : String(raw);
+              const text = raw == null ? '' : String(raw);
               return (
                 // 省略表示した文字列はホバーで全文を出す
                 <Td key={column.key} $align={column.align} $maxWidth={column.maxWidth} title={text}>

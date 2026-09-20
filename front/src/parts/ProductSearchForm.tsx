@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
@@ -7,18 +7,32 @@ import { Button, FieldLabel, Input, PrimaryButton, Select } from './ui';
 
 export type SearchValues = { [key: string]: string };
 
-// 初期表示で展開しておく条件（使用頻度が高いもの）
-const BASIC_TEXT_KEYS = ['artist', 'title', 'label'];
+// 入力欄の種類。
+//   text    … 部分一致のテキスト（SKU / discogs_release_id は数値の完全一致）
+//   suggest … 実データを入力候補に出すテキスト（部分一致）
+//   select  … 実データから作るプルダウン（完全一致。sold_site のみ前方一致）
+type FieldKind = 'text' | 'suggest' | 'select';
+type FieldDef = { key: string; kind: FieldKind };
 
-// 「詳細条件を開く」で表示する条件
-const DETAIL_TEXT_KEYS = ['number', 'genre', 'discogs_release_id'];
+// 3カラムのうち1列目。商品を特定するための項目
+const IDENTITY_FIELDS: FieldDef[] = [
+  { key: 'SKU', kind: 'text' },
+  { key: 'artist', kind: 'text' },
+  { key: 'title', kind: 'text' },
+  { key: 'label', kind: 'text' },
+  { key: 'country', kind: 'suggest' },
+  { key: 'number', kind: 'text' },
+];
 
-// 実データから選択肢を補完するテキスト入力。
-// 候補を出しつつ自由入力も許すため、プルダウンではなく datalist を使う。
-const SUGGEST_KEYS: Array<keyof FilterOptions> = ['country', 'format'];
-
-// 完全一致のプルダウン（sold_site のみ前方一致）
-const SELECT_KEYS: Array<keyof FilterOptions> = ['item_condition', 'sales_status', 'sold_site'];
+// 2列目。分類・状態
+const ATTRIBUTE_FIELDS: FieldDef[] = [
+  { key: 'genre', kind: 'text' },
+  { key: 'format', kind: 'suggest' },
+  { key: 'item_condition', kind: 'select' },
+  { key: 'sales_status', kind: 'select' },
+  { key: 'sold_site', kind: 'select' },
+  { key: 'discogs_release_id', kind: 'text' },
+];
 
 const NUMBER_RANGE_KEYS = [
   { key: 'release_year', step: '1' },
@@ -30,39 +44,52 @@ const DATE_RANGE_KEYS = ['registration_date', 'sold_date'];
 
 // 検索条件として URL に載せるキーの一覧。クリア時にまとめて消すのにも使う
 export const SEARCH_KEYS: string[] = [
-  ...BASIC_TEXT_KEYS,
-  ...DETAIL_TEXT_KEYS,
-  ...SUGGEST_KEYS,
-  ...SELECT_KEYS,
+  ...IDENTITY_FIELDS.map(({ key }) => key),
+  ...ATTRIBUTE_FIELDS.map(({ key }) => key),
   ...NUMBER_RANGE_KEYS.flatMap(({ key }) => [`${key}_from`, `${key}_to`]),
   ...DATE_RANGE_KEYS.flatMap((key) => [`${key}_from`, `${key}_to`]),
 ];
-
-// 詳細条件に値が入っていれば、開いた状態で表示する
-export const hasDetailCondition = (values: SearchValues) =>
-  SEARCH_KEYS.filter((key) => !BASIC_TEXT_KEYS.includes(key)).some((key) => !!values[key]);
 
 const Panel = styled.form`
   background-color: #fff;
   border: solid 1px #ddd;
   border-radius: 4px;
-  padding: 20px;
+  padding: 16px 20px;
 `;
-const Grid = styled.div`
+// 検索条件を3カラムに分ける。全17項目を縦6行に収めて、
+// 一覧が画面内に入るよう検索エリアの高さを抑えるのが狙い。
+// 3列目（範囲条件）は入力欄が2つ並ぶぶん広くとる。
+const Columns = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 18px 36px;
+  align-items: start;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  }
+  @media (max-width: 780px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
 `;
-const DetailSection = styled.div`
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: dashed 1px #ddd;
+// 1行1項目で縦に積む。ラベルを左に固定幅で置くことで入力欄の左端が揃い、
+// 項目名と値をまとめて追いやすくなる。
+const FieldList = styled.div`
+  display: grid;
+  gap: 10px;
+  align-content: start;
 `;
-const SectionTitle = styled.p`
-  margin: 0 0 12px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #777;
+const FieldRow = styled.div`
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  gap: 10px;
+
+  /* 幅が足りないときはラベルを上に逃がす */
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
 `;
 const RangeRow = styled.div`
   display: flex;
@@ -71,27 +98,32 @@ const RangeRow = styled.div`
   .react-datepicker-wrapper {
     flex: 1;
   }
+  /* カレンダーを一覧のヘッダーより前面に出す。
+     react-datepicker の既定も一覧ヘッダー（sticky）も z-index: 1 のため、
+     そのままだと DOM で後ろにあるヘッダーがカレンダーを覆ってしまう。 */
+  .react-datepicker-popper {
+    z-index: 20;
+  }
+`;
+const RowLabel = styled(FieldLabel)`
+  margin-bottom: 0;
 `;
 const Tilde = styled.span`
   color: #777;
 `;
-const Toggle = styled.button`
-  margin-top: 16px;
-  background: none;
-  border: none;
-  padding: 0;
-  color: #3b5d8f;
-  font-size: 14px;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
 const Actions = styled.div`
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 20px;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+
+  /* 検索フォームの主操作なので、共通ボタンより一回り大きくする。
+     ui.ts の Button 自体は他の画面でも使うためここだけで上書きする。 */
+  button {
+    min-width: 170px;
+    padding: 13px 40px;
+    font-size: 15px;
+  }
 `;
 
 const formatDate = (date: Date | null) => {
@@ -114,7 +146,6 @@ type Props = {
 
 export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props) => {
   const [draft, setDraft] = useState<SearchValues>(values);
-  const [detailOpen, setDetailOpen] = useState(hasDetailCondition(values));
 
   const set = (key: string, value: string) => setDraft({ ...draft, [key]: value });
 
@@ -128,37 +159,45 @@ export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props)
     onClear();
   };
 
-  const textField = (key: string) => (
-    <div key={key}>
-      <FieldLabel htmlFor={`search-${key}`}>{key}</FieldLabel>
+  const layout = (key: string, control: ReactNode) => (
+    <FieldRow key={key}>
+      <RowLabel htmlFor={`search-${key}`}>{key}</RowLabel>
+      {control}
+    </FieldRow>
+  );
+
+  const textField = (key: string) =>
+    layout(
+      key,
       <Input
         id={`search-${key}`}
         value={draft[key] || ''}
         onChange={(e) => set(key, e.target.value)}
-      />
-    </div>
-  );
+      />,
+    );
 
-  const suggestField = (key: keyof FilterOptions) => (
-    <div key={key}>
-      <FieldLabel htmlFor={`search-${key}`}>{key}</FieldLabel>
-      <Input
-        id={`search-${key}`}
-        list={`options-${key}`}
-        value={draft[key] || ''}
-        onChange={(e) => set(key, e.target.value)}
-      />
-      <datalist id={`options-${key}`}>
-        {(options?.[key] || []).map((option) => (
-          <option key={option.value} value={option.value} />
-        ))}
-      </datalist>
-    </div>
-  );
+  const suggestField = (key: keyof FilterOptions) =>
+    layout(
+      key,
+      <>
+        <Input
+          id={`search-${key}`}
+          list={`options-${key}`}
+          value={draft[key] || ''}
+          onChange={(e) => set(key, e.target.value)}
+        />
+        {/* datalist は display:none なのでレイアウトを占有しない */}
+        <datalist id={`options-${key}`}>
+          {(options?.[key] || []).map((option) => (
+            <option key={option.value} value={option.value} />
+          ))}
+        </datalist>
+      </>,
+    );
 
-  const selectField = (key: keyof FilterOptions) => (
-    <div key={key}>
-      <FieldLabel htmlFor={`search-${key}`}>{key}</FieldLabel>
+  const selectField = (key: keyof FilterOptions) =>
+    layout(
+      key,
       <Select
         id={`search-${key}`}
         value={draft[key] || ''}
@@ -167,16 +206,21 @@ export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props)
         <option value="">全て</option>
         {(options?.[key] || []).map((option) => (
           <option key={option.value} value={option.value}>
-            {option.value}（{option.count.toLocaleString()}）
+            {option.value}
           </option>
         ))}
-      </Select>
-    </div>
-  );
+      </Select>,
+    );
+
+  const renderField = ({ key, kind }: FieldDef) => {
+    if (kind === 'suggest') return suggestField(key as keyof FilterOptions);
+    if (kind === 'select') return selectField(key as keyof FilterOptions);
+    return textField(key);
+  };
 
   const numberRangeField = (key: string, step: string) => (
-    <div key={key}>
-      <FieldLabel>{key}</FieldLabel>
+    <FieldRow key={key}>
+      <RowLabel>{key}</RowLabel>
       <RangeRow>
         <Input
           type="number"
@@ -194,12 +238,12 @@ export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props)
           onChange={(e) => set(`${key}_to`, e.target.value)}
         />
       </RangeRow>
-    </div>
+    </FieldRow>
   );
 
   const dateRangeField = (key: string) => (
-    <div key={key}>
-      <FieldLabel>{key}</FieldLabel>
+    <FieldRow key={key}>
+      <RowLabel>{key}</RowLabel>
       <RangeRow>
         <DatePicker
           selected={parseDate(draft[`${key}_from`] || '')}
@@ -219,36 +263,19 @@ export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props)
           customInput={<Input aria-label={`${key} 終了`} />}
         />
       </RangeRow>
-    </div>
+    </FieldRow>
   );
 
   return (
     <Panel onSubmit={submit}>
-      <Grid>{BASIC_TEXT_KEYS.map(textField)}</Grid>
-
-      {detailOpen && (
-        <>
-          <DetailSection>
-            <SectionTitle>詳細条件</SectionTitle>
-            <Grid>
-              {SUGGEST_KEYS.map(suggestField)}
-              {DETAIL_TEXT_KEYS.map(textField)}
-              {SELECT_KEYS.map(selectField)}
-            </Grid>
-          </DetailSection>
-          <DetailSection>
-            <SectionTitle>範囲で絞り込む</SectionTitle>
-            <Grid>
-              {NUMBER_RANGE_KEYS.map(({ key, step }) => numberRangeField(key, step))}
-              {DATE_RANGE_KEYS.map(dateRangeField)}
-            </Grid>
-          </DetailSection>
-        </>
-      )}
-
-      <Toggle type="button" onClick={() => setDetailOpen(!detailOpen)}>
-        {detailOpen ? '詳細条件を閉じる' : '詳細条件を開く'}
-      </Toggle>
+      <Columns>
+        <FieldList>{IDENTITY_FIELDS.map(renderField)}</FieldList>
+        <FieldList>{ATTRIBUTE_FIELDS.map(renderField)}</FieldList>
+        <FieldList>
+          {NUMBER_RANGE_KEYS.map(({ key, step }) => numberRangeField(key, step))}
+          {DATE_RANGE_KEYS.map((key) => dateRangeField(key))}
+        </FieldList>
+      </Columns>
 
       <Actions>
         <Button type="button" onClick={clear}>

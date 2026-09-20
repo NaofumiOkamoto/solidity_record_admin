@@ -4,13 +4,13 @@ export type Product = {
   artist: string | null;
   title: string | null;
   label: string | null;
-  number: string | null;
   country: string | null;
-  price_jpy: number | null;
+  number: string | null;
+  release_year: number | null;
+  genre: string | null;
+  format: string | null;
+  item_condition: string | null;
   quantity: number | null;
-  sales_status: string | null;
-  registration_date: string | null;
-  sold_date: string | null;
 };
 
 export type ProductListMeta = {
@@ -27,6 +27,9 @@ export type ProductListResponse = {
 
 export type FilterOption = {
   value: string;
+  // 出現件数。選択肢を多い順に並べるために API が返すが、画面には表示しない。
+  // 他の検索条件を反映しない数字のため、出すと「Used を選べば2万件出る」と
+  // 誤解される（実際は他条件との AND で絞られる）。
   count: number;
 };
 
