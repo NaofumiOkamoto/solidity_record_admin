@@ -1,23 +1,23 @@
 import styled from 'styled-components';
 import { Product } from '../types/product';
 
+// 一覧に出している列はすべてソートできる（API 側の SORTABLE と対応）
 type Column = {
   key: keyof Product;
   label: string;
-  sortable?: boolean;
   align?: 'left' | 'right';
   maxWidth?: string;
 };
 
 // 表示する列は docs/02-product-list.md A-2 でクライアント確定（2026-09-20 見直し）
 const COLUMNS: Column[] = [
-  { key: 'SKU', label: 'SKU', sortable: true, align: 'right', maxWidth: '80px' },
-  { key: 'artist', label: 'artist', sortable: true, maxWidth: '180px' },
-  { key: 'title', label: 'title', sortable: true, maxWidth: '240px' },
+  { key: 'SKU', label: 'SKU', align: 'right', maxWidth: '80px' },
+  { key: 'artist', label: 'artist', maxWidth: '180px' },
+  { key: 'title', label: 'title', maxWidth: '240px' },
   { key: 'label', label: 'label', maxWidth: '150px' },
   { key: 'country', label: 'country', maxWidth: '100px' },
   { key: 'number', label: 'number', maxWidth: '120px' },
-  { key: 'release_year', label: 'release_year', sortable: true, align: 'right', maxWidth: '90px' },
+  { key: 'release_year', label: 'release_year', align: 'right', maxWidth: '90px' },
   { key: 'genre', label: 'genre', maxWidth: '130px' },
   { key: 'format', label: 'format', maxWidth: '110px' },
   { key: 'item_condition', label: 'item_condition', maxWidth: '110px' },
@@ -36,7 +36,7 @@ const Table = styled.table`
   font-size: 13px;
   white-space: nowrap;
 `;
-const Th = styled.th<{ $align?: string; $sortable?: boolean }>`
+const Th = styled.th<{ $align?: string }>`
   position: sticky;
   top: 0;
   /* 一覧の行より前面、検索フォームのカレンダーより背面に置く
@@ -48,10 +48,11 @@ const Th = styled.th<{ $align?: string; $sortable?: boolean }>`
   text-align: ${(p) => p.$align || 'left'};
   font-size: 12px;
   color: #555;
-  cursor: ${(p) => (p.$sortable ? 'pointer' : 'default')};
+  cursor: pointer;
   user-select: none;
+  white-space: nowrap;
   &:hover {
-    background-color: ${(p) => (p.$sortable ? '#ebebeb' : '#f5f5f5')};
+    background-color: #ebebeb;
   }
 `;
 const Td = styled.td<{ $align?: string; $maxWidth?: string }>`
@@ -94,12 +95,7 @@ export const ProductTable = ({ products, sort, order, onSortChange }: Props) => 
       <thead>
         <tr>
           {COLUMNS.map((column) => (
-            <Th
-              key={column.key}
-              $align={column.align}
-              $sortable={column.sortable}
-              onClick={() => column.sortable && onSortChange(column.key)}
-            >
+            <Th key={column.key} $align={column.align} onClick={() => onSortChange(column.key)}>
               {column.label}
               {sort === column.key && <Arrow>{order === 'asc' ? '▲' : '▼'}</Arrow>}
             </Th>

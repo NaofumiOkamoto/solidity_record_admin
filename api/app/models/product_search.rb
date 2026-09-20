@@ -25,8 +25,17 @@ class ProductSearch
     'sold_date' => :date,
   }.freeze
 
-  # ソート可能な列。ここに無い値が来たら DEFAULT_SORT にフォールバックする
-  SORTABLE = %w[SKU artist title release_year price_jpy registration_date sold_date].freeze
+  # ソート可能な列。ここに無い値が来たら DEFAULT_SORT にフォールバックする。
+  # 許可リストにしているのは SQL インジェクション対策であり、列を絞る意図はない。
+  # 一覧に出している列はすべてソートできるようにしてある。
+  # price_jpy / registration_date / sold_date は一覧に出していないが、
+  # URL に直接書けば並び替えられるよう残している。
+  # インデックスの無い列も含むが、2万件では filesort でも 0.1 秒台で返る（2026-09-20 実測）。
+  SORTABLE = %w[
+    SKU artist title label country number
+    release_year genre format item_condition quantity
+    price_jpy registration_date sold_date
+  ].freeze
   DEFAULT_SORT = 'SKU'.freeze
 
   # 一覧に返す列（A-2 でクライアント確定。2026-09-20 に見直し）
