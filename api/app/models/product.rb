@@ -154,6 +154,12 @@ class Product < ApplicationRecord
     end
   end
 
+  # CSV の行順は SKU 昇順で固定する。
+  #
+  # 以前は並び順を指定しておらず、たまたま主キー順（＝SKU昇順）で返っていた。
+  # 2026-09 に registration_date / sold_date へインデックスを足したところ、
+  # MySQL がそのインデックスを使うようになり「日付ごとにまとまった SKU 昇順」に変わって
+  # picking_item の出力順が崩れた。実行計画に依存しないよう明示する。
   def csv_filter(params)
     products = Product.all
     Rails.logger.info('DB情報取得完了')
@@ -174,7 +180,7 @@ class Product < ApplicationRecord
     Rails.logger.info('registration_date絞り込み完了')
     Rails.logger.info("取得数: #{products.length}")
 
-    products
+    products.order(:SKU)
   end
 
   def delete_csv_filter(params)
@@ -196,7 +202,7 @@ class Product < ApplicationRecord
     Rails.logger.info('sold_date')
     Rails.logger.info("取得数: #{products.length}")
 
-    products
+    products.order(:SKU)
   end
 
   private

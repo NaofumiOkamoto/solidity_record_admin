@@ -38,23 +38,33 @@ const Note = styled.span`
   font-weight: normal;
 `;
 
+// 並び順と活性／非活性はここだけで決まる。
+// enabled: false は「未実装」または「実装済みだが公開前」の両方に使う。
+const MENUS = [
+  { label: '商品登録', to: '/products/new', enabled: false, note: '準備中' },
+  // 実装済み。本番での確認が済むまで導線を出さない（URL 直打ちでは開ける）
+  { label: '商品一覧', to: '/products', enabled: false, note: '準備中' },
+  { label: 'CSV 出力', to: '/csv', enabled: true },
+  { label: 'ダッシュボード', to: '/dashboard', enabled: false, note: '準備中' },
+  // 実装済み。本番での確認が済むまで導線を出さない（URL 直打ちでは開ける）
+  { label: 'ジャンル', to: '/genres', enabled: false, note: '準備中' },
+];
+
 export const Top = () => (
   <Layout>
     <Grid>
-      <DisabledMenu>
-        商品一覧
-        <Note>準備中</Note>
-      </DisabledMenu>
-      <MenuLink to="/csv">CSV 出力</MenuLink>
-      {/* 商品登録（フェーズ1）とダッシュボード（フェーズ3）は未実装 */}
-      <DisabledMenu>
-        商品登録
-        <Note>準備中</Note>
-      </DisabledMenu>
-      <DisabledMenu>
-        ダッシュボード
-        <Note>準備中</Note>
-      </DisabledMenu>
+      {MENUS.map(({ label, to, enabled, note }) =>
+        enabled ? (
+          <MenuLink key={to} to={to}>
+            {label}
+          </MenuLink>
+        ) : (
+          <DisabledMenu key={to}>
+            {label}
+            <Note>{note}</Note>
+          </DisabledMenu>
+        ),
+      )}
     </Grid>
   </Layout>
 );
