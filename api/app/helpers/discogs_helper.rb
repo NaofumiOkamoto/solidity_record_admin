@@ -10,6 +10,7 @@ module DiscogsHelper
       'external_id',
       'weight',
       'quantity',
+      'status',
     ]
   end
 
@@ -23,6 +24,7 @@ module DiscogsHelper
       value['SKU'],                       # external_id
       value['weight'],                    # weight
       value['quantity'],                  # quantity
+      'For Sale',                         # status（全件固定値）
     ]
   end
 
