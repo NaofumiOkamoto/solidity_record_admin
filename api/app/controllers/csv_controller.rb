@@ -103,7 +103,7 @@ class CsvController < ApplicationController
       file.write(csv_data)
     end
     if platform == 'yahoo'
-      csv_data = csv_data.encode(Encoding::SHIFT_JIS)
+      csv_data = to_shift_jis(csv_data)
     end
 
     send_data(csv_data, filename: "test.csv")

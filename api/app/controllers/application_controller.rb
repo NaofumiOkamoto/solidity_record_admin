@@ -15,4 +15,5 @@ class ApplicationController < ActionController::API
   include YahooAuctionHelper
   include YahooAuctionDeleteHelper
   include PickingItemDeleteHelper
+  include ShiftJisHelper
 end
