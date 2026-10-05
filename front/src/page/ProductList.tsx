@@ -168,7 +168,7 @@ export const ProductList = () => {
   };
 
   return (
-    <Layout back={{ to: '/', label: '戻る' }}>
+    <Layout>
       <h2>商品一覧</h2>
 
       <ProductSearchForm

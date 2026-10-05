@@ -512,7 +512,7 @@ export const GenreList = () => {
     );
 
   return (
-    <Layout back={{ to: '/', label: '戻る' }}>
+    <Layout>
       <h2>ジャンル</h2>
 
       {flash && (

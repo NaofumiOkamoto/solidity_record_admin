@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Layout } from '../parts/Layout';
+import { MENUS } from '../lib/menus';
 
 const Grid = styled.div`
   display: grid;
@@ -37,16 +38,6 @@ const Note = styled.span`
   font-size: 12px;
   font-weight: normal;
 `;
-
-// 並び順と活性／非活性はここだけで決まる。
-// enabled: false は未実装のもの。公開するときは true にする。
-const MENUS = [
-  { label: '商品登録', to: '/products/new', enabled: false, note: '準備中' },
-  { label: '商品一覧', to: '/products', enabled: true },
-  { label: 'CSV 出力', to: '/csv', enabled: true },
-  { label: 'ダッシュボード', to: '/dashboard', enabled: false, note: '準備中' },
-  { label: 'ジャンル', to: '/genres', enabled: true },
-];
 
 export const Top = () => (
   <Layout>

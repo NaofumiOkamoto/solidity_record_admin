@@ -15,7 +15,7 @@ export const App = () => {
         <Route
           path="/csv"
           element={
-            <Layout back={{ to: '/', label: '戻る' }}>
+            <Layout>
               <Csv />
             </Layout>
           }
