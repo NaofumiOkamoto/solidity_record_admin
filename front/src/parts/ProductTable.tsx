@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Product } from '../types/product';
+import { GenreOption, Product } from '../types/product';
 
 // 一覧に出している列はすべてソートできる（API 側の SORTABLE と対応）
 type Column = {
@@ -84,12 +84,27 @@ const Arrow = styled.span`
 
 type Props = {
   products: Product[];
+  // ジャンルマスタ。products.genre は "1_19" のような id の連結なので、
+  // 名前を出すために引き当てる。取得できていないときは id をそのまま出す
+  genres: GenreOption[];
   sort: string;
   order: 'asc' | 'desc';
   onSortChange: (column: string) => void;
 };
 
-export const ProductTable = ({ products, sort, order, onSortChange }: Props) => (
+export const ProductTable = ({ products, genres, sort, order, onSortChange }: Props) => {
+  const genreNames = new Map(genres.map((genre) => [String(genre.id), genre.sub]));
+
+  // "1_19" → "Soul, 2000's ~ Soul (New)"。マスタに無い id は #1000 の形で見えるようにする
+  const genreLabel = (value: string | null) => {
+    if (!value) return '';
+    return value
+      .split('_')
+      .map((id) => genreNames.get(id) || `#${id}`)
+      .join(', ');
+  };
+
+  return (
   <Scroll>
     <Table>
       <thead>
@@ -107,7 +122,8 @@ export const ProductTable = ({ products, sort, order, onSortChange }: Props) => 
           <Row key={product.SKU}>
             {COLUMNS.map((column) => {
               const raw = product[column.key];
-              const text = raw == null ? '' : String(raw);
+              const text =
+                column.key === 'genre' ? genreLabel(product.genre) : raw == null ? '' : String(raw);
               return (
                 // 省略表示した文字列はホバーで全文を出す
                 <Td key={column.key} $align={column.align} $maxWidth={column.maxWidth} title={text}>
@@ -119,6 +135,7 @@ export const ProductTable = ({ products, sort, order, onSortChange }: Props) => 
         ))}
       </tbody>
     </Table>
-    {products.length === 0 && <Empty>該当する商品がありません</Empty>}
-  </Scroll>
-);
+      {products.length === 0 && <Empty>該当する商品がありません</Empty>}
+    </Scroll>
+  );
+};

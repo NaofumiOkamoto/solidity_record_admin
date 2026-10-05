@@ -1,0 +1,23 @@
+# 管理画面はクライアント（日本語話者）が使うため、API が返すエラーメッセージも日本語にする。
+# rails-i18n gem は入れていないので、実際に使うメッセージだけをここで定義する。
+ja:
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: "を入力してください"
+      taken: "はすでに使われています"
+      not_a_number: "は数値で入力してください"
+      not_an_integer: "は整数で入力してください"
+      greater_than: "は%{count}より大きい値にしてください"
+      too_long: "は%{count}文字以内で入力してください"
+  activerecord:
+    attributes:
+      genre:
+        id: "id"
+        main: "main"
+        sub: "sub"
+        yahoo_path: "yahoo_path"
+        mercari_keywords: "mercari_keywords"
+        ebay_category: "ebay_category"
+        yahoo_auction_category: "yahoo_auction_category"
+        tags: "tags"

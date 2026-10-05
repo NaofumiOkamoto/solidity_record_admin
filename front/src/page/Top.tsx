@@ -39,15 +39,13 @@ const Note = styled.span`
 `;
 
 // 並び順と活性／非活性はここだけで決まる。
-// enabled: false は「未実装」または「実装済みだが公開前」の両方に使う。
+// enabled: false は未実装のもの。公開するときは true にする。
 const MENUS = [
   { label: '商品登録', to: '/products/new', enabled: false, note: '準備中' },
-  // 実装済み。本番での確認が済むまで導線を出さない（URL 直打ちでは開ける）
-  { label: '商品一覧', to: '/products', enabled: false, note: '準備中' },
+  { label: '商品一覧', to: '/products', enabled: true },
   { label: 'CSV 出力', to: '/csv', enabled: true },
   { label: 'ダッシュボード', to: '/dashboard', enabled: false, note: '準備中' },
-  // 実装済み。本番での確認が済むまで導線を出さない（URL 直打ちでは開ける）
-  { label: 'ジャンル', to: '/genres', enabled: false, note: '準備中' },
+  { label: 'ジャンル', to: '/genres', enabled: true },
 ];
 
 export const Top = () => (

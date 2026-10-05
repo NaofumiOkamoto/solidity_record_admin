@@ -26,11 +26,11 @@ module YahooHelper
   def yahoo_format(value, genre, label_map)
     [
       yahoo_path(value, genre),# path
-      product_name(value),# name mercari_helperにあるメソッドを使用
+      product_name(value, genre),# name mercari_helperにあるメソッドを使用
       value['SKU'],# code
       value['price_jpy'],# price
       yahoo_caption(value, genre),# caption
-      product_name(value),# explanation
+      product_name(value, genre),# explanation
       value['weight'],# ship-weight
       '1',# taxable
       'IT03',# template
@@ -55,20 +55,15 @@ module YahooHelper
     yahoo_path.flatten.uniq.join("\n")
   end
 
+  # 送信するカテゴリはジャンルマスタの yahoo_path が1行1件で持っている。
+  # 以前はここで id の範囲（101 / 102..199 / 10,12,14 / 11,13,15）で分岐していたが、
+  # 新しいジャンルを追加したときに範囲を外すと黙って出力が変わるため、データに移した。
   def yahoo_genre_map(format, genre_id, genre_map)
-    convert_format =  format.gsub(/ inch/, 'インチ')
-    case genre_id.to_i
-    when 101
-      ["#{convert_format}:ジャズ"]
-    when 102..199
-      ["#{convert_format}:ジャズ", "#{convert_format}:ジャズ:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
-    when 10, 12, 14
-      ["#{convert_format}:ファンク:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
-    when 11, 13, 15
-      ["#{convert_format}:ソウル:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
-    else
-      ["#{convert_format}:#{genre_map[genre_id.to_s][:yahoo_path_genre]}"]
-    end
+    convert_format = format.gsub(/ inch/, 'インチ')
+    genre = genre_map[genre_id.to_s]
+    return [] if genre.blank?
+
+    genre[:yahoo_path_genre].to_s.split("\n").map { |category| "#{convert_format}:#{category}" }
   end
 
   def yahoo_condition(value)

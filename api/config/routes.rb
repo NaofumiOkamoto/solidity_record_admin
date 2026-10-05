@@ -14,5 +14,6 @@ Rails.application.routes.draw do
         get :filter_options
       end
     end
+    resources :genres, only: %i[index create update destroy]
   end
 end

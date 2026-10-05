@@ -207,7 +207,13 @@ export const ProductList = () => {
       ) : (
         !error && (
           <>
-            <ProductTable products={products} sort={sort} order={order} onSortChange={handleSort} />
+            <ProductTable
+              products={products}
+              genres={options?.genres || []}
+              sort={sort}
+              order={order}
+              onSortChange={handleSort}
+            />
             {meta && (
               <Footer>
                 <Pagination page={meta.page} totalPages={meta.total_pages} onChange={handlePage} />

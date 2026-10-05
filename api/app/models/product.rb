@@ -1,5 +1,27 @@
 class Product < ApplicationRecord
 
+  # products.genre は "1_19" のようにジャンル id を "_" で連結して持つ（正本はスプレッドシート）。
+  # 解析とクエリをここに集約する。将来 product_genres のような中間テーブルに
+  # 正規化するときの差し替え点をこの2つに絞るのが目的。
+  #
+  # 指定した id を含む商品を引く。
+  # "_" は LIKE のワイルドカードなのでエスケープが必須。
+  # エスケープしないと "_9_" が任意の3文字に当たり、id=9 が "1_19" に誤ヒットする。
+  # 前後に区切り文字を足してから照合するのは、"1" が "110" に当たらないようにするため。
+  scope :with_genre, lambda { |id|
+    pattern = sanitize_sql_like("_#{id}_")
+    where("CONCAT('_', genre, '_') LIKE ?", "%#{pattern}%")
+  }
+
+  # "1_19" → [1, 19]。数値でない要素は捨てる
+  def self.parse_genre_ids(value)
+    value.to_s.split('_').filter_map { |id| id.to_i if id.match?(/\A\d+\z/) }
+  end
+
+  def genre_ids
+    self.class.parse_genre_ids(genre)
+  end
+
   SP_HEADER = [
     'SKU',
     'artist',

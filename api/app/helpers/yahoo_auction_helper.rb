@@ -63,8 +63,8 @@ module YahooAuctionHelper
     end
 
     return [
-      yahoo_auction_category(value), # カテゴリ
-      product_name(value), # タイトル
+      yahoo_auction_category(value, genre), # カテゴリ
+      product_name(value, genre), # タイトル
       yahoo_auction_body(value, genre), # 説明
       value['price_jpy'], # 開始価格
       value['price_jpy'], # 即決価格
@@ -106,82 +106,60 @@ module YahooAuctionHelper
 
   private
 
-  def yahoo_auction_category(value)
-    case value['genre'].split('_')[0].to_i
-    when 1, 2, 4, 6
-      '22284'
-    when 3, 5
-      '2084005265'
-    when 101..199
-      '2084007027'
-    when 201..299
-      '2084048577'
-    when 301..400
-      '2084048572'
-    when 2000
-      case value['artist'].first
-      when 'A'
-        '2084042708'
-      when 'B'
-        '2084042756'
-      when 'C'
-        '2084042780'
-      when 'D'
-        '2084042800'
-      when 'E'
-        '2084042815'
-      when 'F'
-        '2084042822'
-      when 'G'
-        '2084042836'
-      when 'H'
-        '2084042847'
-      when 'I'
-        '2084042854'
-      when 'J'
-        '2084042879'
-      when 'K'
-        '2084042897'
-      when 'L'
-        '2084042905'
-      when 'M'
-        '2084042933'
-      when 'N'
-        '2084042948'
-      when 'O'
-        '2084042955'
-      when 'P'
-        '2084042983'
-      when 'Q'
-        '2084042987'
-      when 'R'
-        '2084043012'
-      when 'S'
-        '2084043051'
-      when 'T'
-        '2084043070'
-      when 'U'
-        '2084043075'
-      when 'V'
-        '2084043086'
-      when 'W'
-        '2084043098'
-      when 'X'
-        '2084043102'
-      when 'Y'
-        '2084043106'
-      when 'Z'
-        '2084043111'
-      when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-        '2084042685'
-      end
-    when 3000
-      '2084048578'
-    when 4000
-      '22288'
-    when 5000
-      '2084044743'
-    end
+  # ヤフオクのカテゴリID。ジャンルマスタの yahoo_auction_category が持つ。
+  # 以前はここで id の範囲（1,2,4,6 / 3,5 / 101..199 / 201..299 / 301..400 …）で
+  # 分岐しており、id 10〜19 が拾われずカテゴリが nil になっていた。
+  ROCK_POP_MARKER = 'by_artist_initial'.freeze
+
+  # 洋楽ロック/ポップだけはアーティスト名の頭文字でカテゴリが分かれる。
+  # ヤフオクのカテゴリ木がそうなっているため、この対応表はコード側に残す。
+  ROCK_POP_CATEGORIES = {
+    'A' => '2084042708',
+    'B' => '2084042756',
+    'C' => '2084042780',
+    'D' => '2084042800',
+    'E' => '2084042815',
+    'F' => '2084042822',
+    'G' => '2084042836',
+    'H' => '2084042847',
+    'I' => '2084042854',
+    'J' => '2084042879',
+    'K' => '2084042897',
+    'L' => '2084042905',
+    'M' => '2084042933',
+    'N' => '2084042948',
+    'O' => '2084042955',
+    'P' => '2084042983',
+    'Q' => '2084042987',
+    'R' => '2084043012',
+    'S' => '2084043051',
+    'T' => '2084043070',
+    'U' => '2084043075',
+    'V' => '2084043086',
+    'W' => '2084043098',
+    'X' => '2084043102',
+    'Y' => '2084043106',
+    'Z' => '2084043111',
+    '0' => '2084042685',
+    '1' => '2084042685',
+    '2' => '2084042685',
+    '3' => '2084042685',
+    '4' => '2084042685',
+    '5' => '2084042685',
+    '6' => '2084042685',
+    '7' => '2084042685',
+    '8' => '2084042685',
+    '9' => '2084042685',
+  }.freeze
+
+  def yahoo_auction_category(value, genre_map)
+    genre = genre_map[value['genre'].to_s.split('_').first.to_s]
+    return nil if genre.blank?
+
+    category = genre[:yahoo_auction_category]
+    return category unless category == ROCK_POP_MARKER
+
+    ROCK_POP_CATEGORIES[value['artist'].to_s.first.to_s.upcase]
   end
 
   def yahoo_auction_body(value, genre_map)

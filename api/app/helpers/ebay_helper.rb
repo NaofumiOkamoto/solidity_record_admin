@@ -97,13 +97,17 @@ module EbayHelper
     end
   end
   
+  # カテゴリはジャンルマスタの ebay_category が持つ。
+  # 以前は main が 'Jazz' か 'Soul / Funk / Blues' かで判定しており、
+  # 新しい大分類を追加してもカテゴリが空になるだけだった。
+  # 複数ジャンルが付いている場合は、先に見つかったものを使う（従来と同じ優先順）。
   def ebay_genre(value, genre_map)
-    genre = []
-    value['genre'].split('_').each do |id|
-      genre << genre_map[id.to_s][:main] if genre_map[id.to_s].present?
+    categories = value['genre'].to_s.split('_').filter_map do |id|
+      genre_map[id.to_s] && genre_map[id.to_s][:ebay_category].presence
     end
-    return 'Jazz' if genre.include?('Jazz')
-    return 'Soul' if genre.include?('Soul / Funk / Blues')
+    return 'Jazz' if categories.include?('Jazz')
+
+    categories.first
   end
 
   def ebay_record_size(value)

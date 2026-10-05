@@ -5,7 +5,7 @@
 # 解釈されることはない。
 class ProductSearch
   # 部分一致。照合順序が utf8mb4_0900_ai_ci のため大文字小文字は区別されない
-  LIKE_COLUMNS = %w[artist title label number genre].freeze
+  LIKE_COLUMNS = %w[artist title label number].freeze
 
   # 完全一致。値の種類が限られていて画面ではプルダウンで選ぶ列。
   # country と format は当初部分一致にしていたが、候補から選んだ値より広くヒットしてしまう
@@ -57,12 +57,20 @@ class ProductSearch
   # count は画面には出さない（他の検索条件を反映しない数字のため誤解を招く）。
   # 実データの分布を調べるときに使えるので返してはいる。
   def self.filter_options
-    FILTER_OPTION_COLUMNS.to_h do |column|
+    options = FILTER_OPTION_COLUMNS.to_h do |column|
       counts = Product.where.not(column => [nil, '']).group(column).count
-      options = counts.sort_by { |value, _count| natural_sort_key(value) }
-                      .map { |value, count| { value: value, count: count } }
-      [column, options]
+      list = counts.sort_by { |value, _count| natural_sort_key(value) }
+                   .map { |value, count| { value: value, count: count } }
+      [column, list]
     end
+
+    # ジャンルは他の項目と形が違う（id で絞り込み、画面には main / sub を出す）。
+    # main ごとにまとめて表示するため main も返す。
+    options['genres'] = Genre.order(:main, :sub).map do |genre|
+      { id: genre.id, main: genre.main, sub: genre.sub }
+    end
+
+    options
   end
 
   # 数字を含む値を見た目どおりに並べるためのキー。
@@ -132,6 +140,7 @@ class ProductSearch
       scope = apply_like(scope)
       scope = apply_exact(scope)
       scope = apply_sold_site(scope)
+      scope = apply_genre(scope)
       scope = apply_integers(scope)
       apply_ranges(scope)
     end
@@ -168,6 +177,17 @@ class ProductSearch
     return scope if value.blank?
 
     scope.where(table['sold_site'].matches("#{escape_like(value)}%"))
+  end
+
+  # genre はジャンルマスタの id を受け取る。
+  # products.genre は "1_19" のような連結なので、部分一致にすると
+  # id=1 が 10〜19 や 101〜117 にも当たってしまう（移行前はそうなっていて、
+  # genre=1 で全体の半分以上が返っていた）。Product.with_genre で区切りを見て照合する。
+  def apply_genre(scope)
+    id = cast(@params[:genre], :integer)
+    return scope if id.nil?
+
+    scope.merge(Product.with_genre(id))
   end
 
   def apply_integers(scope)

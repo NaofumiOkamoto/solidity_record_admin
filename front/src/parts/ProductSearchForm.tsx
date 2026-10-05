@@ -10,7 +10,8 @@ export type SearchValues = { [key: string]: string };
 // 入力欄の種類。
 //   text   … 部分一致のテキスト（SKU / discogs_release_id は数値の完全一致）
 //   select … 実データから作るプルダウン（完全一致。sold_site のみ前方一致）
-type FieldKind = 'text' | 'select';
+//   genre  … ジャンルマスタ参照のプルダウン（id で絞り込み、main ごとにまとめて表示）
+type FieldKind = 'text' | 'select' | 'genre';
 type FieldDef = { key: string; kind: FieldKind };
 
 // 3カラムのうち1列目。商品を特定するための項目
@@ -25,7 +26,7 @@ const IDENTITY_FIELDS: FieldDef[] = [
 
 // 2列目。分類・状態
 const ATTRIBUTE_FIELDS: FieldDef[] = [
-  { key: 'genre', kind: 'text' },
+  { key: 'genre', kind: 'genre' },
   { key: 'format', kind: 'select' },
   { key: 'item_condition', kind: 'select' },
   { key: 'sales_status', kind: 'select' },
@@ -61,7 +62,7 @@ const Panel = styled.form`
 const Columns = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.35fr);
-  gap: 18px 36px;
+  gap: 18px 48px;
   align-items: start;
 
   @media (max-width: 1200px) {
@@ -104,8 +105,18 @@ const RangeRow = styled.div`
     z-index: 20;
   }
 `;
+// ラベルは右寄せにして入力欄のすぐ隣に置く。
+// 左寄せだと SKU や tags のような短いラベルで空白が100px以上空き、
+// 列の間（gap）より広くなって「どの入力欄がどのラベルのものか」が読みにくい。
 const RowLabel = styled(FieldLabel)`
   margin-bottom: 0;
+  text-align: right;
+  white-space: nowrap;
+
+  /* ラベルが入力欄の上に回る幅では右寄せをやめる */
+  @media (max-width: 600px) {
+    text-align: left;
+  }
 `;
 const Tilde = styled.span`
   color: #777;
@@ -192,8 +203,38 @@ export const ProductSearchForm = ({ values, options, onSearch, onClear }: Props)
       </Select>,
     );
 
-  const renderField = ({ key, kind }: FieldDef) =>
-    kind === 'select' ? selectField(key as keyof FilterOptions) : textField(key);
+  // main ごとに optgroup でまとめる。48件を1つの平らなリストにすると探しにくい
+  const genreField = () =>
+    layout(
+      'genre',
+      <Select
+        id="search-genre"
+        value={draft.genre || ''}
+        onChange={(e) => set('genre', e.target.value)}
+      >
+        <option value="">全て</option>
+        {Object.entries(
+          (options?.genres || []).reduce<{ [main: string]: typeof options.genres }>((acc, genre) => {
+            acc[genre.main] = [...(acc[genre.main] || []), genre];
+            return acc;
+          }, {}),
+        ).map(([main, genres]) => (
+          <optgroup key={main} label={main}>
+            {genres.map((genre) => (
+              <option key={genre.id} value={genre.id}>
+                {genre.sub}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </Select>,
+    );
+
+  const renderField = ({ key, kind }: FieldDef) => {
+    if (kind === 'genre') return genreField();
+    if (kind === 'select') return selectField(key as keyof FilterOptions);
+    return textField(key);
+  };
 
   const numberRangeField = (key: string, step: string) => (
     <FieldRow key={key}>

@@ -14,15 +14,12 @@ class DeleteProductCsvController < ApplicationController
     result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_SHEET'], ["products!A:AR"])
     # テストシート
     # result = GoogleApi::Spreadsheets.new.get_values(ENV['PRODUCT_TEST_SHEET'], ["products_test!A:AR"])
-    genre = GoogleApi::Spreadsheets.new.get_values(ENV['GENRE_SHEET'], ["genre!B:F"])
     label = GoogleApi::Spreadsheets.new.get_values(ENV['LABEL_SHEET'], ["label!A:B"])
     Rails.logger.info('スプシ取得完了')
 
-    genre_map = {}
-    genre.values.each do |g|
-      next if g[0] == 'id'
-      genre_map[g[0]] = { main: g[1], sub: g[2], yahoo_path_genre: g[3], tags: g[4] }
-    end
+    # ジャンルマスタは 2026-09 に DB へ移した（管理画面から編集する）。
+    # 以前はここで GENRE_SHEET を読んでいた。復旧が必要なら rake genres:import。
+    genre_map = Genre.csv_map
 
     label_map = {}
     label.values.each do |l|

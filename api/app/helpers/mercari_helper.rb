@@ -79,7 +79,7 @@ module MercariHelper
     end
     is_lp = ['2LP','3LP','Gatefold LP','LP','2 LP','3 LP'].include?(value['format'])
     row = [
-      product_name(value), # 商品名
+      product_name(value, genre_map), # 商品名
       product_description(value, genre), # 商品説明
       '',
       value['quantity'], # SKU1_在庫数
@@ -133,51 +133,32 @@ module MercariHelper
     img_row + row
   end
 
-  def product_name(value)
-    genre, _ =  value['genre'].split('_')
-    format = ''
-    case value['format']
-    when '7 inch', '7inch'
-      format = '7インチ 45'
-    when '10 inch', '10inch'
-      format = '10インチ'
-    when '12 inch','12inch'
-      format = '12インチ'
-    else
-      format = 'LP'
-    end
+  # 商品名。mercari / yahoo / yahoo_auction から使う。
+  # ジャンル由来のキーワードはマスタの mercari_keywords が持つ。
+  # 以前はここで id の範囲（1..6 / 101..199 / 201..299 …）で分岐しており、
+  # id 7〜100 と 400 が拾われず、該当ジャンルの商品名が nil になっていた。
+  def product_name(value, genre_map)
+    format = case value['format']
+             when '7 inch', '7inch'
+               '7インチ 45'
+             when '10 inch', '10inch'
+               '10インチ'
+             when '12 inch', '12inch'
+               '12インチ'
+             else
+               'LP'
+             end
 
-    base = "#{value['artist'].gsub('_', ', ')} #{value['title']} #{value['label']} #{value['country']} #{value['number']} #{value['SKU']}"
-    case genre.to_i
-    when 1
-      return "#{base} SOUL ソウル レコード #{format}"
-    when 2
-      return "#{base} SOUL FUNK ソウル ファンク レコード #{format}"
-    when 3
-      return "#{base} BLUES ブルース レコード #{format}"
-    when 4
-      return "#{base} SOUL DISCO ソウル ディスコ レコード #{format}"
-    when 5
-      return "#{base} GOSPEL ゴスペル レコード #{format}"
-    when 6
-      return "#{base} R&B R&R レコード #{format}"
-    when 101..199
-      return "#{base} JAZZ ジャズ レコード #{format}"
-    when 201..299
-      return "#{base} REGGAE レゲエ レコード #{format}"
-    when 301..398
-      return "#{base} LATIN ラテン レコード #{format}"
-    when 399
-      return "#{base} CUMBIA クンビア レコード #{format}"
-    when 2000..2099 
-      return "#{base} ROCK POP ロック ポップ レコード #{format}"
-    when 3000..3099 
-      return "#{base} FOLK COUNTRY レコード #{format}"
-    when 4000..4099 
-      return "#{base} HIP HOP R&B レコード #{format}"
-    when 5000
-      return "#{base} HOUSE TECHNO ハウス テクノ レコード#{format}"
-    end
+    base = "#{value['artist'].gsub('_', ', ')} #{value['title']} #{value['label']} " \
+           "#{value['country']} #{value['number']} #{value['SKU']}"
+
+    genre_id, = value['genre'].to_s.split('_')
+    genre = genre_map[genre_id.to_s]
+    keywords = genre && genre[:mercari_keywords].presence
+
+    return "#{base} レコード #{format}" if keywords.blank?
+
+    "#{base} #{keywords} レコード #{format}"
   end
 
   private

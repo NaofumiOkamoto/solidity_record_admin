@@ -23,6 +23,9 @@ module Api
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # API が返すバリデーションエラーをそのまま画面に出すため、日本語にしておく
+    config.i18n.default_locale = :ja
     config.paths.add "lib", eager_load: true # 適当な場所に追記
     # config.autoload_paths += Dir.glob("#{config.root}/app/lib")
   end

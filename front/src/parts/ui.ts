@@ -33,6 +33,10 @@ export const Input = styled.input`
   border: solid 1px #b3b3b3;
   border-radius: 2px;
   font-size: 14px;
+  &:disabled {
+    background-color: #f3f3f3;
+    color: #999;
+  }
 `;
 
 export const Select = styled.select`
