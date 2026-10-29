@@ -248,8 +248,23 @@ module MercariHelper
       購入金額10,000円以上で、送料無料となります。(各商品金額には7インチは送料240円、LPは送料850円が含まれております。そのため、『購入金額10,000円以上で送料無料』が適用される金額は、各商品金額から各送料を引いた金額の合計となります。)
     LP
 
+    low_price_note = <<~NOTE
+      #{ListingTemplateHelper::LOW_PRICE_NOTE_JP}
+
+    NOTE
+
+    listening = <<~LISTENING
+
+      ●試聴:
+
+      #{'A. ' if !is_lp}#{value['title'].split(' / ')[0]}
+      #{value['mp3_A']}
+      #{mp3_B if value['mp3_B'].present?}
+      #{listening_note}
+    LISTENING
+
     description = <<~PRODUCT
-      ●Artist: #{value['artist'].gsub('_', ', ')}
+      #{low_price_note if low_price?(value)}●Artist: #{value['artist'].gsub('_', ', ')}
 
       ●Title: #{value['title']}
 
@@ -289,13 +304,7 @@ module MercariHelper
       発送につきましては、平日のみ行っております。大変申し訳ございませんが、土曜日・日曜日・祝日の発送は行っておりませんので、何卒ご理解のほどよろしくお願い申し上げます。
 
       その他ご不明な点やご要望などございましたら、お気軽にご連絡ください。
-
-      ●試聴:
-
-      #{'A. ' if !is_lp}#{value['title'].split(' / ')[0]}
-      #{value['mp3_A']}
-      #{mp3_B if value['mp3_B'].present?}
-      #{listening_note}
+      #{listening if mp3_present?(value)}
     PRODUCT
 
     description

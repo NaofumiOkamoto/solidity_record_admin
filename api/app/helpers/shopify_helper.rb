@@ -395,6 +395,8 @@ module ShopifyHelper
       tags << 'new-releases'
     end
 
+    tags << 'low-price' if low_price?(value)
+
     tags.join(', ')
   end
 
@@ -422,7 +424,7 @@ module ShopifyHelper
     mp3_B = "<audio controls controlslist=\"nodownload\" src=\"//drive.google.com/uc?id=#{value['mp3_B']}\"></audio>"
 
     # is_link = ['2LP','3LP','Gatefold LP','LP','2 LP', '3 LP'].exclude?(value['format'])
-    is_link = value['mp3_A'].present?
+    is_link = mp3_present?(value)
 
     link_message_new = if is_inch
       <<~LINK_MESSAGE
@@ -452,8 +454,13 @@ module ShopifyHelper
 
     splited_title = value['title'].split(' / ')
     title_in_link = <<~TITLE
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: <A style="color: #2653D9; border: none" href="#{value['mp3_A']}" target="_blank">#{splited_title[0]}</A> #{'/' if value['mp3_B'].present? && splited_title[1].present?} <A style="color: #2653D9; border: none;" href="#{value['mp3_B']}" target="_blank">#{splited_title[1]}</A></span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{linked_title(value, anchor_attrs: 'style="color: #2653D9; border: none;" target="_blank" ')}</span></p>
     TITLE
+
+    low_price_note = <<~NOTE
+      <p data-mce-fragment="1"><span data-mce-fragment="1">#{ListingTemplateHelper::LOW_PRICE_NOTE_JP}</span></p>
+      <p data-mce-fragment="1"><span data-mce-fragment="1">#{ListingTemplateHelper::LOW_PRICE_NOTE_EN}</span></p>
+    NOTE
 
     title_not_in_link = <<~TITLE
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Title: #{splited_title[0]}#{splited_title[1] ? ' / ' + splited_title[1] : ''}</span></p>
@@ -461,7 +468,7 @@ module ShopifyHelper
 
     description = <<~BODY
       <meta charset="utf-8">
-      <p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist'].gsub('_', ', ')}</span></p>
+      #{low_price_note if low_price?(value)}<p data-mce-fragment="1"><span data-mce-fragment="1">●Artist: #{value['artist'].gsub('_', ', ')}</span></p>
       #{is_link ? title_in_link : title_not_in_link}#{link_message if is_link}<p data-mce-fragment="1"><span data-mce-fragment="1">●Label: #{value['label']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Country: #{value['country']}</span></p>
       <p data-mce-fragment="1"><span data-mce-fragment="1">●Number: #{value['number']}</span></p>

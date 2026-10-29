@@ -205,11 +205,11 @@ module YahooAuctionHelper
 
     caption = <<~CAPTION
 
-    ●Artist: #{value['artist'].gsub('_', ', ')}<br><br>
+    #{"#{ListingTemplateHelper::LOW_PRICE_NOTE_JP}<br><br>\n\n" if low_price?(value)}●Artist: #{value['artist'].gsub('_', ', ')}<br><br>
 
-    ●Title: <A href="#{value['mp3_A']}">#{value['title'].split(' / ')[0]}</A> #{'/' if value['mp3_B'].present? && value['title'].split(' / ')[1].present?} <A href="#{value['mp3_B']}">#{value['title'].split(' / ')[1]}</A><br><br>
+    ●Title: #{linked_title(value)}<br><br>
 
-    #{listening_note}<br><br>
+    #{"#{listening_note}<br><br>" if mp3_present?(value)}
 
     ●Label: #{value['label']}<br><br>
 
