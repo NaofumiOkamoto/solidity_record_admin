@@ -22,6 +22,30 @@ class Product < ApplicationRecord
     self.class.parse_genre_ids(genre)
   end
 
+  # 商品詳細（docs/03-product-detail.md）で返す列。
+  # 未使用の11項目（99 B-2 で「詳細にも出さない」と確定）とタイムスタンプは返さない。
+  DETAIL_COLUMNS = %w[
+    SKU discogs_release_id artist title label country number release_year genre format item_condition
+    record_grading cover_grading record_description_jp record_description_en
+    cover_description_jp cover_description_en mp3_A mp3_B weight img_count
+    price_jpy price_usd cost_price quantity registration_date sold_date sold_site sales_status
+    recoding_date track_list personnel discogs_listing_id
+  ].freeze
+
+  # 同じ discogs_release_id の商品として並べる列（99 B-6 で確定）
+  SAME_RELEASE_COLUMNS = %w[SKU record_grading price_jpy price_usd quantity].freeze
+
+  # 同じ盤（discogs_release_id が同じ）の他の商品。新しい SKU が先。
+  # release_id が空か 0 の商品同士は同じ盤ではないので並べない
+  def same_release_products
+    return Product.none if discogs_release_id.blank? || discogs_release_id.zero?
+
+    Product.where(discogs_release_id: discogs_release_id)
+           .where.not(SKU: self.SKU)
+           .order(SKU: :desc)
+           .select(*SAME_RELEASE_COLUMNS)
+  end
+
   SP_HEADER = [
     'SKU',
     'artist',

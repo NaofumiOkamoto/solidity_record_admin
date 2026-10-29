@@ -92,3 +92,58 @@ export type GenreForm = {
   yahoo_auction_category: string;
   tags: string;
 };
+
+// GET /api/products/:sku の戻り値（docs/03-product-detail.md）。
+// 未使用の11項目とタイムスタンプは API が返さない
+export type ProductDetail = {
+  SKU: number;
+  discogs_release_id: number | null;
+  artist: string | null;
+  title: string | null;
+  label: string | null;
+  country: string | null;
+  number: string | null;
+  release_year: number | null;
+  genre: string | null;
+  format: string | null;
+  item_condition: string | null;
+  record_grading: string | null;
+  cover_grading: string | null;
+  record_description_jp: string | null;
+  record_description_en: string | null;
+  cover_description_jp: string | null;
+  cover_description_en: string | null;
+  mp3_A: string | null;
+  mp3_B: string | null;
+  weight: number | null;
+  img_count: number | null;
+  price_jpy: number | null;
+  price_usd: number | null;
+  cost_price: string | null;
+  quantity: number | null;
+  registration_date: string | null;
+  sold_date: string | null;
+  sold_site: string | null;
+  sales_status: string | null;
+  // eBay の商品説明にだけ出る項目。登録フォームには載せない（99 B-1）
+  recoding_date: string | null;
+  track_list: string | null;
+  personnel: string | null;
+  discogs_listing_id: number | null;
+};
+
+// 同じ discogs_release_id の他の商品（99 B-6）
+export type SameReleaseItem = {
+  SKU: number;
+  record_grading: string | null;
+  price_jpy: number | null;
+  price_usd: number | null;
+  quantity: number | null;
+};
+
+export type ProductDetailResponse = {
+  product: ProductDetail;
+  // product.genre に含まれる id のうち、マスタにあるもの
+  genres: GenreOption[];
+  same_release: SameReleaseItem[];
+};

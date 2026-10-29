@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { GenreOption, Product } from '../types/product';
 
@@ -64,6 +66,7 @@ const Td = styled.td<{ $align?: string; $maxWidth?: string }>`
   text-overflow: ellipsis;
 `;
 const Row = styled.tr`
+  cursor: pointer;
   &:nth-child(even) {
     background-color: #fafafa;
   }
@@ -76,6 +79,14 @@ const Empty = styled.p`
   padding: 40px;
   text-align: center;
   color: #777;
+`;
+// Ctrl / ⌘ + クリックで別タブに開けるよう、SKU だけは本物のリンクにする
+const SkuLink = styled(Link)`
+  color: #3b5d8f;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 const Arrow = styled.span`
   margin-left: 4px;
@@ -94,6 +105,19 @@ type Props = {
 
 export const ProductTable = ({ products, genres, sort, order, onSortChange }: Props) => {
   const genreNames = new Map(genres.map((genre) => [String(genre.id), genre.sub]));
+  const navigate = useNavigate();
+  const location = useLocation();
+  // 詳細の「一覧に戻る」で検索条件・ページ・ソートごと戻れるよう、今の一覧の URL を渡す
+  const fromList = { from: `${location.pathname}${location.search}` };
+
+  // 行のどこを押しても詳細へ移る。ただしリンクや入力欄の上で押したときはそちらの操作を優先する
+  // （SKU のリンクは自前で遷移する。在庫などを一覧で編集できるようにしたときに入力欄を置くため）
+  const handleRowClick = (event: MouseEvent<HTMLTableRowElement>, sku: number) => {
+    if ((event.target as HTMLElement).closest('a, button, input, select, textarea, label')) return;
+    // 文字列を選択してコピーしようとしたときは移らない
+    if (window.getSelection()?.toString()) return;
+    navigate(`/products/${sku}`, { state: fromList });
+  };
 
   // "1_19" → "Soul, 2000's ~ Soul (New)"。マスタに無い id は #1000 の形で見えるようにする
   const genreLabel = (value: string | null) => {
@@ -119,7 +143,7 @@ export const ProductTable = ({ products, genres, sort, order, onSortChange }: Pr
       </thead>
       <tbody>
         {products.map((product) => (
-          <Row key={product.SKU}>
+          <Row key={product.SKU} onClick={(event) => handleRowClick(event, product.SKU)}>
             {COLUMNS.map((column) => {
               const raw = product[column.key];
               const text =
@@ -127,7 +151,13 @@ export const ProductTable = ({ products, genres, sort, order, onSortChange }: Pr
               return (
                 // 省略表示した文字列はホバーで全文を出す
                 <Td key={column.key} $align={column.align} $maxWidth={column.maxWidth} title={text}>
-                  {text}
+                  {column.key === 'SKU' ? (
+                    <SkuLink to={`/products/${product.SKU}`} state={fromList}>
+                      {text}
+                    </SkuLink>
+                  ) : (
+                    text
+                  )}
                 </Td>
               );
             })}
