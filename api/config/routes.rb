@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'delete_product_csv/new', to: 'delete_product_csv#new'
 
   namespace :api do
-    resources :products, only: %i[index show], param: :sku do
+    resources :products, only: %i[index show update], param: :sku do
       collection do
         get :filter_options
       end

@@ -32,6 +32,37 @@ class Product < ApplicationRecord
     recoding_date track_list personnel discogs_listing_id
   ].freeze
 
+  # 管理画面の編集フォームから変えられる列（docs/03-product-detail.md）。
+  # SKU は専用の操作で変える（影響が大きいため）。eBay 用の3項目はフォームに載せない（99 B-1）。
+  # discogs_listing_id は Discogs API から書き戻す列なので人には触らせない。
+  EDITABLE_COLUMNS = (DETAIL_COLUMNS - %w[SKU recoding_date track_list personnel discogs_listing_id]).freeze
+
+  ITEM_CONDITIONS = %w[New Used].freeze
+
+  # 入力チェックは管理画面から保存するときだけ効かせる（valid?(:admin_form)）。
+  # 既存データには通らない行があり（artist 空1件、release_year が "197" の4件など。2026-10 時点）、
+  # 常に効かせると discogs_update_listings_helper の product.update(discogs_listing_id: ...) が
+  # それらの商品で黙って失敗するようになるため。スプレッドシート取込は upsert_all なのでもともと通らない。
+  with_options on: :admin_form do
+    validates :artist, :title, presence: true
+    validates :item_condition, inclusion: { in: ITEM_CONDITIONS }
+    validates :price_jpy, :weight, :img_count, :quantity,
+              numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+    validates :price_usd, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+    validates :discogs_release_id, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+    validates :release_year,
+              numericality: { only_integer: true, greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999 },
+              allow_nil: true
+    # 文字列の列はすべて varchar(255)
+    validates :artist, :title, :label, :country, :number, :genre, :format, :item_condition,
+              :record_grading, :cover_grading, :record_description_jp, :record_description_en,
+              :cover_description_jp, :cover_description_en, :mp3_A, :mp3_B,
+              :cost_price, :sold_site, :sales_status,
+              length: { maximum: 255 }
+    validate :dates_must_be_parsable
+    validate :genre_ids_must_exist
+  end
+
   # 同じ discogs_release_id の商品として並べる列（99 B-6 で確定）
   SAME_RELEASE_COLUMNS = %w[SKU record_grading price_jpy price_usd quantity].freeze
 
@@ -252,6 +283,27 @@ class Product < ApplicationRecord
   end
 
   private
+
+  # 日付として読めない文字列は、型変換で黙って nil になり「未入力」と区別がつかなくなるので、元の値で判定する
+  def dates_must_be_parsable
+    %w[registration_date sold_date].each do |column|
+      raw = read_attribute_before_type_cast(column)
+      errors.add(column, :invalid_date) if raw.present? && self[column].nil?
+    end
+  end
+
+  # genre は "1_19" のような id の連結。マスタに無い id を入れると CSV 出力でジャンルが欠落する
+  def genre_ids_must_exist
+    return if genre.blank?
+
+    unless genre.match?(/\A\d+(_\d+)*\z/)
+      errors.add(:genre, :invalid_genre_format)
+      return
+    end
+
+    missing = genre_ids - Genre.where(id: genre_ids).pluck(:id)
+    errors.add(:genre, :unknown_genre, ids: missing.join(', ')) if missing.any?
+  end
 
   # SKU が数値として入っていない行は取り込まない。
   # 入荷登録の途中（artist, title だけ記入して SKU は未記入）の状態でCSVを出力すると、

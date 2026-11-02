@@ -9,6 +9,12 @@ ja:
       not_a_number: "は数値で入力してください"
       not_an_integer: "は整数で入力してください"
       greater_than: "は%{count}より大きい値にしてください"
+      greater_than_or_equal_to: "は%{count}以上の値にしてください"
+      less_than_or_equal_to: "は%{count}以下の値にしてください"
+      inclusion: "は一覧にない値です"
+      invalid_date: "は日付として読めません（例: 2026-10-29）"
+      invalid_genre_format: "はジャンル id を _ でつないだ形式にしてください（例: 1_19）"
+      unknown_genre: "にジャンルマスタに無い id が含まれています（%{ids}）"
       too_long: "は%{count}文字以内で入力してください"
   activerecord:
     attributes:
