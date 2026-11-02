@@ -129,9 +129,12 @@ const Tip = styled.div`
   }
 `;
 
-// 編集を有効にしている間に画面へ出す、まだできていないこと。実装したらここから消す
+// 注意書きのツールチップに出す、まだできていないこと。実装したらここから消す。
+// 先頭の「保存」だけは、編集できるか（EDITABLE）で文を変える
 const NOT_YET = [
-  '保存：「保存」を押しても入力内容のチェックだけで、DB にもスプレッドシートにも書き込みません',
+  EDITABLE
+    ? '保存：「保存」を押しても入力内容のチェックだけで、DB にもスプレッドシートにも書き込みません'
+    : '編集・保存：この画面ではまだ編集できません（保存先が決まっていないため）',
   'Discogs 読込：「読込」ボタンはまだ押せません',
   'SKU の変更：今後「SKU を変更」ボタンを別に設ける予定です。SKU は画像・試聴音源のファイル名や Shopify の Handle に使われているため、押すと影響を表示して確認を取り、変更先の SKU が重複していないかを確かめてから変えます',
 ];
@@ -336,30 +339,27 @@ export const ProductForm = () => {
       {!isLoading && initialValues && (
         <>
           <Notice>
-            {EDITABLE ? (
-              <>
-                <p>編集の確認用です。商品の修正はこれまでどおりスプレッドシートで行ってください。</p>
-                <TipWrap>
-                  <TipTrigger type="button">未対応・検討中の機能</TipTrigger>
-                  <Tip role="tooltip">
-                    <p>まだできていないこと</p>
-                    <ul>
-                      {NOT_YET.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                    <p>検討中のこと</p>
-                    <ul>
-                      {UNDER_CONSIDERATION.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </Tip>
-                </TipWrap>
-              </>
-            ) : (
-              <p>現在は閲覧のみです。商品の修正はこれまでどおりスプレッドシートで行ってください。</p>
-            )}
+            <p>
+              {EDITABLE ? '編集の確認用です。' : '現在は閲覧のみです。'}
+              商品の修正はこれまでどおりスプレッドシートで行ってください。
+            </p>
+            <TipWrap>
+              <TipTrigger type="button">未対応・検討中の機能</TipTrigger>
+              <Tip role="tooltip">
+                <p>まだできていないこと</p>
+                <ul>
+                  {NOT_YET.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <p>検討中のこと</p>
+                <ul>
+                  {UNDER_CONSIDERATION.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Tip>
+            </TipWrap>
           </Notice>
 
           <ProductFields
