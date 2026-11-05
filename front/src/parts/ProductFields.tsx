@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { DescriptionPicker } from './DescriptionPicker';
 import { GenrePicker } from './GenrePicker';
 import { Button, FieldLabel, Input, Select } from './ui';
+import { DescriptionTarget } from '../lib/descriptionTemplates';
 import { FilterOptions, ProductDetail } from '../types/product';
 
 // 商品の入力欄一式（docs/03-product-detail.md）。詳細兼編集（/products/:sku）と、
@@ -40,6 +42,8 @@ export type Field = {
   readOnly?: boolean;
   // 入力欄の下に出す説明（編集できるときだけ）
   hint?: string;
+  // 日本語の説明文の欄に「定型文から選ぶ」を付ける。英語の欄（_jp → _en）も一緒に書き換える
+  templates?: DescriptionTarget;
 };
 
 const GRADES = ['M', 'NM', 'EX+', 'EX', 'EX-', 'VG+', 'VG', 'VG-', 'G+', 'G'] as const;
@@ -111,9 +115,9 @@ const COLUMNS: Section[][] = [
         // 固定の10段階の後ろに、実データにある中間の値（VG_VG+ など。2026-11 時点で全体の3割）を足す
         { key: 'record_grading', kind: 'combo', choices: GRADES, moreChoices: GRADE_COLUMNS },
         { key: 'cover_grading', kind: 'combo', choices: GRADES, moreChoices: GRADE_COLUMNS },
-        { key: 'record_description_jp', kind: 'textarea' },
+        { key: 'record_description_jp', kind: 'textarea', templates: 'record' },
         { key: 'record_description_en', kind: 'textarea' },
-        { key: 'cover_description_jp', kind: 'textarea' },
+        { key: 'cover_description_jp', kind: 'textarea', templates: 'cover' },
         { key: 'cover_description_en', kind: 'textarea' },
         { key: 'mp3_A', kind: 'link' },
         { key: 'mp3_B', kind: 'link' },
@@ -313,6 +317,12 @@ const PickButton = styled(Button)<{ $invalid?: boolean }>`
   font-size: 13px;
   ${(p) => (p.$invalid ? 'border-color: #c0392b;' : '')}
 `;
+const TemplateButton = styled(Button)`
+  margin-top: 6px;
+  padding: 4px 12px;
+  font-weight: normal;
+  font-size: 12px;
+`;
 const Placeholder = styled.span`
   font-size: 13px;
   color: #bbb;
@@ -331,6 +341,7 @@ type Props = {
 export const ProductFields = ({ values, initialValues, errors, options, editable, onChange }: Props) => {
   const genres = options?.genres || [];
   const [genrePickerOpen, setGenrePickerOpen] = useState(false);
+  const [templateTarget, setTemplateTarget] = useState<DescriptionTarget | null>(null);
 
   const valuesOf = (column: keyof FilterOptions): string[] => {
     const list = options?.[column];
@@ -501,6 +512,11 @@ export const ProductFields = ({ values, initialValues, errors, options, editable
         {editable && (values[field.key] ?? '') !== (initialValues[field.key] ?? '') && <Changed>変更あり</Changed>}
       </FieldLabel>
       {renderControl(field)}
+      {editable && field.templates && (
+        <TemplateButton type="button" onClick={() => setTemplateTarget(field.templates || null)}>
+          定型文から選ぶ…
+        </TemplateButton>
+      )}
       {editable && field.hint && <Hint>{field.hint}</Hint>}
       {errors[field.key]?.map((message) => (
         <ErrorText key={message}>
@@ -543,6 +559,19 @@ export const ProductFields = ({ values, initialValues, errors, options, editable
           })}
         </Column>
       ))}
+      {templateTarget && (
+        <DescriptionPicker
+          open
+          target={templateTarget}
+          jp={values[`${templateTarget}_description_jp`] || ''}
+          en={values[`${templateTarget}_description_en`] || ''}
+          onApply={({ jp, en }) => {
+            onChange(`${templateTarget}_description_jp`, jp);
+            onChange(`${templateTarget}_description_en`, en);
+          }}
+          onClose={() => setTemplateTarget(null)}
+        />
+      )}
     </Columns>
   );
 };

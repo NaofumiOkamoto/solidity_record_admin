@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { Modal, ModalFooter, ModalGroup, ModalGroupTitle, ModalHeader, ModalList, ModalTitle } from './Modal';
 import { Button, PrimaryButton } from './ui';
 import { GenreOption } from '../types/product';
 
@@ -18,31 +19,6 @@ type Props = {
   onClose: () => void;
 };
 
-// 枠外クリックを拾うため、dialog 自体には余白を付けず中身に付ける
-const Dialog = styled.dialog`
-  width: min(720px, calc(100vw - 32px));
-  max-height: calc(100vh - 64px);
-  padding: 0;
-  border: none;
-  border-radius: 6px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  &::backdrop {
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-`;
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 64px);
-`;
-const Header = styled.div`
-  padding: 16px 20px 12px;
-  border-bottom: solid 1px #ddd;
-`;
-const Title = styled.h2`
-  margin: 0;
-  font-size: 16px;
-`;
 const Selected = styled.p`
   margin: 10px 0 0;
   font-size: 13px;
@@ -59,23 +35,6 @@ const Hint = styled.span`
   font-size: 12px;
   color: #999;
 `;
-const List = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px 20px 16px;
-`;
-const Group = styled.fieldset`
-  margin: 8px 0 0;
-  padding: 0;
-  border: none;
-`;
-const GroupTitle = styled.legend`
-  padding: 0;
-  margin-bottom: 4px;
-  font-size: 13px;
-  font-weight: bold;
-  color: #555;
-`;
 const Options = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -89,29 +48,16 @@ const Option = styled.label`
   font-size: 14px;
   cursor: pointer;
 `;
-const Footer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  padding: 12px 20px;
-  border-top: solid 1px #ddd;
-`;
 
-export const GenrePicker = ({ open, genres, selected, onApply, onClose }: Props) => {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const [draft, setDraft] = useState<number[]>([]);
+export const GenrePicker = ({ open, onClose, ...rest }: Props) => (
+  <Modal open={open} onClose={onClose}>
+    <GenrePickerBody onClose={onClose} {...rest} />
+  </Modal>
+);
 
-  // 開くたびに今の値から始める（前回キャンセルした途中の状態は持ち越さない）
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      setDraft(selected);
-      dialog.showModal();
-    } else if (!open && dialog.open) {
-      dialog.close();
-    }
-  }, [open, selected]);
+// 開いている間だけ描画される。draft は開くたびに今の値から始まる
+const GenrePickerBody = ({ genres, selected, onApply, onClose }: Omit<Props, 'open'>) => {
+  const [draft, setDraft] = useState<number[]>(selected);
 
   const byId = new Map(genres.map((genre) => [genre.id, genre]));
   const nameOf = (id: number) => byId.get(id)?.sub || `id ${id}（マスタに無し）`;
@@ -132,66 +78,52 @@ export const GenrePicker = ({ open, genres, selected, onApply, onClose }: Props)
   );
 
   return (
-    <Dialog
-      ref={dialogRef}
-      // Esc で閉じたとき
-      onCancel={(e) => {
-        e.preventDefault();
-        onClose();
-      }}
-      onClick={(e) => e.target === dialogRef.current && onClose()}
-    >
-      {open && (
-        <Body>
-          <Header>
-            <Title>ジャンルを選択</Title>
-            <Selected>
-              選択中（{draft.length}）:{' '}
-              {draft.length === 0
-                ? 'なし'
-                : draft.map((id, index) => (
-                    <span key={id}>
-                      {index > 0 && '、'}
-                      <Order>{index + 1}.</Order>
-                      {nameOf(id)}
-                    </span>
-                  ))}
-              <Hint>
-                先頭のジャンルでメルカリ・ヤフオクのカテゴリが決まります。新しくチェックしたものは末尾に追加されます
-              </Hint>
-            </Selected>
-          </Header>
-          <List>
-            {Array.from(groups.entries()).map(([main, items]) => (
-              <Group key={main}>
-                <GroupTitle>{main}</GroupTitle>
-                <Options>
-                  {items.map((item) => (
-                    <Option key={item.id}>
-                      <input type="checkbox" checked={draft.includes(item.id)} onChange={() => toggle(item.id)} />
-                      {item.label}
-                    </Option>
-                  ))}
-                </Options>
-              </Group>
-            ))}
-          </List>
-          <Footer>
-            <Button type="button" onClick={onClose}>
-              キャンセル
-            </Button>
-            <PrimaryButton
-              type="button"
-              onClick={() => {
-                onApply(draft);
-                onClose();
-              }}
-            >
-              反映
-            </PrimaryButton>
-          </Footer>
-        </Body>
-      )}
-    </Dialog>
+    <>
+      <ModalHeader>
+        <ModalTitle>ジャンルを選択</ModalTitle>
+        <Selected>
+          選択中（{draft.length}）:{' '}
+          {draft.length === 0
+            ? 'なし'
+            : draft.map((id, index) => (
+                <span key={id}>
+                  {index > 0 && '、'}
+                  <Order>{index + 1}.</Order>
+                  {nameOf(id)}
+                </span>
+              ))}
+          <Hint>先頭のジャンルでメルカリ・ヤフオクのカテゴリが決まります。新しくチェックしたものは末尾に追加されます</Hint>
+        </Selected>
+      </ModalHeader>
+      <ModalList>
+        {Array.from(groups.entries()).map(([main, items]) => (
+          <ModalGroup key={main}>
+            <ModalGroupTitle>{main}</ModalGroupTitle>
+            <Options>
+              {items.map((item) => (
+                <Option key={item.id}>
+                  <input type="checkbox" checked={draft.includes(item.id)} onChange={() => toggle(item.id)} />
+                  {item.label}
+                </Option>
+              ))}
+            </Options>
+          </ModalGroup>
+        ))}
+      </ModalList>
+      <ModalFooter>
+        <Button type="button" onClick={onClose}>
+          キャンセル
+        </Button>
+        <PrimaryButton
+          type="button"
+          onClick={() => {
+            onApply(draft);
+            onClose();
+          }}
+        >
+          反映
+        </PrimaryButton>
+      </ModalFooter>
+    </>
   );
 };
