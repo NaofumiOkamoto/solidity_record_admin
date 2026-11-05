@@ -512,7 +512,8 @@ export const ProductFields = ({ values, initialValues, errors, options, editable
         {editable && (values[field.key] ?? '') !== (initialValues[field.key] ?? '') && <Changed>変更あり</Changed>}
       </FieldLabel>
       {renderControl(field)}
-      {editable && field.templates && (
+      {/* 閲覧のみの画面（本番）でも、操作のイメージを見てもらえるよう開けるようにする。反映はできない */}
+      {field.templates && (
         <TemplateButton type="button" onClick={() => setTemplateTarget(field.templates || null)}>
           定型文から選ぶ…
         </TemplateButton>
@@ -563,6 +564,7 @@ export const ProductFields = ({ values, initialValues, errors, options, editable
         <DescriptionPicker
           open
           target={templateTarget}
+          readOnly={!editable}
           jp={values[`${templateTarget}_description_jp`] || ''}
           en={values[`${templateTarget}_description_en`] || ''}
           onApply={({ jp, en }) => {

@@ -15,10 +15,15 @@ import {
 //
 // 開いたときは、今の説明文に含まれている定型文にチェックが付いた状態から始まる。
 // 反映すると定型文の部分だけが入れ替わり、手で書いた文は後ろにそのまま残る。
+//
+// 閲覧のみの画面（readOnly）でも開ける。チェックとプレビューはできるが、「反映」は出さない。
+// 本番で操作のイメージを見てもらうため（2026-11-05）。
 
 type Props = {
   open: boolean;
   target: DescriptionTarget;
+  // 閲覧のみ。「反映」を出さない
+  readOnly?: boolean;
   jp: string;
   en: string;
   onApply: (next: { jp: string; en: string }) => void;
@@ -85,7 +90,7 @@ export const DescriptionPicker = ({ open, onClose, ...rest }: Props) => (
 );
 
 // 開いている間だけ描画される。チェックは開くたびに今の説明文から作り直す
-const DescriptionPickerBody = ({ target, jp, en, onApply, onClose }: Omit<Props, 'open'>) => {
+const DescriptionPickerBody = ({ target, readOnly, jp, en, onApply, onClose }: Omit<Props, 'open'>) => {
   const templates = DESCRIPTION_TEMPLATES.filter((template) => template.target === target);
   const [checked, setChecked] = useState<string[]>(() => usedTemplateIds(templates, jp));
 
@@ -101,7 +106,10 @@ const DescriptionPickerBody = ({ target, jp, en, onApply, onClose }: Omit<Props,
     <>
       <ModalHeader>
         <ModalTitle>{TITLES[target]}</ModalTitle>
-        <Notice>定型文は操作のイメージ用の仮のものです</Notice>
+        <Notice>
+          定型文は操作のイメージ用の仮のものです。
+          {readOnly && '閲覧のみのため、チェックして反映後の文を確かめるところまでで、欄には反映できません。'}
+        </Notice>
       </ModalHeader>
       <ModalList>
         {Array.from(groups.entries()).map(([category, items]) => (
@@ -135,17 +143,19 @@ const DescriptionPickerBody = ({ target, jp, en, onApply, onClose }: Omit<Props,
       </Preview>
       <ModalFooter>
         <Button type="button" onClick={onClose}>
-          キャンセル
+          {readOnly ? '閉じる' : 'キャンセル'}
         </Button>
-        <PrimaryButton
-          type="button"
-          onClick={() => {
-            onApply({ jp: result.jp, en: result.en });
-            onClose();
-          }}
-        >
-          反映
-        </PrimaryButton>
+        {!readOnly && (
+          <PrimaryButton
+            type="button"
+            onClick={() => {
+              onApply({ jp: result.jp, en: result.en });
+              onClose();
+            }}
+          >
+            反映
+          </PrimaryButton>
+        )}
       </ModalFooter>
     </>
   );
