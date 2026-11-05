@@ -55,6 +55,9 @@ export type FilterOptions = {
   sold_site: FilterOption[];
   country: FilterOption[];
   format: FilterOption[];
+  // 編集フォームのグレードの入力候補に、中間の値（VG_VG+ など）を足すために使う
+  record_grading: FilterOption[];
+  cover_grading: FilterOption[];
   genres: GenreOption[];
 };
 

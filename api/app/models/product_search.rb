@@ -46,8 +46,10 @@ class ProductSearch
     price_jpy price_usd registration_date sold_date sold_site quantity
   ].freeze
 
-  # プルダウンの選択肢を実データから作る列
-  FILTER_OPTION_COLUMNS = %w[item_condition sales_status sold_site country format].freeze
+  # プルダウンの選択肢を実データから作る列。
+  # record_grading / cover_grading は検索フォームでは使わず、編集フォームの入力候補に
+  # VG_VG+ のような中間の値を足すために返している
+  FILTER_OPTION_COLUMNS = %w[item_condition sales_status sold_site country format record_grading cover_grading].freeze
 
   DEFAULT_PER_PAGE = 50
   MAX_PER_PAGE = 100

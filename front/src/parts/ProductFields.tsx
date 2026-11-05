@@ -34,6 +34,8 @@ export type Field = {
   kind?: Kind;
   // 選択肢。options（実データ）から引く列名か、固定の候補
   choices?: keyof FilterOptions | readonly string[];
+  // 固定の候補の後ろに足す、実データの値を引く列名。固定の候補に無い値だけ足す
+  moreChoices?: (keyof FilterOptions)[];
   // 編集可能な画面でも入力させない
   readOnly?: boolean;
   // 入力欄の下に出す説明（編集できるときだけ）
@@ -41,6 +43,25 @@ export type Field = {
 };
 
 const GRADES = ['M', 'NM', 'EX+', 'EX', 'EX-', 'VG+', 'VG', 'VG-', 'G+', 'G'] as const;
+// グレードは record / cover で同じ尺度なので、両方の列の実データから中間の値を拾う
+const GRADE_COLUMNS: (keyof FilterOptions)[] = ['record_grading', 'cover_grading'];
+
+// "VG_VG+" → [6, 5]。GRADES に無い部分は後ろに回す
+const gradeRank = (value: string) =>
+  value.split('_').map((part) => {
+    const index = (GRADES as readonly string[]).indexOf(part);
+    return index === -1 ? GRADES.length : index;
+  });
+
+// 良いグレードから順に並べる（先頭の部分で比べ、同じなら次の部分で比べる）
+const compareGrades = (a: string, b: string) => {
+  const [ra, rb] = [gradeRank(a), gradeRank(b)];
+  for (let i = 0; i < Math.max(ra.length, rb.length); i += 1) {
+    const diff = (ra[i] ?? -1) - (rb[i] ?? -1);
+    if (diff !== 0) return diff;
+  }
+  return a.localeCompare(b);
+};
 const ITEM_CONDITIONS = ['New', 'Used'] as const;
 
 type Section = {
@@ -87,8 +108,9 @@ const COLUMNS: Section[][] = [
     {
       title: 'コンディション・メディア',
       fields: [
-        { key: 'record_grading', kind: 'combo', choices: GRADES },
-        { key: 'cover_grading', kind: 'combo', choices: GRADES },
+        // 固定の10段階の後ろに、実データにある中間の値（VG_VG+ など。2026-11 時点で全体の3割）を足す
+        { key: 'record_grading', kind: 'combo', choices: GRADES, moreChoices: GRADE_COLUMNS },
+        { key: 'cover_grading', kind: 'combo', choices: GRADES, moreChoices: GRADE_COLUMNS },
         { key: 'record_description_jp', kind: 'textarea' },
         { key: 'record_description_en', kind: 'textarea' },
         { key: 'cover_description_jp', kind: 'textarea' },
@@ -310,11 +332,20 @@ export const ProductFields = ({ values, initialValues, errors, options, editable
   const genres = options?.genres || [];
   const [genrePickerOpen, setGenrePickerOpen] = useState(false);
 
+  const valuesOf = (column: keyof FilterOptions): string[] => {
+    const list = options?.[column];
+    return Array.isArray(list) ? (list as { value?: string }[]).map((item) => item.value || '').filter(Boolean) : [];
+  };
+
   const choicesOf = (field: Field): string[] => {
     if (!field.choices) return [];
-    if (typeof field.choices !== 'string') return [...field.choices];
-    const list = options?.[field.choices];
-    return Array.isArray(list) ? (list as { value?: string }[]).map((item) => item.value || '').filter(Boolean) : [];
+    if (typeof field.choices === 'string') return valuesOf(field.choices);
+    const fixed = [...field.choices];
+    if (!field.moreChoices) return fixed;
+    const more = Array.from(new Set(field.moreChoices.flatMap(valuesOf)))
+      .filter((value) => !fixed.includes(value))
+      .sort(compareGrades);
+    return [...fixed, ...more];
   };
 
   const genreName = (id: number) => {
