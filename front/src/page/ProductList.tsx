@@ -12,6 +12,8 @@ import { Select } from '../parts/ui';
 
 const PER_PAGE_OPTIONS = [25, 50, 100];
 const DEFAULT_PER_PAGE = 50;
+// API の ProductSearch::DEFAULT_SORT と対応する。最新の登録順（降順）が既定
+const DEFAULT_SORT = 'registration_date';
 
 const ResultHeader = styled.div`
   display: flex;
@@ -74,7 +76,7 @@ export const ProductList = () => {
   }, [queryString]);
 
   const perPage = Number(searchParams.get('per_page')) || DEFAULT_PER_PAGE;
-  const sort = searchParams.get('sort') || 'SKU';
+  const sort = searchParams.get('sort') || DEFAULT_SORT;
   const order = searchParams.get('order') === 'asc' ? 'asc' : 'desc';
 
   useEffect(() => {
@@ -124,7 +126,7 @@ export const ProductList = () => {
     updateParams({
       ...nextValues,
       per_page: perPage === DEFAULT_PER_PAGE ? '' : perPage,
-      sort: sort === 'SKU' ? '' : sort,
+      sort: sort === DEFAULT_SORT ? '' : sort,
       order: order === 'desc' ? '' : order,
     });
 
@@ -145,7 +147,7 @@ export const ProductList = () => {
     updateParams({
       ...values,
       per_page: nextPerPage === DEFAULT_PER_PAGE ? '' : nextPerPage,
-      sort: sort === 'SKU' ? '' : sort,
+      sort: sort === DEFAULT_SORT ? '' : sort,
       order: order === 'desc' ? '' : order,
     });
 

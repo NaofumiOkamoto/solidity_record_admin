@@ -6,10 +6,15 @@ export type Product = {
   label: string | null;
   country: string | null;
   number: string | null;
-  release_year: number | null;
   genre: string | null;
   format: string | null;
   item_condition: string | null;
+  price_jpy: number | null;
+  price_usd: number | null;
+  // "2026-10-29" の形
+  registration_date: string | null;
+  sold_date: string | null;
+  sold_site: string | null;
   quantity: number | null;
 };
 

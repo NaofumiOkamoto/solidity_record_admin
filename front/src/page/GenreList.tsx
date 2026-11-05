@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import ReactLoading from 'react-loading';
 import styled from 'styled-components';
 import { Layout } from '../parts/Layout';
@@ -119,8 +119,13 @@ const Count = styled.p`
   font-size: 14px;
   color: #555;
 `;
+// 表の中だけをスクロールさせ、見出し行（Th の position: sticky）を常に見えるようにする。
+// 横スクロールのために overflow を付けている以上、sticky はこの箱に対して効くため、
+// 箱に高さの上限が無いと縦に伸びきってしまい見出しが固定されない。
+// 上限は画面の高さからヘッダー・見出し・件数・追加ボタンのぶんを引いたもの
 const Scroll = styled.div`
-  overflow-x: auto;
+  overflow: auto;
+  max-height: max(320px, calc(100vh - 230px));
   background-color: #fff;
   border: solid 1px #ddd;
   border-radius: 4px;
@@ -306,6 +311,7 @@ type Editing = number | 'new' | null;
 export const GenreList = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [editing, setEditing] = useState<Editing>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [draft, setDraft] = useState<GenreFormValues>(EMPTY);
   const [rowErrors, setRowErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -364,6 +370,12 @@ export const GenreList = () => {
     setRowErrors([]);
     setFlash(null);
   };
+
+  // 追加の行は表の末尾に出るので、表の中を一番下までスクロールして見えるようにする
+  useEffect(() => {
+    if (editing !== 'new' || !scrollRef.current) return;
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [editing]);
 
   // API のバリデーションエラー（422）は日本語で返ってくるのでそのまま表示する
   const errorsOf = (e) => e?.response?.data?.errors || ['保存に失敗しました。入力内容を確認してください。'];
@@ -531,7 +543,7 @@ export const GenreList = () => {
         !loadError && (
           <>
             <Count>{genres.length}件</Count>
-            <Scroll>
+            <Scroll ref={scrollRef}>
               <Table>
                 <colgroup>
                   {COLUMNS.map((column) => (

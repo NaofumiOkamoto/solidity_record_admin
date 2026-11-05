@@ -28,20 +28,22 @@ class ProductSearch
   # ソート可能な列。ここに無い値が来たら DEFAULT_SORT にフォールバックする。
   # 許可リストにしているのは SQL インジェクション対策であり、列を絞る意図はない。
   # 一覧に出している列はすべてソートできるようにしてある。
-  # price_jpy / registration_date / sold_date は一覧に出していないが、
-  # URL に直接書けば並び替えられるよう残している。
+  # release_year は 2026-11-05 に一覧から外したが、URL に直接書けば並び替えられるよう残している。
   # インデックスの無い列も含むが、2万件では filesort でも 0.1 秒台で返る（2026-09-20 実測）。
   SORTABLE = %w[
     SKU artist title label country number
-    release_year genre format item_condition quantity
-    price_jpy registration_date sold_date
+    release_year genre format item_condition
+    price_jpy price_usd registration_date sold_date sold_site quantity
   ].freeze
-  DEFAULT_SORT = 'SKU'.freeze
+  # 最新の登録順（降順）が既定（クライアント依頼・2026-11-05）。
+  # registration_date が空の商品は MySQL の降順では最後に回る
+  DEFAULT_SORT = 'registration_date'.freeze
 
-  # 一覧に返す列（A-2 でクライアント確定。2026-09-20 に見直し）
+  # 一覧に返す列（A-2 でクライアント確定。2026-09-20 に見直し、2026-11-05 にクライアント依頼で変更）
   LIST_COLUMNS = %w[
     SKU artist title label country number
-    release_year genre format item_condition quantity
+    genre format item_condition
+    price_jpy price_usd registration_date sold_date sold_site quantity
   ].freeze
 
   # プルダウンの選択肢を実データから作る列

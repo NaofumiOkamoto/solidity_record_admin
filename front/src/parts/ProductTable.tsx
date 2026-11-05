@@ -11,7 +11,7 @@ type Column = {
   maxWidth?: string;
 };
 
-// 表示する列は docs/02-product-list.md A-2 でクライアント確定（2026-09-20 見直し）
+// 表示する列は docs/02-product-list.md A-2 でクライアント確定（2026-09-20 見直し、2026-11-05 にクライアント依頼で変更）
 const COLUMNS: Column[] = [
   { key: 'SKU', label: 'SKU', align: 'right', maxWidth: '80px' },
   { key: 'artist', label: 'artist', maxWidth: '180px' },
@@ -19,15 +19,24 @@ const COLUMNS: Column[] = [
   { key: 'label', label: 'label', maxWidth: '150px' },
   { key: 'country', label: 'country', maxWidth: '100px' },
   { key: 'number', label: 'number', maxWidth: '120px' },
-  { key: 'release_year', label: 'release_year', align: 'right', maxWidth: '90px' },
   { key: 'genre', label: 'genre', maxWidth: '130px' },
   { key: 'format', label: 'format', maxWidth: '110px' },
   { key: 'item_condition', label: 'item_condition', maxWidth: '110px' },
+  { key: 'price_jpy', label: 'price_jpy', align: 'right', maxWidth: '90px' },
+  { key: 'price_usd', label: 'price_usd', align: 'right', maxWidth: '90px' },
+  { key: 'registration_date', label: 'registration_date', maxWidth: '130px' },
+  { key: 'sold_date', label: 'sold_date', maxWidth: '110px' },
+  { key: 'sold_site', label: 'sold_site', maxWidth: '130px' },
   { key: 'quantity', label: '在庫', align: 'right', maxWidth: '60px' },
 ];
 
+// 表の中だけをスクロールさせ、見出し行（Th の position: sticky）を常に見えるようにする。
+// 横スクロールのために overflow を付けている以上、sticky はこの箱に対して効くため、
+// 箱に高さの上限が無いと縦に伸びきってしまい見出しが固定されない（ジャンル一覧と同じ）。
+// 上限は、件数・ページ送りの行と下のページ送りが同じ画面に収まる高さ
 const Scroll = styled.div`
-  overflow-x: auto;
+  overflow: auto;
+  max-height: max(320px, calc(100vh - 140px));
   background-color: #fff;
   border: solid 1px #ddd;
   border-radius: 4px;
