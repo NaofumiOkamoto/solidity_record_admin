@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Csv } from './page/CsvCreate';
+import { DescriptionTemplateList } from './page/DescriptionTemplateList';
 import { GenreList } from './page/GenreList';
 import { Layout } from './parts/Layout';
 import { ProductForm } from './page/ProductForm';
@@ -14,6 +15,7 @@ export const App = () => {
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:sku" element={<ProductForm />} />
         <Route path="/genres" element={<GenreList />} />
+        <Route path="/description-templates" element={<DescriptionTemplateList />} />
         <Route
           path="/csv"
           element={

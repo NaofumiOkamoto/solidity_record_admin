@@ -30,19 +30,27 @@ export const ModalTitle = styled.h2`
   margin: 0;
   font-size: 16px;
 `;
+// 上の余白は付けない。sticky の見出し（ModalGroupTitle）は余白の内側に止まるため、
+// 余白があるとその隙間をスクロールした行が通って透けて見える。上の空きは ModalGroup の margin でとる
 export const ModalList = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 8px 20px 16px;
+  padding: 0 20px 16px;
 `;
-export const ModalGroup = styled.fieldset`
+export const ModalGroup = styled.section`
   margin: 8px 0 0;
-  padding: 0;
-  border: none;
 `;
-export const ModalGroupTitle = styled.legend`
-  padding: 0;
-  margin-bottom: 4px;
+// 分類の見出し。一覧（ModalList）をスクロールしても、今見ている分類の見出しが上に残る。
+// fieldset の legend は sticky にできないブラウザがあるため、ふつうの見出しにしている。
+// 一覧の左右の余白（20px）まで背景を広げ、下の行が透けないようにする
+export const ModalGroupTitle = styled.h3`
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 -20px 4px;
+  padding: 4px 20px;
+  background-color: #fff;
+  border-bottom: solid 1px #eee;
   font-size: 13px;
   font-weight: bold;
   color: #555;

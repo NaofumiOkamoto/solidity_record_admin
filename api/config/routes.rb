@@ -15,5 +15,10 @@ Rails.application.routes.draw do
       end
     end
     resources :genres, only: %i[index create update destroy]
+    resources :description_templates, only: %i[index create update destroy] do
+      collection do
+        post :translate
+      end
+    end
   end
 end

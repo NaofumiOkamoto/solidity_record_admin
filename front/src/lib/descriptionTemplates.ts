@@ -1,63 +1,35 @@
-// 説明文の定型文（クライアント依頼・2026-11）。
-//
-// **仮のデータ。** 操作のイメージを見てもらうために、依頼ドキュメントの例と実データでよく使われている文から
-// 適当に選んで置いている。定型文を DB で管理して石井さん側で追加・編集できるようにするかは確認中
-// （docs/03 の「説明文の定型文」）。決まったら API から取るように置き換える。
-//
-// jp は「。」で終わる文を1つ以上、en は「.」で終わる文を1つ以上。説明文はこれらを並べてつないだものになる。
+// 説明文の定型文（docs/07-description-template.md）。
+// 定型文そのものは DB のマスタ（/api/description_templates）にあり、「定型文」画面で追加・編集・削除する。
+// ここには型と、説明文に定型文を当てはめる処理を置く。
 
 export type DescriptionTarget = 'record' | 'cover';
 
+export const DESCRIPTION_TARGETS: { value: DescriptionTarget; label: string }[] = [
+  { value: 'record', label: '盤（record_description）' },
+  { value: 'cover', label: 'ジャケット（cover_description）' },
+];
+
+// jp は「。」で終わる文を1つ以上、en は「.」で終わる文を1つ以上（API 側で検証している）。
+// 説明文はこれらを並べてつないだものになる。
+//
+// A面・B面・両面だけが違う文は1件にまとめてある。jp に {面} があれば面を選べる定型文で、
+// 英語は片面なら en の {side} を A side / B side に置き換え、両面なら en_both を使う
+// （両面は「both side labels」のように複数形になり、置き換えでは作れないため）。
 export type DescriptionTemplate = {
-  id: string;
+  id: number;
   target: DescriptionTarget;
+  // モーダルでの見出し
   category: string;
   jp: string;
   en: string;
+  // 両面用の英語。jp に {面} があるときだけ使う。空なら「両面」は選べない
+  en_both: string | null;
   // どういうときに使うか。説明文には入らない
-  note?: string;
+  note: string | null;
+  // 並び順。モーダルでの表示順で、説明文に並べる順にもなる
+  position: number;
+  updated_at: string;
 };
-
-type Row = [category: string, jp: string, en: string, note?: string];
-
-const RECORD: Row[] = [
-  ['ラベルの状態', '両面のラベルに若干のダメージ。', 'Slight damage on both side labels.'],
-  ['ラベルの状態', '両面のラベルにダメージ。', 'Some damage on both side labels.'],
-  ['ラベルの状態', 'A面のラベルに若干のダメージ。', 'Slight damage on A side label.'],
-  ['ラベルの状態', 'A面のラベルにダメージ。', 'Some damage on A side label.'],
-  ['ラベルの状態', 'B面のラベルに若干のダメージ。', 'Slight damage on B side label.'],
-  ['ラベルの状態', 'B面のラベルにダメージ。', 'Some damage on B side label.'],
-  ['ラベルの状態', 'A面のラベルに書き込み。', 'Writing on A side label.'],
-  ['ラベルの状態', 'A面のラベルにステッカー。', 'Sticker on A side label.'],
-  ['盤の状態', '盤に若干の歪み。プレイOK。', "Slight edge warp. But doesn't affect playing."],
-  ['盤の状態', '盤に歪み。プレイOK。', "Edge warp. But doesn't affect playing."],
-  ['盤の状態', 'エッジに若干の欠け。', 'Slight chip on the edge.'],
-  ['盤の状態', 'エッジに欠け。', 'Chip on the edge.'],
-  ['音質', '多少の傷はあるが、おおむね良好。', 'But good shape.', 'VG+ 以上の盤に使用'],
-  ['音質', '傷はあるが、プレイはおおむね良好。', 'Plays good.', 'VG〜VG+ の盤に使用'],
-  ['音質', '傷は多いが、プレイはまずまず。', 'Plays good.', 'VG 以下の盤に使用'],
-  ['その他', 'プロモ盤。', 'Promo copy.'],
-  ['その他', 'カンパニースリーブ付き。', 'With company sleeve.'],
-  ['その他', 'ジャケットなし。', 'No cover.'],
-];
-
-const COVER: Row[] = [
-  ['付属品', '帯とインサート付き。', 'With OBI and insert.'],
-  ['付属品', '帯付き。', 'With OBI.'],
-  ['付属品', '帯なし。', 'No OBI.'],
-  ['付属品', 'インサート付き。', 'With insert.'],
-  ['付属品', 'インサートなし。', 'No insert.'],
-  ['ジャケットの状態', '見開きジャケット。', 'Gatefold cover.'],
-  ['ジャケットの状態', 'ジャケットに若干のシミ。', 'Slight brown stains on cover.'],
-  ['ジャケットの状態', 'ジャケットにシミ。', 'Some brown stains on cover.'],
-  ['帯・インサートの状態', '帯に若干のダメージ。', 'Slight damage on OBI.'],
-  ['帯・インサートの状態', 'インサートにシミ。', 'Some brown stains on insert.'],
-];
-
-const build = (target: DescriptionTarget, rows: Row[]): DescriptionTemplate[] =>
-  rows.map(([category, jp, en, note], index) => ({ id: `${target}-${index}`, target, category, jp, en, note }));
-
-export const DESCRIPTION_TEMPLATES: DescriptionTemplate[] = [...build('record', RECORD), ...build('cover', COVER)];
 
 // ---- 説明文と定型文の突き合わせ ----
 //
@@ -86,34 +58,72 @@ const removeSequence = (sentences: string[], sequence: string[]) => {
   return [...sentences.slice(0, start), ...sentences.slice(start + sequence.length)];
 };
 
-// 説明文（日本語）に含まれている定型文
-export const usedTemplateIds = (templates: DescriptionTemplate[], jp: string) => {
+export const SIDE_JP = '{面}';
+export const SIDE_EN = '{side}';
+
+export type Side = 'A' | 'B' | 'both';
+export const SIDES: { value: Side; jp: string; en: string }[] = [
+  { value: 'A', jp: 'A面', en: 'A side' },
+  { value: 'B', jp: 'B面', en: 'B side' },
+  { value: 'both', jp: '両面', en: '' },
+];
+
+export const hasSide = (template: DescriptionTemplate) => template.jp.includes(SIDE_JP);
+
+// 定型文を、実際に説明文に入る文に展開したもの。面を選べる定型文は A面・B面・両面の3つになる
+// （英語（両面）が空なら A面・B面の2つ）。
+// モーダルのチェックはこの key で持つ
+export type TemplateVariant = { key: string; template: DescriptionTemplate; side: Side | null; jp: string; en: string };
+
+const replaceAll = (text: string, from: string, to: string) => text.split(from).join(to);
+
+export const variantsOf = (template: DescriptionTemplate): TemplateVariant[] => {
+  if (!hasSide(template)) {
+    return [{ key: String(template.id), template, side: null, jp: template.jp, en: template.en }];
+  }
+  return SIDES.filter((side) => side.value !== 'both' || template.en_both).map((side) => ({
+    key: `${template.id}:${side.value}`,
+    template,
+    side: side.value,
+    jp: replaceAll(template.jp, SIDE_JP, side.jp),
+    en: side.value === 'both' ? template.en_both || '' : replaceAll(template.en, SIDE_EN, side.en),
+  }));
+};
+
+// 説明文（日本語）に含まれている定型文（の面）
+export const usedVariantKeys = (templates: DescriptionTemplate[], jp: string) => {
   const sentences = splitJp(jp);
-  return templates.filter((template) => indexOfSequence(sentences, splitJp(template.jp)) !== -1).map((t) => t.id);
+  return templates
+    .flatMap(variantsOf)
+    .filter((variant) => indexOfSequence(sentences, splitJp(variant.jp)) !== -1)
+    .map((variant) => variant.key);
 };
 
 export const applyTemplates = (
   templates: DescriptionTemplate[],
   current: { jp: string; en: string },
-  checkedIds: string[],
+  checkedKeys: string[],
 ) => {
+  const variants = templates.flatMap(variantsOf);
   // 取り除くのは、今の日本語に含まれていた定型文の文だけ。
   // 英語だけに定型文と同じ文があっても、手で書いた文かもしれないので残す
-  const used = templates.filter((template) => usedTemplateIds([template], current.jp).length > 0);
+  const usedKeys = usedVariantKeys(templates, current.jp);
+  const used = variants.filter((variant) => usedKeys.includes(variant.key));
   let restJp = splitJp(current.jp);
   let restEn = splitEn(current.en);
-  used.forEach((template) => {
-    restJp = removeSequence(restJp, splitJp(template.jp));
-    restEn = removeSequence(restEn, splitEn(template.en));
+  used.forEach((variant) => {
+    restJp = removeSequence(restJp, splitJp(variant.jp));
+    restEn = removeSequence(restEn, splitEn(variant.en));
   });
 
   // チェックを変えていなければ元の文のまま返す（反映を押しただけで文の順番が変わらないように）
-  const unchanged = used.length === checkedIds.length && used.every((template) => checkedIds.includes(template.id));
+  const unchanged = used.length === checkedKeys.length && used.every((variant) => checkedKeys.includes(variant.key));
   if (unchanged) return { ...current, manualJp: restJp };
 
-  const checked = templates.filter((template) => checkedIds.includes(template.id));
-  const jp = [...checked.flatMap((template) => splitJp(template.jp)), ...restJp].join('');
+  // 並びは定型文の順。同じ定型文の面は A面 → B面 → 両面
+  const checked = variants.filter((variant) => checkedKeys.includes(variant.key));
+  const jp = [...checked.flatMap((variant) => splitJp(variant.jp)), ...restJp].join('');
   // 「Plays good.」のように複数の定型文で同じ英文があるので、重ねて出さない
-  const en = Array.from(new Set([...checked.flatMap((template) => splitEn(template.en)), ...restEn])).join(' ');
+  const en = Array.from(new Set([...checked.flatMap((variant) => splitEn(variant.en)), ...restEn])).join(' ');
   return { jp, en, manualJp: restJp };
 };

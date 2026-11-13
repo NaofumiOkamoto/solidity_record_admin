@@ -1,0 +1,248 @@
+target,category,jp,en,en_both,position
+record,ラベル,{面}のラベルに若干のダメージ。,Slight damage on {side} label.,Slight damage on both side labels.,10
+record,ラベル,{面}のラベルにダメージ。,Some damage on {side} label.,Some damage on both side labels.,20
+record,ラベル,{面}のラベルに若干のダメージと書き込み。,Slight damage and writing on {side} label.,Slight damage and writing on both side labels.,30
+record,ラベル,{面}のラベルにダメージと書き込み。,Some damage and writing on {side} label.,Some damage and writing on both side labels.,40
+record,ラベル,{面}のラベルに若干のダメージと書き込みとステッカー。,"Slight damage, writing, and sticker on {side} label.","Slight damage, writing and sticker on both side labels.",50
+record,ラベル,両面のラベルにダメージと書き込みとステッカー。,"Some damage, writing and sticker on both side labels.",,60
+record,ラベル,{面}のラベルに若干のダメージと書き込みとスタンプ。,"Slight damage and writing, stamp on {side} label.","Slight damage, writing and stamp on both side labels.",70
+record,ラベル,{面}のラベルに若干のダメージとステッカー。,Slight damage and sticker on {side} label.,Slight damage and sticker on both side labels.,80
+record,ラベル,{面}のラベルにダメージとステッカー。,Some damage and sticker on {side} label.,Some damage and sticker on both side labels.,90
+record,ラベル,{面}のラベルに若干のダメージとスタンプ。,Slight damage and stamp on {side} label.,Slight damage and stamp on both side labels.,100
+record,ラベル,{面}のラベルにダメージとスタンプ。,Some damage and stamp on {side} label.,Some damage and stamp on both side labels.,110
+record,ラベル,両面のラベルにダメージがあり、A面のラベルは剥がれかけてます。,"Some damage on both side labels, and A side label is coming off.",,120
+record,ラベル,{面}のラベルに書き込み。,Writing on {side} label.,Writing on both side labels.,130
+record,ラベル,{面}のラベルに書き込みとステッカー。,Writing and sticker on {side} label.,Writing and sticker on both side labels.,140
+record,ラベル,{面}のラベルに書き込みとステッカーとスタンプ。,"Writing, sticker, and stamp on {side} label.","Writing, sticker, and stamp on both side labels.",150
+record,ラベル,{面}のラベルに書き込みとスタンプ。,Writing and stamp on {side} label.,Writing and stamp on both side labels.,160
+record,ラベル,{面}のラベルに書き込みとテープ。,Writing and tape on {side} label.,,170
+record,ラベル,{面}のラベルにステッカー。,Sticker on {side} label.,Sticker on both side labels.,180
+record,ラベル,{面}のラベルにステッカーとスタンプ。,Sticker and stamp on {side} label.,,190
+record,ラベル,{面}のラベルにスタンプ。,Stamp on {side} label.,Stamp on both side labels.,200
+record,ラベル,{面}のラベルに若干のシミ。,Slight brown stains on {side} label.,Slight brown stains on both side labels.,210
+record,ラベル,{面}のラベルにシミ。,Some stains on {side} label.,Some brown stains on both side labels.,220
+record,ラベル,{面}のラベルに若干のシミと書き込み。,Slight brown stains and writing on {side} label.,Slight brown stains and writing on both side labels.,230
+record,ラベル,{面}のラベルに若干のシミとステッカー。,Slight brown stains and sticker on {side} label.,,240
+record,ラベル,{面}のラベルに若干の汚れ。,Slight stains on {side} label.,Slight stains on both side labels.,250
+record,ラベル,{面}のラベルに汚れ。,Some stains on {side} label.,Some stains on both side labels.,260
+record,ラベル,{面}のラベルに2ヶ所ステッカー。,Stickers on {side} label.,,270
+record,ラベル,{面}のラベルに剥がれ。,{side} label come off.,,280
+record,ラベル,{面}のラベルにテープ。,Tape on {side} label.,,290
+record,ラベル,ラベル部分にカットアウト。,There is a cut out on the label.,,300
+record,ラベル,ラベル部分に若干の欠け。,Slight chip on the label.,,310
+record,ラベル,ラベル部分に欠け。,There is a chip on the label.,,320
+record,ラベル,ラベル部分に若干の割れ。,Slight crack on the label.,,330
+record,ラベル,ラベル部分に2箇所カットアウト。,There are two cut outs on the label.,,340
+record,ラベル,{面}ブランクラベル。,{side} label is blank.,,350
+record,ラベル,{面}のラベルとデッドワックス部分に書き込み。,Writing on {side} label and deadwax.,,360
+record,ラベル,{面}のラベルなし。,No {side} label.,,370
+record,ラベル,{面}ミスラベル。,{side} is miss label.,,380
+record,盤の状態,盤に若干の歪み。,Slight edge warp.,,390
+record,盤の状態,盤に歪み。,Edge warp.,,400
+record,盤の状態,{面}の盤に若干の曇り。,Slight cloudy on {side}.,Slight cloudy on both sides.,410
+record,盤の状態,{面}の盤に曇り。,Some cloudy on {side}.,Some cloudy on both sides.,420
+record,盤の状態,{面}の盤に目立つ曇り。,Noticeable cloudy on {side}.,Noticeable cloudy on both sides.,430
+record,盤の状態,エッジに若干のダメージ。,Slight damage on the edge.,,440
+record,盤の状態,{面}のエッジに若干のダメージ。,Slight damage on {side} edge.,,450
+record,盤の状態,エッジにダメージ。,Some damage on the edge.,,460
+record,盤の状態,{面}のエッジにダメージ。,Some damage on edge of {side}.,,470
+record,盤の状態,エッジに若干の欠け。,Slight chip on edge.,,480
+record,盤の状態,{面}のエッジに若干の欠け。,Slight chip on {side} edge.,,490
+record,盤の状態,エッジに欠け。,There is a chip on the edge.,,500
+record,盤の状態,エッジにヒートダメージ。,Heat damage on the edge.,,510
+record,盤の状態,両面のエッジに若干の曇り。,Slight cloudy on both sides edge.,,520
+record,盤の状態,両面のエッジに曇り。,Some cloudy on edge of both sides.,,530
+record,盤の状態,{面}のデッドワックス部分に書き込み。,Writing on deadwax of {side}.,,540
+record,盤の状態,デッドワックス部分にカットアウト。,There is a cut out on the deadwax.,,550
+record,盤の状態,{面}のデッドワックス部分にステッカー。,Sticker on deadwax of {side}.,,560
+record,盤の状態,ジュークボックスの傷。,Jukebox marks.,,570
+record,盤の状態,{面}若干センターずれ。,Slight off-center on {side}.,Slight off-center on both sides.,580
+record,盤の状態,{面}若干のセンターずれ。,{side} has slight off-center.,,590
+record,盤の状態,{面}ミスレーベル。,{side} is miss label.,,600
+record,盤の状態,傷もしくは浅いひびのように見える箇所あり。,There are shallow cracks like a hairline mark.Slight edge warp.,,610
+record,盤の状態,{面}に若干の曇り。,Slight cloudy on {side}.,,620
+record,盤の状態,{面}のデッドワックスに書き込み。,Writing on deadwax of {side}.,Writing on deadwax of both sides.,630
+record,盤の状態,赤盤。,Red vinyl.,,640
+record,盤の状態,両面の後半にプレス起因の突起あり。,There is a bubble on later half of both sides.,,650
+record,盤の状態,{面}の中盤にプレス起因の突起あり。,There is a bubble on middle of {side}.,There is a bubble on middle of both sides.,660
+record,ノイズ・音割れ,{面}ノイジー。,Some noise on {side}.,Some noise on both sides.,670
+record,ノイズ・音割れ,{面}若干ノイジー。,Slight noise on {side}.,Slight noise on both sides.,680
+record,ノイズ・音割れ,{面}に傷によるクリックノイズあり。,Some click noise on {side} due to scratches.,Some click noise on both sides due to scratches.,690
+record,ノイズ・音割れ,{面}に目立つノイズ。,Noticeable noise on {side}.,Noticeable noise on both sides.,700
+record,ノイズ・音割れ,{面}にプチノイズ。,Some crackling noise on {side}.,Some crackling noise on both sides.,710
+record,ノイズ・音割れ,{面}にプチノイズあり。,Some crackling noise on {side}.,Some crackling noise on both sides.,720
+record,ノイズ・音割れ,{面}にクリックノイズあり。,Some click noise on {side}.,Some click noise on both sides.,730
+record,ノイズ・音割れ,{面}に傷によるクリックノイズあるが、全体的にプレイはまずまず。,"Some click noise on {side} due to scratches, but almost plays good.","Some click noise on both sides due to scratches, but almost plays good.",740
+record,ノイズ・音割れ,{面}に傷による目立つノイズ。,Noticeable noise on {side} due to scratches.,,750
+record,ノイズ・音割れ,{面}に傷による目立つノイズあり。,Noticeable noise on {side} due to scratches.,Noticeable noise on both sides due to scratches.,760
+record,ノイズ・音割れ,{面}に目立つ傷によるノイズあり。,Some noise on {side} due to noticeable scratches.,,770
+record,ノイズ・音割れ,{面}に傷によるクリックノイズあるが、全体的におおむね良好。,"Some click noise on {side} due to scratches, but almost good.",,780
+record,ノイズ・音割れ,{面}に傷によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on {side} due to scratches, but almost good.","Some click noise on both sides due to scratches, but almost good.",790
+record,ノイズ・音割れ,両面にプレス起因の突起によるクリックノイズあり。,Some click noise on both sides due to a bubble.,,800
+record,ノイズ・音割れ,両面にプレス起因の突起による若干のクリックノイズあり。,But doesn't affect playing.,,810
+record,ノイズ・音割れ,{面}にクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on {side}, but almost good.","Some click noise on both sides, but almost good.",820
+record,ノイズ・音割れ,{面}に傷によるノイズあり。,Some noise on {side} due to scratches.,Some noise on both sides due to scratches.,830
+record,ノイズ・音割れ,{面}に傷によるクリックノイズがあるが、全体的におおむね良好。,"Some click noise on {side} due to scratches, but almost good.",,840
+record,ノイズ・音割れ,{面}に傷によるクリックノイズがあり。,Some click noise on {side} due to scratches.,,850
+record,ノイズ・音割れ,{面}に傷によるクリックノイズがあるが、プレイは全体的にまずまず。,"Some click noise on {side} due to scratches, but almost plays good.",,860
+record,ノイズ・音割れ,両面にプレス起因の突起があり、若干音に影響あり。,"There is a bubble on both sides, which slightly affects the sound.",,870
+record,ノイズ・音割れ,{面}に傷によるクリックノイズあるが、全体的にプレイはおおむね良好。,"Some click noise on {side} due to scratches, but almost plays good.",,880
+record,ノイズ・音割れ,{面}に周期ノイズあり。,Some periodic noise on {side}.,,890
+record,ノイズ・音割れ,{面}に傷による周期ノイズあり。,Some periodic noise on {side} due to scratches.,,900
+record,ノイズ・音割れ,両面にプレス起因の突起による若干のクリックノイズあるが、全体的にはおおむね良好。,"Slight click noise on both sides due to a bubble, but almost good.",,910
+record,ノイズ・音割れ,見た目は比較的良好だが、{面}若干ノイジー。,"Looks good, but slight noise on {side}.","Looks good, but slight noise on both sides.",920
+record,ノイズ・音割れ,見た目は比較的良好だが、{面}ノイジー。,"Looks good, but some noise on {side}.","Looks good, but some noise on both sides.",930
+record,ノイズ・音割れ,見た目は比較的良好だが、{面}の序盤若干ノイジー。,"Looks good, but slight noise on beginning of {side}.","Looks good, but slight noise on beginning of both sides.",940
+record,ノイズ・音割れ,見た目は比較的良好だが、{面}の序盤ノイジー。,"Looks good, but some noise on beginning of {side}.",,950
+record,ノイズ・音割れ,見た目は比較的良好だが、{面}にプチノイズあり。,Some crackling noise on {side}.,"Looks good, but some crackling noise on both sides.",960
+record,ノイズ・音割れ,見た目は比較的良好だが、{面}の所々若干ノイジー。,"Looks good, but slight noise on parts of {side}.","Looks good, but slight noise on parts of both sides.",970
+record,ノイズ・音割れ,見た目は比較的良好だが、{面}に目立つノイズ。,"Looks good, but noticeable noise on {side}.",,980
+record,ノイズ・音割れ,見た目は比較的良好だが、両面に若干のプチノイズあり。,"Looks good, but slight cracling noise on both sides.",,990
+record,ノイズ・音割れ,{面}の序盤に傷によるクリックノイズあり。,Some click noise on beginning of {side} due to scratches.,Some click noise on beginning of both sides due to scratches.,1000
+record,ノイズ・音割れ,{面}の序盤に傷によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on beginning of {side} due to scratches, but almost good.",,1010
+record,ノイズ・音割れ,{面}の序盤に傷による若干のクリックノイズあるが、全体的にはおおむね良好。,"Slight click noise on beginning of {side} due to scratches, but almost good.",,1020
+record,ノイズ・音割れ,{面}の序盤にクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on beginning of {side}, but almost good.",,1030
+record,ノイズ・音割れ,{面}の序盤に若干のクリックノイズあるが、全体的にはおおむね良好。,"Slight click noise on first half of {side}, but almost good.",,1040
+record,ノイズ・音割れ,{面}の序盤に周期ノイズあり。,Some periodic noise on beginning of {side}.,,1050
+record,ノイズ・音割れ,{面}の序盤にプレス起因の突起によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on beginning of {side} due to a bubble, but almost good.","Some click noise on beginning of both sides due to a bubble, but almost good.",1060
+record,ノイズ・音割れ,{面}の序盤にプレス起因の突起による若干のクリックノイズあるが、全体的にはおおむね良好。,"Slight click noise on beginning of {side} due to a bubble, but almost good.","Slight click noise on beginning of both sides due to a bubble, but almost good.",1070
+record,ノイズ・音割れ,{面}の序盤にプチノイズ。,Some cracling noise on beginning of {side}.,,1080
+record,ノイズ・音割れ,{面}の序盤にプチノイズあるが、全体的にはおおむね良好。,"Some crackling noise on beginning of {side}, but almost good.","Some cracling noise on beginning of both sides, but almost good.",1090
+record,ノイズ・音割れ,{面}の序盤に傷によるクリックノイズあるが、全体的にプレイはまずまず。,"Some click noise on beginning of {side} due to scratches, but almost plays good.",,1100
+record,ノイズ・音割れ,{面}の序盤に傷によるクリックノイズあるが、全体的にプレイはおおむね良好。,"Some click noise on beginning of {side} due to scratches, but almost plays good.",,1110
+record,ノイズ・音割れ,{面}の序盤にクリックノイズあり。,Some click noise on beginning of {side}.,Some click noise on beginning of both sides.,1120
+record,ノイズ・音割れ,{面}の序盤に傷によるクリックノイズがあるが、全体的にはおおむね良好。,"Some click noise on beginning of {side} due to scratches, but almost good.",,1130
+record,ノイズ・音割れ,{面}の序盤に傷によるクリックノイズがあるが、全体的にプレイはおおむね良好。,"Some click noise on beginning of {side} due to scratches, but almost plays good.",,1140
+record,ノイズ・音割れ,{面}の序盤に目立つ周期ノイズ。,Noticeable periodic noise on beginning of {side}.,,1150
+record,ノイズ・音割れ,{面}の序盤にノイズあるが、全体的にはおおむね良好。,"Some noise on beginning of {side}, but almost good.","Some noise on beginning of both side, but almost good.",1160
+record,ノイズ・音割れ,{面}の序盤に傷による周期ノイズあり。,Some periodic noise on beginning of {side} due to scratches.,,1170
+record,ノイズ・音割れ,{面}の序盤に1箇所ノイズあるが、全体的にはおおむね良好。,"There is one instance of noise on beginning of {side}, but almost good.",,1180
+record,ノイズ・音割れ,{面}の序盤にノイジーな箇所があるが、全体的におおむね良好。,"Some noise on beginning of {side}, but almost good.",,1190
+record,ノイズ・音割れ,{面}の序盤にクリックノイズがあるが、全体的におおむね良好。,"Some click noise on beginning of {side}, but almost good.",,1200
+record,ノイズ・音割れ,{面}の序盤に傷によるノイズあり。,Some noise on beginning of {side} due to scratches.,Some noise on beginning of both sides due to scratches.,1210
+record,ノイズ・音割れ,{面}の序盤にプレス起因の突起があり、若干音に影響あるが、全体的におおむね良好。,"There is a bubble on beginning of {side}, but almost good.",,1220
+record,ノイズ・音割れ,{面}の序盤に周期ノイズあるが、全体的にはおおむね良好。,"Some periodic noise on beginning of {side}, but almost good.","Slight periodic noise on beginning of both sides, but almost good.",1230
+record,ノイズ・音割れ,{面}の序盤ノイジー。,Some noise on beginning of {side}.,Some noise on beginning of both sides.,1240
+record,ノイズ・音割れ,{面}の序盤若干ノイジー。,Slight noise on beginning of {side}.,Slight noise on beginning of both sides.,1250
+record,ノイズ・音割れ,{面}の序盤若干ノイジーだが、全体的にはおおむね良好。,"Slight noise on beginning of {side}, but almost good.","Slight noise on beginning of both sides, but almost good.",1260
+record,ノイズ・音割れ,{面}の序盤ノイジーだが、全体的にはおおむね良好。,"Some noise on beginning of {side}, but almost good.",,1270
+record,ノイズ・音割れ,{面}の序盤若干ノイジーだが、全体的にプレイはおおむね良好。,"Slight noise on beginning of {side}, but almost plays good.","Slight noise on beginning of both sides, but almost plays good.",1280
+record,ノイズ・音割れ,{面}の序盤ノイジーだが、全体的にプレイはおおむね良好。,"Some noise on beginning of {side}, but almost plays good.",,1290
+record,ノイズ・音割れ,{面}の序盤若干ノイジーだが、全体的にプレイはまずまず。,"Slight noise on beginning of {side}, but almost plays good.",,1300
+record,ノイズ・音割れ,{面}の序盤ノイジーだが、全体的にプレイはまずまず。,"Some noise on beginning of {side}, but almost plays good.",,1310
+record,ノイズ・音割れ,{面}の序盤若干ノイジーだが、全体的にはプレイはおおむね良好。,"Slight noise on beginning of {side}, but almost plays good.","Slight noise on beginning of both sides, but almost plays good.",1320
+record,ノイズ・音割れ,{面}若干音割れ。,Slight sound cracking on {side}.,Slight sound cracking on both sides.,1330
+record,ノイズ・音割れ,{面}音割れ。,Sound cracking on {side}.,,1340
+record,ノイズ・音割れ,{面}の後半に傷によるクリックノイズあり。,Some click noise on later half of {side} due to scratches.,,1350
+record,ノイズ・音割れ,{面}の後半にプレス起因の突起によるクリックノイズあり。,Some click noise on latter half of {side} due to a bubble.,Some click noise on later half of both sides due to a bubble.,1360
+record,ノイズ・音割れ,{面}の後半にプレス起因の突起による若干のクリックノイズあり。,Slight click noise on later half of {side} due to a bubble.,Slight click noise on later half of both sides due to a bubble.,1370
+record,ノイズ・音割れ,{面}の後半にプレス起因の突起があり、若干音に影響あり。,"There is a bubble on later half of {side}, which slightly affects the sound.","There is a bubble on later half of both sides, which slightly affects the sound.",1380
+record,ノイズ・音割れ,{面}の後半に傷によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on later half of {side} due to scratches, but almost good.",,1390
+record,ノイズ・音割れ,{面}の後半にプレス起因の突起による若干のクリックノイズあるが、全体的にはおおむね良好。,"Slight click noise on later half of {side} due to a bubble, but almost good.","Slight click noise on later half of both sides due to a bubble, but almost good.",1400
+record,ノイズ・音割れ,{面}の後半に傷によるクリックノイズあるが、全体的にプレイはおおむね良好。,"Some click noise on later half of {side}, but almost plays good.",,1410
+record,ノイズ・音割れ,両面の後半に目立つ曇りがあり、若干ノイジー。,Slight noise on later half of both sides due to noticeable cloudy.,,1420
+record,ノイズ・音割れ,{面}の後半にプレス起因の突起によるクリックノイズがあるが、全体的にはおおむね良好。,"Some click noise on later half on {side} due to a bubble, but almost good.","Some click noise on later half of both sides due to a bubble, but almost good.",1430
+record,ノイズ・音割れ,{面}の後半にプレス起因の突起による周期ノイズあり。,Some periodic noise on later half of {side} due to a bubble.,Some periodic noise on later half of both sides due to a bubble.,1440
+record,ノイズ・音割れ,{面}の中盤にプレス起因の突起によるクリックノイズあり。,Some click noise on middle of {side} due to a bubble.,Some click noise on middle of both sides due to a bubble.,1450
+record,ノイズ・音割れ,{面}の中盤にプレス起因の突起による若干のクリックノイズあり。,Slight click noise on middle of {side} due to a bubble.,,1460
+record,ノイズ・音割れ,{面}の中盤にプレス起因の突起によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on middle of {side} due to a bubble, but almost good.",,1470
+record,ノイズ・音割れ,{面}の中盤にプレス起因の突起による若干のクリックノイズあるが、全体的にはおおむね良好。,"Slight click noise on middle of {side} due to a bubble, but almost good.","Slight click noise on middle of both sides due to a bubble, but almost good.",1480
+record,ノイズ・音割れ,{面}の中盤にプレス起因の突起があり、若干音に影響あり。,"There is a bubble on middle of {side}, which slightly affects the sound.","There is a bubble on middle of both sides, which slightly affects the sound.",1490
+record,ノイズ・音割れ,{面}の中盤に傷によるクリックノイズあり。,Some click noise on middle of {side} due to scratches.,Some click noise on middle of both sides due to scratches.,1500
+record,ノイズ・音割れ,{面}の中盤に傷によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on middle of {side}, but almost good.",,1510
+record,ノイズ・音割れ,{面}の中盤に傷によるクリックノイズあるが、全体的にプレイはおおむね良好。,"Some click noise on middle of {side}, but almost good.",,1520
+record,ノイズ・音割れ,{面}の中盤に傷によるクリックノイズあるが、全体的にプレイはまずまず。,"Some click noise on middle of {side}, but almost plays good.",,1530
+record,ノイズ・音割れ,{面}の中盤に目立つノイズあり。,Noticeable noise on middle of {side}.,,1540
+record,ノイズ・音割れ,{面}の前半に傷によるクリックノイズあり。,Some click noise on first half of {side}.,Some click noise on beginning of both side due to scratches.,1550
+record,ノイズ・音割れ,{面}の前半に傷によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on first half of {side} due to scratches, but almost good.",,1560
+record,ノイズ・音割れ,{面}の前半に傷による若干のクリックノイズあるが、全体的にはおおむね良好。,"Slight click noise on first half of {side} due to scratches, but almost good.",,1570
+record,ノイズ・音割れ,{面}の前半に傷による周期ノイズあり。,Some periodic noise on first half of {side} due to scratches.,,1580
+record,ノイズ・音割れ,{面}の前半にプレス起因の突起によるクリックノイズあり。,Some click noise on first half of {side} due to a bubble.,,1590
+record,ノイズ・音割れ,{面}の前半に目立つ周期ノイズあり。,Noticeable periodic noise on first half of {side}.,,1600
+record,ノイズ・音割れ,{面}の前半にプレス起因の突起によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on first half of {side} due to a bubble, but almost good.",,1610
+record,ノイズ・音割れ,両面の前半にプレス起因の突起によるクリックノイズがあるが、全体的にはおおむね良好。,"Some click noise on first half of both sides due to a bubble, but almost good.",,1620
+record,ノイズ・音割れ,{面}の前半に傷によるクリックノイズあるが、全体的にプレイはおおむね良好。,"Some click noise on first half of {side}, but almost plays good.",,1630
+record,ノイズ・音割れ,{面}の冒頭ノイジー。,Some noise on beginning of {side}.,Some noise on beginning of both sides.,1640
+record,ノイズ・音割れ,{面}の冒頭若干ノイジーだが、全体的にはおおむね良好。,"Slight noise on beginning of {side}, but almost good.","Slight noise on beginning of both sides, but almost good.",1650
+record,ノイズ・音割れ,{面}の冒頭ノイジーだが、全体的にはおおむね良好。,"Some noise on beginning of {side}, but almost good.",,1660
+record,ノイズ・音割れ,{面}の冒頭若干ノイジーだが、全体的にプレイはおおむね良好。,"Slight noise on beginning of {side}, but almost plays good.","Slight noise on beginning of both sides, but almost plays good.",1670
+record,ノイズ・音割れ,{面}の冒頭若干ノイジーだが、全体的にプレイはまずまず。,"Slight noise on beginning of {side}, but almost plays good.",,1680
+record,ノイズ・音割れ,{面}所々ノイジー。,Some noise on parts of {side}.,Some noise on parts of both sides.,1690
+record,ノイズ・音割れ,{面}所々若干ノイジー。,Slight noise on parts of {side}.,Slight noise on parts of both sides.,1700
+record,ノイズ・音割れ,{面}の所々ノイジー。,Some noise on parts of {side}.,,1710
+record,ノイズ・音割れ,{面}の冒頭にクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on beginning of {side}, but almost good.",,1720
+record,ノイズ・音割れ,{面}の冒頭に傷によるクリックノイズあり。,Some click noise on beginnig of {side}.,,1730
+record,ノイズ・音割れ,{面}の冒頭にクリックノイズあり。,Some click noise on beginning of {side}.,,1740
+record,ノイズ・音割れ,{面}の冒頭に傷によるクリックノイズあるが、全体的にはまずまず。,"Some click noise on beginning of {side} due to scratches, but almost plays good.","Some click noise on beginning of both sides, but almost plays good.",1750
+record,ノイズ・音割れ,{面}の冒頭にプレス起因の突起によるクリックノイズあり。,Some click noise on beginning of {side} due to a bubble.,,1760
+record,ノイズ・音割れ,{面}の冒頭に傷によるクリックノイズあるが、全体的にはおおむね良好。,"Some click noise on beginning of {side} due to scratches, but almost good.",,1770
+record,ノイズ・音割れ,{面}冒頭の無音部分にノイズあるが、全体的にプレイはおおむね良好。,"Some noise on lead in groove of {side}, but almost plays good.",,1780
+record,ノイズ・音割れ,{面}の録音が不安定。,The recording of {side} is unstable.,,1790
+record,ノイズ・音割れ,{面}の出だしの録音が不安定。,The recording is unstable at the start of the {side}.,,1800
+record,ノイズ・音割れ,{面}の出だしに若干ノイズがあるが、全体的におおむね良好。,"Slight noise on start of {side}, but almost good.",,1810
+record,ノイズ・音割れ,{面}ブランクで録音なし。,{side} is blank with no recording.,,1820
+record,ノイズ・音割れ,両面のラストにプレス起因の突起による若干のクリックノイズあり。,But doesn't affect playing.,,1830
+record,プレイの総評,多少の傷はあるが、おおむね良好。,But good shape.,,1840
+record,プレイの総評,多少の傷はあるが、プレイはおおむね良好。,Plays good.,,1850
+record,プレイの総評,プレイOK。,But doesn't affect playing.,,1860
+record,プレイの総評,傷は多いが、{面}のプレイはまずまず。,{side} plays good.,,1870
+record,プレイの総評,傷は多いが、プレイはまずまず。,Plays good.,,1880
+record,プレイの総評,傷は多いが、プレイまずまず。,Plays good.,,1890
+record,プレイの総評,傷はあるが、プレイはおおむね良好。,Plays good.,,1900
+record,プレイの総評,傷はあるが、{面}のプレイはおおむね良好。,{side} plays good.,,1910
+record,プレイの総評,傷はあるが、おおむね良好。,But good shape.,,1920
+record,プレイの総評,{面}のプレイはおおむね良好。,{side} plays good.,,1930
+record,プレイの総評,{面}のプレイはまずまず。,{side} plays good.,,1940
+record,プレイの総評,{面}はおおむね良好。,{side} is good shape.,,1950
+record,プレイの総評,全体的にはおおむね良好。,But almost good.,,1960
+record,プレイの総評,プレイに支障なし。,But doesn't affect playing.,,1970
+record,プレイの総評,プレイに支障はなく、おおむね良好。,No problem for playing. Good shape.,,1980
+record,プレイの総評,盤の歪みが激しいが、プレイOK。,Heavy edge warp. But doesn't affect playing.,,1990
+record,プレイの総評,センターが若干拡張されているが、プレイOK。,Center hole is slightly enlarged. But doesn't affect playing.,,2000
+record,盤の種類・付属品,プロモ盤。,Promo copy.,,2010
+record,盤の種類・付属品,ジャケットなし。,No cover.,,2020
+record,盤の種類・付属品,カンパニースリーブ付き。,With company sleeve.,,2030
+record,盤の種類・付属品,カラー盤。,Colored vinyl.,,2040
+record,盤の種類・付属品,センターアダプターなし。,No center adapter.,,2050
+record,盤の種類・付属品,カンパニースリーブに書き込み。,Writing on company sleeve.,,2060
+record,盤の種類・付属品,片面プレス。,Single Sided.,,2070
+record,盤の種類・付属品,2枚組。,2 LP.,,2080
+cover,付属品,帯とインサート付き。,With OBI and insert.,,10
+cover,付属品,帯なし。,No OBI.,,20
+cover,付属品,インサートなし。,No insert.,,30
+cover,付属品,帯付き。,With OBI.,,40
+cover,付属品,インサート付き。,With insert.,,50
+cover,付属品,インサート2枚付き。,With 2 inserts.,,60
+cover,付属品,CAP帯とインサート付き。,With CAP OBI and insert.,,70
+cover,付属品,シュリンク付き。,Shrink wrap.,,80
+cover,付属品,CAP帯付き。,With CAP OBI.,,90
+cover,付属品,インナースリーブ付き。,With inner sleeve.,,100
+cover,付属品,帯とインサート3枚付き。,With OBI and 3 inserts.,,110
+cover,ジャケットの状態,ジャケットにシミ。,Some brown stains on cover.,,120
+cover,ジャケットの状態,ジャケットに若干のシミ。,Slight brown stains on cover.,,130
+cover,ジャケットの状態,ジャケットにステッカー。,Sticker on cover.,,140
+cover,ジャケットの状態,ジャケットにプロモステッカー。,Promo sticker on cover.,,150
+cover,ジャケットの状態,ジャケットに書き込み。,Writing on cover.,,160
+cover,ジャケットの状態,ジャケットにカットアウト。,There is a cut out on the cover.,,170
+cover,ジャケットの状態,見開きジャケット。,Gatefold cover.,,180
+cover,ジャケットの状態,ジャケットとインサートにシミ。,Some brown stains on cover and insert.,,190
+cover,ジャケットの状態,ジャケットとインサートに若干のシミ。,Slight brown stains on cover and insert.,,200
+cover,ジャケットの状態,ジャケット下部に裂け。,Split on the bottom of the cover.,,210
+cover,ジャケットの状態,ジャケット上部に裂け。,Split on the top of the cover.,,220
+cover,ジャケットの状態,ジャケット上部に若干のダメージ。,Slight damage on the top of the cover.,,230
+cover,ジャケットの状態,帯とジャケットとインサートにシミ。,"Some brown stains on OBI, cover and insert.",,240
+cover,ジャケットの状態,帯とジャケットとインサートに若干のシミ。,"Slight brown stains on OBI, cover and insert.",,250
+cover,ジャケットの状態,帯とジャケットに若干のシミ。,Slight brown stains on OBI and cover.,,260
+cover,ジャケットの状態,ジャケットと帯にシミ。,Some brown stains on cover and OBI.,,270
+cover,ジャケットの状態,ジャケット右下の角に若干のダメージ。,Slight damage on bottom right corner of the cover.,,280
+cover,ジャケットの状態,ジャケット右上の角に若干のダメージ。,Slight damage on top right corner of the cover.,,290
+cover,付属品の状態,帯に若干のダメージ。,OBI has slight damage.,,300
+cover,付属品の状態,帯に若干の変色。,OBI has slight discolored.,,310
+cover,付属品の状態,帯に若干の色褪せ。,OBI has slight discolored.,,320
+cover,付属品の状態,帯にシミ。,Some brown stains on OBI.,,330
+cover,付属品の状態,インサートにシミ。,Some brown stains on insert.,,340
+cover,付属品の状態,インサートに若干のシミ。,Slight brown stains on insert.,,350
+cover,付属品の状態,インサートに若干のダメージ。,Slight damage on insert.,,360
+cover,付属品の状態,インナースリーブに裂けあり。,Inner sleeve has some splits.,,370
+cover,付属品の状態,インナースリーブにダメージ。,Inner sleeve has damage.,,380
+cover,付属品の状態,シュリンクに裂けあり。,Shrink has some splits.,,390

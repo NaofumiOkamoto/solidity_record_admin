@@ -16,6 +16,12 @@ ja:
       invalid_genre_format: "はジャンル id を _ でつないだ形式にしてください（例: 1_19）"
       unknown_genre: "にジャンルマスタに無い id が含まれています（%{ids}）"
       too_long: "は%{count}文字以内で入力してください"
+      must_end_with_period_jp: "は「。」で終わるようにしてください"
+      must_end_with_period_en: "は「.」で終わるようにしてください"
+      must_include_side: "に {side} を入れてください（日本語に {面} があるため。A side / B side に置き換わります）"
+      must_not_include_side: "には {side} を使わず、両面の英文をそのまま書いてください"
+      side_without_jp: "の {side} は、日本語に {面} があるときだけ使えます"
+      present_without_side: "は、日本語に {面} があるときだけ入力してください"
   activerecord:
     attributes:
       genre:
@@ -27,3 +33,11 @@ ja:
         ebay_category: "ebay_category"
         yahoo_auction_category: "yahoo_auction_category"
         tags: "tags"
+      description_template:
+        target: "対象"
+        category: "分類"
+        jp: "日本語"
+        en: "英語"
+        en_both: "英語（両面）"
+        note: "メモ"
+        position: "順番"
